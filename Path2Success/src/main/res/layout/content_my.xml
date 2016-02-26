@@ -5,14 +5,16 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:showIn="@layout/activity_main"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:weightSum="1"
-    tools:showIn="@layout/activity_my">
+    android:id="@+id/linearLayout"
+    android:weightSum="1">
+
     <TextView
         android:layout_width="421dp"
         android:layout_height="0dp"
         android:layout_weight="0.14"
-        android:text="This needs a text!"
+        android:text="@string/intro"
         android:textSize="32sp"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,14 +23,29 @@
     <EditText android:id="@+id/edit_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="This needs a text"
+        android:hint="@string/hint_to_add"
         android:layout_weight="0.75" />
 
     <Button android:id="@+id/theButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Add"
+        android:hint="@string/add_button"
         android:layout_gravity="center_horizontal"
         android:onClick="addNewItem"/>
     </LinearLayout>
+
+    <CheckBox
+        android:layout_width="365dp"
+        android:layout_height="0dp"
+        android:text="@string/check"
+        android:checked="false"
+        android:layout_weight="0.13" />
+    <CheckBox
+        android:layout_width="365dp"
+        android:layout_height="0dp"
+        android:text="@string/check"
+        android:checked="false"
+        android:layout_weight="0.13" />
+
+
 </LinearLayout>
