@@ -1,5 +1,6 @@
 package com.example.tyler.Path2Success;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,12 +8,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class MyActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
+    private LinearLayout mLayout;
+    private EditText mText1;
+    private EditText mText2;
+    private Button mButton;
 
     public void addNewItem(View view)  {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
@@ -31,8 +40,32 @@ public class MyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        mButton = (Button) findViewById(R.id.theButton);
+        mText1 = (EditText) findViewById(R.id.edit_message);
+        mText2 = (EditText) findViewById(R.id.edit_message2);
+        mButton.setOnClickListener(onClick());
+        TextView textView = new TextView(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+    }
+
+    private TextView createNewTextView(String text) {
+        final AbsListView.LayoutParams lparams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+        final TextView textView = new TextView(this);
+        textView.setLayoutParams(lparams);
+        textView.setText(text);
+        return textView;
+    }
+
+    private View.OnClickListener onClick() {
+        return new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mLayout.addView(createNewTextView(mText1.getText().toString() + "   " + mText2.getText().toString()));
+            }
+        };
     }
 
     @Override
