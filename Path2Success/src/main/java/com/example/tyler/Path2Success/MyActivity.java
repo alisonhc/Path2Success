@@ -1,6 +1,5 @@
 package com.example.tyler.Path2Success;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,12 +50,12 @@ public class MyActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    private TextView createNewTextView(String text) {
+    private CheckBox createNewCheckBox(String text) {
         final AbsListView.LayoutParams lparams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
-        final TextView textView = new TextView(this);
-        textView.setLayoutParams(lparams);
-        textView.setText(text);
-        return textView;
+        final CheckBox checkBox = new CheckBox(this);
+        checkBox.setLayoutParams(lparams);
+        checkBox.setText(text);
+        return checkBox;
     }
 
     private View.OnClickListener onClick() {
@@ -63,7 +63,7 @@ public class MyActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                mLayout.addView(createNewTextView(mText1.getText().toString() + "   " + mText2.getText().toString()));
+                mLayout.addView(createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString()));
             }
         };
     }
