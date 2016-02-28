@@ -6,7 +6,9 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_display_message">Your goals</string>
     <string name="hint_to_add">Add a new item</string>
-    <string name="check">I have been eating veggies everyday</string>
+    <string name="check1">I have been eating veggies everyday</string>
+    <string name="check2">peel potato</string>
+    <string name="check3">bake potato</string>
     <string name="add_button">Add</string>
     <string name="intro">Path 2 Success</string>
 </resources>

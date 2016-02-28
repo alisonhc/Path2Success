@@ -14,9 +14,9 @@ public class MyActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
 
-    public void sendMessage(View view)  {
+    public void addNewItem(View view)  {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        Intent intent2 = new Intent(this, DisplayMessageActivity.class);
+        //Intent intent2 = new Intent(this, DisplayMessageActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
         EditText editText2 = (EditText) findViewById(R.id.edit_message2);
         String message = editText.getText().toString();

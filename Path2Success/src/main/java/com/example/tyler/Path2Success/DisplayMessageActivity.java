@@ -3,6 +3,7 @@ package com.example.tyler.Path2Success;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,10 +19,12 @@ public class DisplayMessageActivity extends AppCompatActivity {
         TextView textView = new TextView(this);
         TextView textView2 = new TextView(this);
         textView.setTextSize(40);
-        textView.setText(message + "        "+message2); //only shows whichever comes second right now.
-
+        textView2.setTextSize(40);
+        textView.setText(message+"      "); //only shows whichever comes second right now.
+        textView2.setText(message2);
 //Hi.
-        RelativeLayout layout = (RelativeLayout) findViewById(R.id.content);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.content);
         layout.addView(textView);
+        layout.addView(textView2);
     }
 }
