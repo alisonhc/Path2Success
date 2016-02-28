@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="421dp"
         android:layout_height="0dp"
-        android:layout_weight="0.14"
+        android:layout_weight="0.20"
         android:text="@string/intro"
         android:textSize="32sp"/>
     <LinearLayout
@@ -21,6 +21,11 @@
         android:layout_height="61dp"
         android:weightSum="1">
     <EditText android:id="@+id/edit_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/hint_to_add"
+        android:layout_weight="0.75" />
+    <EditText android:id="@+id/edit_message2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/hint_to_add"
