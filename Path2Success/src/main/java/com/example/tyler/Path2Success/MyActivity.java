@@ -65,10 +65,13 @@ public class MyActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                mLayout.addView(createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString()));
+                CheckBox cBox = createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString());
+                cBox.setOnClickListener(onClickBox(cBox));
+                mLayout.addView(cBox);
+
+                //myLayout.addView
                 InputMethodManager inputManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
 
@@ -76,6 +79,17 @@ public class MyActivity extends AppCompatActivity {
                 mText2.setText("");
             }
         };
+    }
+
+    private View.OnClickListener onClickBox(View box){
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View box){
+                mLayout.removeView(box);
+            }
+        };
+
+
     }
 
     @Override
