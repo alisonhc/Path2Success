@@ -50,6 +50,7 @@ public class MyActivity extends AppCompatActivity {
         TextView textView = new TextView(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Path 2 Success");
     }
 
     private CheckBox createNewCheckBox(String text) {

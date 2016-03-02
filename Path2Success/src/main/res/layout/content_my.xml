@@ -23,12 +23,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/hint_to_add"
-        android:layout_weight="0.75" />
+        android:layout_weight="0.64" />
     <EditText android:id="@+id/edit_message2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/hint_to_add"
-        android:layout_weight="0.75" />
+        android:hint="@string/hint_of_time"
+        android:layout_weight="0.32" />
 
     <Button android:id="@+id/theButton"
         android:layout_width="wrap_content"
