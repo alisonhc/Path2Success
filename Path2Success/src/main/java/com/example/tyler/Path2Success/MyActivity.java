@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+
 public class MyActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";

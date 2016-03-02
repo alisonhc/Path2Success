@@ -7,36 +7,37 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:id="@+id/linearLayout"
+    android:animateLayoutChanges="true"
     android:weightSum="1">
 
-    <TextView
-        android:layout_width="421dp"
-        android:layout_height="0dp"
-        android:layout_weight="0.20"
-        android:text="@string/intro"
-        android:textSize="32sp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:layout_weight="0.22">
     <EditText android:id="@+id/edit_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/hint_to_add"
-        android:layout_weight="0.64" />
+        android:layout_weight="0.64"
+        android:layout_gravity="top"
+        android:layout_marginTop="50dp" />
     <EditText android:id="@+id/edit_message2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/hint_of_time"
-        android:layout_weight="0.32" />
+        android:layout_weight="0.32"
+        android:layout_gravity="top"
+        android:layout_marginTop="50dp" />
 
 
     <Button android:id="@+id/theButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/add_button"
-        android:layout_gravity="center_horizontal"
-        android:onClick="addNewItem"/>
+        android:layout_gravity="top|center_horizontal"
+        android:onClick="addNewItem"
+        android:layout_marginTop="50dp" />
     </LinearLayout>
 
 
