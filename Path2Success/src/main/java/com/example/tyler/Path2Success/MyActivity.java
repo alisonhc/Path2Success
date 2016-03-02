@@ -71,6 +71,9 @@ public class MyActivity extends AppCompatActivity {
 
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
+
+                mText1.setText("");
+                mText2.setText("");
             }
         };
     }
