@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,19 +32,6 @@ public class MyActivity extends AppCompatActivity {
     private Button mButton;
     private LayoutTransition mTransition;
 
-    public void addNewItem(View view)  {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        //Intent intent2 = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
-        EditText editText2 = (EditText) findViewById(R.id.edit_message2);
-        String message = editText.getText().toString();
-        String message2 = editText2.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        intent.putExtra(EXTRA_MESSAGE2, message2);
-        startActivity(intent);
-
-
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +40,7 @@ public class MyActivity extends AppCompatActivity {
         mButton = (Button) findViewById(R.id.theButton);
         mText1 = (EditText) findViewById(R.id.edit_message);
         mText2 = (EditText) findViewById(R.id.edit_message2);
+        //mText2.setGravity(Gravity.END);
         mTransition = new LayoutTransition();
         mButton.setOnClickListener(onClick());
         mLayout.setLayoutTransition(mTransition);
@@ -75,8 +64,8 @@ public class MyActivity extends AppCompatActivity {
         return new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-                CheckBox cBox = createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString());
+            public void onClick(View v) {;
+                CheckBox cBox = createNewCheckBox(mText1.getText().toString() + ": " + mText2.getText().toString());
                 cBox.setOnClickListener(onClickBox(cBox));
                 mLayout.addView(cBox);
                 mTransition.addChild(mLayout,cBox);

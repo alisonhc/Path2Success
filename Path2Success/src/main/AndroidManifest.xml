@@ -18,15 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.example.tyler.Path2Success.DisplayMessageActivity"
-            android:label="@string/title_activity_display_message"
-            android:parentActivityName="com.example.tyler.Path2Success.MyActivity"
-            android:theme="@style/AppTheme.NoActionBar" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.tyler.Path2Success.MyActivity" />
-        </activity>
     </application>
 
 </manifest>
