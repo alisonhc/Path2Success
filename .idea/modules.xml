@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Path2Success/Path2Success.iml" filepath="$PROJECT_DIR$/Path2Success/Path2Success.iml" />
       <module fileurl="file://$PROJECT_DIR$/Path3Success.iml" filepath="$PROJECT_DIR$/Path3Success.iml" />
+      <module fileurl="file://$PROJECT_DIR$/path-backend/path-backend.iml" filepath="$PROJECT_DIR$/path-backend/path-backend.iml" />
     </modules>
   </component>
 </project>
