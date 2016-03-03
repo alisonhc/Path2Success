@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:id="@+id/linearLayout"
-    android:animateLayoutChanges="true"
     android:weightSum="1">
 
     <LinearLayout
@@ -38,6 +37,14 @@
         android:layout_gravity="top|center_horizontal"
         android:onClick="addNewItem"
         android:layout_marginTop="50dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkboxes"
+        android:orientation="vertical"
+
+        >
     </LinearLayout>
 
 

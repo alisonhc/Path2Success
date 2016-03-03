@@ -1,5 +1,6 @@
 package com.example.tyler.Path2Success;
 
+import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -23,10 +25,11 @@ public class MyActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
-    private LinearLayout mLayout;
+    private ViewGroup mLayout;
     private EditText mText1;
     private EditText mText2;
     private Button mButton;
+    private LayoutTransition mTransition;
 
     public void addNewItem(View view)  {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
@@ -45,11 +48,14 @@ public class MyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        mLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        mLayout = (ViewGroup) findViewById(R.id.checkboxes);
         mButton = (Button) findViewById(R.id.theButton);
         mText1 = (EditText) findViewById(R.id.edit_message);
         mText2 = (EditText) findViewById(R.id.edit_message2);
+        mTransition = new LayoutTransition();
         mButton.setOnClickListener(onClick());
+        mLayout.setLayoutTransition(mTransition);
+        mTransition.setAnimateParentHierarchy(false);
         TextView textView = new TextView(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,6 +65,7 @@ public class MyActivity extends AppCompatActivity {
     private CheckBox createNewCheckBox(String text) {
         final AbsListView.LayoutParams lparams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
         final CheckBox checkBox = new CheckBox(this);
+
         checkBox.setLayoutParams(lparams);
         checkBox.setText(text);
         return checkBox;
@@ -72,6 +79,7 @@ public class MyActivity extends AppCompatActivity {
                 CheckBox cBox = createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString());
                 cBox.setOnClickListener(onClickBox(cBox));
                 mLayout.addView(cBox);
+                mTransition.addChild(mLayout,cBox);
 
                 //myLayout.addView
                 InputMethodManager inputManager = (InputMethodManager)
@@ -89,6 +97,7 @@ public class MyActivity extends AppCompatActivity {
         return new View.OnClickListener(){
             @Override
             public void onClick(View box){
+           //     mTransition.setStagger(LayoutTransition.DISAPPEARING,100);
                 mLayout.removeView(box);
             }
         };
