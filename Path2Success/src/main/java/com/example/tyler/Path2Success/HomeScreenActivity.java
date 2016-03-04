@@ -30,10 +30,10 @@ public class HomeScreenActivity extends AppCompatActivity {
     private EditText mText2;
     private Button mButton;
     private LayoutTransition mTransition;
-   // private ArrayList<IndividualGoal> itemListHolder;
-    private ArrayList<String> itemListHolder =new ArrayList<>();
-//    private GoalDataAdapter adapter;
-    private ArrayAdapter<String> adapter;
+    private ArrayList<IndividualGoal> itemListHolder=new ArrayList<>();
+    //private ArrayList<String> itemListHolder =new ArrayList<>();
+   private GoalDataAdapter adapter;
+    //private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,34 +47,32 @@ public class HomeScreenActivity extends AppCompatActivity {
         mTransition = new LayoutTransition();
         mButton.setOnClickListener(onClick());
       //  mLayout.setLayoutTransition(mTransition);
-        mLayout.setAdapter(adapter);
        // mTransition.setAnimateParentHierarchy(false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Path 2 Success");
-       // adapter = new GoalDataAdapter(this,R.layout.goal_info,itemListHolder);
-       // adapter=new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,itemListHolder);
-
+        adapter=new GoalDataAdapter(this,itemListHolder);
+        mLayout.setAdapter(adapter);
     }
 
-
-
-    private CheckBox createNewCheckBox(String text) {
-        final AbsListView.LayoutParams lparams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
-        final CheckBox checkBox = new CheckBox(this);
-
-        checkBox.setLayoutParams(lparams);
-        checkBox.setText(text);
-        return checkBox;
-    }
+//
+//
+//    private CheckBox createNewCheckBox(String text) {
+//        final AbsListView.LayoutParams lparams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+//        final CheckBox checkBox = new CheckBox(this);
+//
+//        checkBox.setLayoutParams(lparams);
+//        checkBox.setText(text);
+//        return checkBox;
+//    }
 
     private View.OnClickListener onClick() {
         return new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                //IndividualGoal newGoal = new IndividualGoal(mText1.getText().toString()+mText2.getText().toString(),new Date());
-                itemListHolder.add(mText1.getText().toString());
+                IndividualGoal newGoal = new IndividualGoal(mText1.getText().toString(),mText2.getText().toString());
+                itemListHolder.add(newGoal);
                 adapter.notifyDataSetChanged();
 //                CheckBox cBox = createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString());
 //                cBox.setOnClickListener(onClickBox(cBox));
@@ -86,8 +84,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
-                //mText1.setText("");
-                //mText2.setText("");
+                mText1.setText("");
+                mText2.setText("");
             }
         };
     }

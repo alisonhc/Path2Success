@@ -8,24 +8,24 @@ import java.util.Date;
 public class IndividualGoal {
 
     String title;
-    Date date;
+    String dueDate;
 
 
-    public IndividualGoal(String title, Date date){
+    public IndividualGoal(String title,String date){
         this.title=title;
-        this.date=date;
+        this.dueDate=date;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Date getDate() {
-        return date;
+    public String getDate() {
+        return dueDate;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(String date) {
+        this.dueDate = date;
     }
 
     public void setTitle(String title) {
@@ -36,7 +36,7 @@ public class IndividualGoal {
     public String toString() {
         return "IndividualGoal{" +
                 "title='" + title + '\'' +
-                ", date=" + date +
+                ", date=" + dueDate +
                 '}';
     }
 
