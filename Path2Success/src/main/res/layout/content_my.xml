@@ -44,8 +44,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/checkboxes"
         android:orientation="vertical"
-
-        >
+        android:layout_weight="0.40">
     </LinearLayout>
 
 

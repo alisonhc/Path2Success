@@ -43,6 +43,7 @@ public class MyActivity extends AppCompatActivity {
         //mText2.setGravity(Gravity.END);
         mTransition = new LayoutTransition();
         mButton.setOnClickListener(onClick());
+
         mLayout.setLayoutTransition(mTransition);
         mTransition.setAnimateParentHierarchy(false);
         TextView textView = new TextView(this);
@@ -65,8 +66,10 @@ public class MyActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {;
-                CheckBox cBox = createNewCheckBox(mText1.getText().toString() + ": " + mText2.getText().toString());
+                CheckBox cBox = createNewCheckBox(mText1.getText().toString()  + mText2.getText().toString());
                 cBox.setOnClickListener(onClickBox(cBox));
+                cBox.setTextSize(20);
+                cBox.setPadding(10,10,10,10);
                 mLayout.addView(cBox);
                 mTransition.addChild(mLayout,cBox);
 
