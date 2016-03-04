@@ -17,7 +17,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -25,6 +32,7 @@ public class MyActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
+    public static final String FILENAME = "goal_file";
     private ViewGroup mLayout;
     private EditText mText1;
     private EditText mText2;
@@ -41,6 +49,9 @@ public class MyActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_MESSAGE, message);
         intent.putExtra(EXTRA_MESSAGE2, message2);
         startActivity(intent);
+
+
+        //here is where we would add the strings to the internal storage of the device
 
 
     }
@@ -60,6 +71,48 @@ public class MyActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Path 2 Success");
+
+//        Test toast and reading files from local storage
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_LONG;
+
+//        try {
+//            FileInputStream fis = openFileInput(FILENAME);
+
+            //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
+        try {
+            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+                    openFileInput(FILENAME)));
+            String inputString;
+            StringBuffer stringBuffer = new StringBuffer();
+            while ((inputString = inputReader.readLine()) != null) {
+                stringBuffer.append(inputString + "\n");
+            }
+            String text = stringBuffer.toString();
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            inputReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+//            int data = fis.read();
+//            String text = "Yup, reading that shit " + data;
+//            Toast toast = Toast.makeText(context, text, duration);
+//            toast.show();
+
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
+        //on load, we want to read all of the task objects into the view
+        //load them in the same way they are printed in the AddNewItem way
+        //maybe make a new method (that comes from this onCreate method) that adds
+        //    the previously stored goals to the view
     }
 
     private CheckBox createNewCheckBox(String text) {
@@ -76,6 +129,39 @@ public class MyActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+
+                //Making a test toast
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_LONG;
+
+                String title = mText1.getText().toString();
+                String date = mText2.getText().toString();
+
+                //add new goal to local storage
+//                String FILENAME = "goal_file";
+                try {
+                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+                    String combinedString = title + " " + date;
+                    fos.write(combinedString.getBytes());
+                    fos.close();
+
+                    //Making a test toast
+                    String text = "Goal successfully written to device!";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    String text = "Didn't work #1";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    String text = "Didn't work #2";
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
+
+
                 CheckBox cBox = createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString());
                 cBox.setOnClickListener(onClickBox(cBox));
                 mLayout.addView(cBox);
