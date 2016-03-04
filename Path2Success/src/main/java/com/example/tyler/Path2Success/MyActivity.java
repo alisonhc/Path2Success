@@ -110,17 +110,18 @@ public class MyActivity extends AppCompatActivity {
             bis.close();
             fis.close();
 
-            JSONArray goals = new JSONArray(b.toString());
+//            JSONArray goals = new JSONArray(b.toString());
+            goalList = new JSONArray(b.toString());
 
 //            String text = goals.getJSONObject(0).getString("title");
 
-            Toast toast = Toast.makeText(context, String.valueOf(goals.length()), duration);
+            Toast toast = Toast.makeText(context, String.valueOf(goalList.length()), duration);
 //            Toast toast = Toast.makeText(context, text, duration);
             toast.show();
 
-            for (int i = 0; i < goals.length(); i++) {
-                String title = goals.getJSONObject(i).getString("title");
-                String date = goals.getJSONObject(i).getString("date");
+            for (int i = 0; i < goalList.length(); i++) {
+                String title = goalList.getJSONObject(i).getString("title");
+                String date = goalList.getJSONObject(i).getString("date");
 
                 //here add each corresponding checkbox to the view
 
