@@ -19,6 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -38,6 +43,7 @@ public class MyActivity extends AppCompatActivity {
     private EditText mText2;
     private Button mButton;
     private LayoutTransition mTransition;
+    private JSONArray goalList;
 
     public void addNewItem(View view)  {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
@@ -71,6 +77,7 @@ public class MyActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Path 2 Success");
+        goalList = new JSONArray();
 
 //        Test toast and reading files from local storage
         Context context = getApplicationContext();
@@ -81,18 +88,52 @@ public class MyActivity extends AppCompatActivity {
 
             //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
         try {
-            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
-                    openFileInput(FILENAME)));
-            String inputString;
-            StringBuffer stringBuffer = new StringBuffer();
-            while ((inputString = inputReader.readLine()) != null) {
-                stringBuffer.append(inputString + "\n");
+//            BufferedReader inputReader = new BufferedReader(new InputStreamReader(
+//                    openFileInput(FILENAME)));
+//            String inputString;
+//            StringBuffer stringBuffer = new StringBuffer();
+//            while ((inputString = inputReader.readLine()) != null) {
+//                stringBuffer.append(inputString + "\n");
+//            }
+//            String text = stringBuffer.toString();
+//            Toast toast = Toast.makeText(context, text, duration);
+//            toast.show();
+//            inputReader.close();
+
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            StringBuffer b = new StringBuffer();
+            while (bis.available() != 0) {
+                char c = (char) bis.read();
+                b.append(c);
             }
-            String text = stringBuffer.toString();
-            Toast toast = Toast.makeText(context, text, duration);
+            bis.close();
+            fis.close();
+
+            JSONArray goals = new JSONArray(b.toString());
+
+//            String text = goals.getJSONObject(0).getString("title");
+
+            Toast toast = Toast.makeText(context, String.valueOf(goals.length()), duration);
+//            Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-            inputReader.close();
+
+            for (int i = 0; i < goals.length(); i++) {
+                String title = goals.getJSONObject(i).getString("title");
+                String date = goals.getJSONObject(i).getString("date");
+
+                //here add each corresponding checkbox to the view
+
+                CheckBox cBox = createNewCheckBox(title + " " + date);
+                cBox.setOnClickListener(onClickBox(cBox));
+                mLayout.addView(cBox);
+                mTransition.addChild(mLayout,cBox);
+
+            }
+
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 
@@ -140,25 +181,32 @@ public class MyActivity extends AppCompatActivity {
                 //add new goal to local storage
 //                String FILENAME = "goal_file";
                 try {
-                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_APPEND);
-                    String combinedString = title + " " + date;
-                    fos.write(combinedString.getBytes());
+                    //here is where you would make a javascript object and add it to local storage
+//                    JSONArray goalList = new JSONArray();
+                    JSONObject goal;
+
+                    goal = new JSONObject();
+                    goal.put("title", title);
+                    goal.put("date", date);
+                    goalList.put(goal);
+
+                    String goals = goalList.toString();
+
+                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+//                    String combinedString = title + " " + date;
+                    fos.write(goals.getBytes());
                     fos.close();
 
                     //Making a test toast
-                    String text = "Goal successfully written to device!";
+                    String text = "Goal successfully written to device!\n" + goals;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    String text = "Didn't work #1";
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    String text = "Didn't work #2";
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
 
