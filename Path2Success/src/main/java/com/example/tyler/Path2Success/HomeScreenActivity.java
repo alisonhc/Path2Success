@@ -9,83 +9,64 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
-    private ListView mLayout;
-    private EditText mText1;
-    private EditText mText2;
-    private Button mButton;
+    private ListView listLayout;
+    private EditText taskContent;
+    private EditText dueDate;
+    private Button addButton;
     private LayoutTransition mTransition;
-    private ArrayList<IndividualGoal> itemListHolder=new ArrayList<>();
-    //private ArrayList<String> itemListHolder =new ArrayList<>();
+    private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
    private GoalDataAdapter adapter;
-    //private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-        mLayout = (ListView) findViewById(R.id.checkboxes);
+        listLayout = (ListView) findViewById(R.id.checkboxes);
 
-        mButton = (Button) findViewById(R.id.theButton);
-        mText1 = (EditText) findViewById(R.id.edit_message);
-        mText2 = (EditText) findViewById(R.id.edit_message2);
+        addButton = (Button) findViewById(R.id.theButton);
+        taskContent = (EditText) findViewById(R.id.edit_message);
+        dueDate = (EditText) findViewById(R.id.edit_message2);
         mTransition = new LayoutTransition();
-        mButton.setOnClickListener(onClick());
-      //  mLayout.setLayoutTransition(mTransition);
+        addButton.setOnClickListener(onClick());
+      //  listLayout.setLayoutTransition(mTransition);
        // mTransition.setAnimateParentHierarchy(false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Path 2 Success");
-        adapter=new GoalDataAdapter(this,itemListHolder);
-        mLayout.setAdapter(adapter);
+        adapter=new GoalDataAdapter(this, goalArrayList);
+        listLayout.setAdapter(adapter);
     }
 
-//
-//
-//    private CheckBox createNewCheckBox(String text) {
-//        final AbsListView.LayoutParams lparams = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
-//        final CheckBox checkBox = new CheckBox(this);
-//
-//        checkBox.setLayoutParams(lparams);
-//        checkBox.setText(text);
-//        return checkBox;
-//    }
 
     private View.OnClickListener onClick() {
         return new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                IndividualGoal newGoal = new IndividualGoal(mText1.getText().toString(),mText2.getText().toString());
-                itemListHolder.add(newGoal);
+                IndividualGoal newGoal = new IndividualGoal(taskContent.getText().toString(), dueDate.getText().toString());
+                goalArrayList.add(newGoal);
                 adapter.notifyDataSetChanged();
-//                CheckBox cBox = createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString());
+//                CheckBox cBox = createNewCheckBox(taskContent.getText().toString() + " " + dueDate.getText().toString());
 //                cBox.setOnClickListener(onClickBox(cBox));
-//                mLayout.addFooterView(cBox);
-//                mTransition.addChild(mLayout,cBox);
+//                listLayout.addFooterView(cBox);
+//                mTransition.addChild(listLayout,cBox);
 
-                //myLayout.addView
                 InputMethodManager inputManager = (InputMethodManager)
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
-                mText1.setText("");
-                mText2.setText("");
+             //   taskContent.setText("");
+               // dueDate.setText("");
             }
         };
     }
@@ -95,7 +76,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 //            @Override
 //            public void onClick(View box){
 //           //     mTransition.setStagger(LayoutTransition.DISAPPEARING,100);
-//                mLayout.removeView(box);
+//                listLayout.removeView(box);
 //            }
 //        };
 //
