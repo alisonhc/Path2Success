@@ -60,13 +60,11 @@ public class GoalDataAdapter extends BaseAdapter{
         }
         else{
             viewHolder = (ViewHolder)convertView.getTag();
-
-            IndividualGoal currentGoalInList=getItem(position);
-
-            viewHolder.dueDate.setText(currentGoalInList.getDate());
-
-            viewHolder.task.setText(currentGoalInList.getTitle());
         }
+
+        IndividualGoal currentGoalInList=getItem(position);
+        viewHolder.dueDate.setText(currentGoalInList.getDate());
+        viewHolder.task.setText(currentGoalInList.getTitle());
 
         return convertView;
 
