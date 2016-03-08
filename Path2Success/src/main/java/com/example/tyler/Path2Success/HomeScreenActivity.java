@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class HomeScreenActivity extends AppCompatActivity {
 
 
-    public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
+
     private ListView listLayout;
   //  private EditText taskContent;
   //  private EditText dueDate;
@@ -121,8 +121,9 @@ public class HomeScreenActivity extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 String tContent = data.getStringExtra(InputNewGoal.EXTRA_MESSAGE);
+                String tDate = data.getStringExtra((InputNewGoal.EXTRA_MESSAGE2));
                 if(!tContent.isEmpty()) {
-                    IndividualGoal newGoal = new IndividualGoal(tContent, "");
+                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate);
                     goalArrayList.add(newGoal);
                     adapter.notifyDataSetChanged();
                 }
