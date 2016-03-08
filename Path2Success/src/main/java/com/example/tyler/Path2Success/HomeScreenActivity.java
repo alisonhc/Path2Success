@@ -18,15 +18,16 @@ import java.util.ArrayList;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
-    public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
+
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
     private ListView listLayout;
   //  private EditText taskContent;
   //  private EditText dueDate;
     private Button addButton;
     private LayoutTransition mTransition;
+    public static final int RESULT_CODE = 9;
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
-   private GoalDataAdapter adapter;
+    private GoalDataAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +107,26 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     /** Called when the user clicks the Send button */
-    public void sendMessage(View view) {
+    public void goToInputScreen(View view) {
         Intent intent = new Intent(this, InputNewGoal.class);
-        startActivity(intent);
+        startActivityForResult(intent, RESULT_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check which request we're responding to
+        if (requestCode == RESULT_CODE) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                String tContent = data.getStringExtra(InputNewGoal.EXTRA_MESSAGE);
+                if(!tContent.isEmpty()) {
+                    IndividualGoal newGoal = new IndividualGoal(tContent, "");
+                    goalArrayList.add(newGoal);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 }

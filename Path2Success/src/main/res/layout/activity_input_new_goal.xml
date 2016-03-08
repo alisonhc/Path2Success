@@ -10,7 +10,7 @@
     android:weightSum="1">
 
 
-    <EditText android:id="@+id/edit_message"
+    <EditText android:id="@+id/taskContent"
         android:layout_width="359dp"
         android:layout_height="58dp"
         android:hint="@string/hint_to_add"
