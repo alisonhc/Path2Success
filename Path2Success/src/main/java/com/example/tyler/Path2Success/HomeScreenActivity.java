@@ -65,8 +65,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                         InputMethodManager.HIDE_NOT_ALWAYS);
-             //   taskContent.setText("");
-               // dueDate.setText("");
+                taskContent.setText("");
+                dueDate.setText("");
             }
         };
     }
