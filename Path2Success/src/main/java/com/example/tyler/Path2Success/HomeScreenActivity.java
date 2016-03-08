@@ -31,7 +31,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.checkboxes);
 
         addButton = (Button) findViewById(R.id.theButton);

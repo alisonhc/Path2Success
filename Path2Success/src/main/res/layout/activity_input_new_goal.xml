@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.tyler.Path2Success.InputNewGoal">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:id="@+id/input_new_goal_linearLayout"
+    android:weightSum="1">
 
-</RelativeLayout>
+
+    <EditText android:id="@+id/edit_message"
+        android:layout_width="359dp"
+        android:layout_height="58dp"
+        android:hint="@string/hint_to_add"
+        android:layout_marginTop="50dp" />
+
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="255dp"
+        android:id="@+id/datePicker"
+        android:layout_gravity="center_horizontal" />
+
+    <Button android:id="@+id/theButton"
+        android:layout_width="110dp"
+        android:layout_height="70dp"
+        android:hint="@string/add_button"
+        android:layout_gravity="center_horizontal"
+        android:onClick="addNewItem"
+        android:background="#fd8e2e"
+        android:layout_marginTop="50dp"
+        android:textColorHighlight="#ffffff" />
+
+
+</LinearLayout>
