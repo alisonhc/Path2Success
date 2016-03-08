@@ -21,8 +21,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
     private ListView listLayout;
-    private EditText taskContent;
-    private EditText dueDate;
+  //  private EditText taskContent;
+  //  private EditText dueDate;
     private Button addButton;
     private LayoutTransition mTransition;
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
@@ -34,11 +34,10 @@ public class HomeScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.checkboxes);
 
-        addButton = (Button) findViewById(R.id.theButton);
-        taskContent = (EditText) findViewById(R.id.edit_message);
-        dueDate = (EditText) findViewById(R.id.edit_message2);
-        mTransition = new LayoutTransition();
-        addButton.setOnClickListener(onClick());
+    //    addButton = (Button) findViewById(R.id.add_a_new_task);
+     //   taskContent = (EditText) findViewById(R.id.edit_message);
+    //    mTransition = new LayoutTransition();
+     //   addButton.setOnClickListener(onClick());
       //  listLayout.setLayoutTransition(mTransition);
        // mTransition.setAnimateParentHierarchy(false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,28 +48,28 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
 
-    private View.OnClickListener onClick() {
-        return new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                IndividualGoal newGoal = new IndividualGoal(taskContent.getText().toString(), dueDate.getText().toString());
-                goalArrayList.add(newGoal);
-                adapter.notifyDataSetChanged();
-//                CheckBox cBox = createNewCheckBox(taskContent.getText().toString() + " " + dueDate.getText().toString());
-//                cBox.setOnClickListener(onClickBox(cBox));
-//                listLayout.addFooterView(cBox);
-//                mTransition.addChild(listLayout,cBox);
-
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-                taskContent.setText("");
-                dueDate.setText("");
-            }
-        };
-    }
+//    private View.OnClickListener onClick() {
+//        return new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                IndividualGoal newGoal = new IndividualGoal(taskContent.getText().toString(), dueDate.getText().toString());
+//                goalArrayList.add(newGoal);
+//                adapter.notifyDataSetChanged();
+////                CheckBox cBox = createNewCheckBox(taskContent.getText().toString() + " " + dueDate.getText().toString());
+////                cBox.setOnClickListener(onClickBox(cBox));
+////                listLayout.addFooterView(cBox);
+////                mTransition.addChild(listLayout,cBox);
+//
+//                InputMethodManager inputManager = (InputMethodManager)
+//                        getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+//                        InputMethodManager.HIDE_NOT_ALWAYS);
+//                taskContent.setText("");
+//                dueDate.setText("");
+//            }
+//        };
+//    }
 
 //    private View.OnClickListener onClickBox(View box){
 //        return new View.OnClickListener(){
