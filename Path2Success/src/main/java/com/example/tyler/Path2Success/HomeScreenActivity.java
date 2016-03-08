@@ -110,6 +110,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void goToInputScreen(View view) {
         Intent intent = new Intent(this, InputNewGoal.class);
         startActivityForResult(intent, RESULT_CODE);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 
     @Override

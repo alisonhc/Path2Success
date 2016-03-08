@@ -36,5 +36,6 @@ public class InputNewGoal extends AppCompatActivity {
         intent.putExtra(EXTRA_MESSAGE2, date);
         setResult(Activity.RESULT_OK, intent);
         finish();
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 }
