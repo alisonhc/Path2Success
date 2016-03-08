@@ -18,7 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InputNewGoal"></activity>
+        <activity android:name=".InputNewGoal"
+            android:label="@string/title_activity_display_message"
+            android:parentActivityName=".HomeScreenActivity">
+        </activity>
     </application>
 
 </manifest>

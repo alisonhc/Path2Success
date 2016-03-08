@@ -23,9 +23,9 @@
         android:id="@+id/datePicker"
         android:layout_gravity="center_horizontal" />
 
-    <Button android:id="@+id/theButton"
-        android:layout_width="110dp"
-        android:layout_height="70dp"
+    <Button android:id="@+id/add_and_back"
+        android:layout_width="78dp"
+        android:layout_height="58dp"
         android:hint="@string/add_button"
         android:layout_gravity="center_horizontal"
         android:onClick="addNewItem"

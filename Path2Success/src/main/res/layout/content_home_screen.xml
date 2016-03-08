@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -9,44 +9,27 @@
     android:id="@+id/home_screen_linearLayout"
     android:weightSum="1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="61dp"
-        android:weightSum="1"
-        android:layout_weight="0.22">
-    <EditText android:id="@+id/edit_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_to_add"
-        android:layout_weight="0.64"
-        android:layout_marginTop="50dp" />
-    <EditText android:id="@+id/edit_message2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_of_time"
-        android:layout_weight="0.32"
-        android:layout_gravity="top"
-        android:layout_marginTop="50dp" />
-
-
-    <Button android:id="@+id/theButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@string/add_button"
-        android:layout_gravity="top|center_horizontal"
-        android:onClick="addNewItem"
-        android:layout_marginTop="50dp" />
-    </LinearLayout>
     <ListView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
         android:id="@+id/checkboxes"
         android:orientation="vertical"
         android:drawSelectorOnTop="false"
         android:layout_weight="0.89">
     </ListView>
 
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="80dp"
+        android:text="+"
+        android:textSize="150px"
+        android:textColor="#ffffff"
+        android:id="@+id/add_a_new_task"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/round_button"
+        android:layout_toRightOf="@+id/checkboxes"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
-
-</LinearLayout>
+</RelativeLayout>
