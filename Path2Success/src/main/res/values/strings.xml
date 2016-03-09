@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Path 2 Success</string>
     <string name="edit_message">What do you want to accomplish?</string>
-    <string name ="edit_message2">Goal completion day?</string>
+    <string name="edit_message2">Goal completion day?</string>
     <string name="button_send">Send</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_display_message">Your goals</string>
-    <string name="hint_to_add">New task</string>
-    <string name="hint_of_time">To complete by</string>
+    <string name="hint_to_add">What do you want to accomplish?</string>
+    <string name="hint_of_time">When do you want to accomplish this?</string>
     <string name="add_button">Add</string>
     <string name="intro">Add new tasks here</string>
 </resources>
