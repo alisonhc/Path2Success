@@ -2,6 +2,7 @@ package com.example.tyler.Path2Success;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,14 +28,13 @@ import java.io.IOException;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
-    public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
-    public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
     public static final String FILENAME = "goal_file";
     private ListView listLayout;
-    private EditText taskContent;
-    private EditText dueDate;
+  //  private EditText taskContent;
+  //  private EditText dueDate;
     private Button addButton;
     private LayoutTransition mTransition;
+    public static final int RESULT_CODE = 9;
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
     private GoalDataAdapter adapter;
     private JSONArray goalList;
@@ -42,14 +42,13 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
+        setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.checkboxes);
 
-        addButton = (Button) findViewById(R.id.theButton);
-        taskContent = (EditText) findViewById(R.id.edit_message);
-        dueDate = (EditText) findViewById(R.id.edit_message2);
-        mTransition = new LayoutTransition();
-        addButton.setOnClickListener(onClick());
+    //    addButton = (Button) findViewById(R.id.add_a_new_task);
+     //   taskContent = (EditText) findViewById(R.id.edit_message);
+    //    mTransition = new LayoutTransition();
+     //   addButton.setOnClickListener(onClick());
       //  listLayout.setLayoutTransition(mTransition);
        // mTransition.setAnimateParentHierarchy(false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -102,26 +101,25 @@ public class HomeScreenActivity extends AppCompatActivity {
 //        listLayout.setAdapter(adapter);
     }
 
-
-    private View.OnClickListener onClick() {
-        return new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                String title = taskContent.getText().toString();
-                String date = dueDate.getText().toString();
-
-
-                IndividualGoal newGoal = new IndividualGoal(title, date);
-                goalArrayList.add(newGoal);
-                adapter.notifyDataSetChanged();
-
-                //Making a test toast
-                Context context = getApplicationContext();
-                int duration = Toast.LENGTH_LONG;
-
-                //add new goal to local storage
+//    private View.OnClickListener onClick() {
+//        return new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                String title = taskContent.getText().toString();
+//                String date = dueDate.getText().toString();
+//
+//
+//                IndividualGoal newGoal = new IndividualGoal(title, date);
+//                goalArrayList.add(newGoal);
+//                adapter.notifyDataSetChanged();
+//
+//                //Making a test toast
+//                Context context = getApplicationContext();
+//                int duration = Toast.LENGTH_LONG;
+//
+//                //add new goal to local storage
 //                String FILENAME = "goal_file";
 //                try {
 //                    //here is where you would make a javascript object and add it to local storage
@@ -157,20 +155,6 @@ public class HomeScreenActivity extends AppCompatActivity {
 ////                cBox.setOnClickListener(onClickBox(cBox));
 ////                mLayout.addView(cBox);
 ////                mTransition.addChild(mLayout,cBox);
-////                CheckBox cBox = createNewCheckBox(taskContent.getText().toString() + " " + dueDate.getText().toString());
-////                cBox.setOnClickListener(onClickBox(cBox));
-////                listLayout.addFooterView(cBox);
-////                mTransition.addChild(listLayout,cBox);
-//
-//                InputMethodManager inputManager = (InputMethodManager)
-//                        getSystemService(Context.INPUT_METHOD_SERVICE);
-//                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-//                        InputMethodManager.HIDE_NOT_ALWAYS);
-//             //   taskContent.setText("");
-//               // dueDate.setText("");
-            }
-        };
-    }
 
 //    private View.OnClickListener onClickBox(View box){
 //        return new View.OnClickListener(){
@@ -204,5 +188,31 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /** Called when the user clicks the Send button */
+    public void goToInputScreen(View view) {
+        Intent intent = new Intent(this, InputNewGoal.class);
+        startActivityForResult(intent, RESULT_CODE);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Check which request we're responding to
+        if (requestCode == RESULT_CODE) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                String tContent = data.getStringExtra(InputNewGoal.EXTRA_MESSAGE);
+                String tDate = data.getStringExtra((InputNewGoal.EXTRA_MESSAGE2));
+                if(!tContent.isEmpty()) {
+                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate);
+                    goalArrayList.add(newGoal);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        }
     }
 }

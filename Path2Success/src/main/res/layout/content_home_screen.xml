@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/home_screen_linearLayout"
+        android:weightSum="1">
+
+    <ListView
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:id="@+id/checkboxes"
+        android:orientation="vertical"
+        android:drawSelectorOnTop="false"
+        android:layout_weight="0.89"
+        android:layout_toLeftOf="@+id/fab">
+    </ListView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/ic_add"
+            android:layout_marginTop="30px"
+            app:layout_anchorGravity="bottom|right|end"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:onClick="goToInputScreen"/>
+    </RelativeLayout>
