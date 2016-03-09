@@ -14,13 +14,16 @@
         android:layout_height="61dp"
         android:weightSum="1"
         android:layout_weight="0.22">
+
+        <!-- Edit field for task name-->
     <EditText android:id="@+id/edit_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/hint_to_add"
         android:layout_weight="0.64"
-        android:layout_gravity="top"
         android:layout_marginTop="50dp" />
+
+        <!-- Edit field for completion date-->
     <EditText android:id="@+id/edit_message2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,15 +42,13 @@
         android:onClick="addNewItem"
         android:layout_marginTop="50dp" />
     </LinearLayout>
-    <LinearLayout
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:id="@+id/checkboxes"
         android:orientation="vertical"
-        android:layout_weight="0.40">
-    </LinearLayout>
-
-
-
+        android:drawSelectorOnTop="false"
+        android:layout_weight="0.89">
+    </ListView>
 
 </LinearLayout>
