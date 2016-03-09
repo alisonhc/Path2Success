@@ -65,45 +65,41 @@ public class HomeScreenActivity extends AppCompatActivity {
         int duration = Toast.LENGTH_LONG;
 
             //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
-        try {
-
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            StringBuffer b = new StringBuffer();
-            while (bis.available() != 0) {
-                char c = (char) bis.read();
-                b.append(c);
-            }
-            bis.close();
-            fis.close();
-
-            goalList = new JSONArray(b.toString());
-            Toast toast = Toast.makeText(context, String.valueOf(goalList.length()), duration);
-            toast.show();
-
-            for (int i = 0; i < goalList.length(); i++) {
-                String title = goalList.getJSONObject(i).getString("title");
-                String date = goalList.getJSONObject(i).getString("date");
-
-                //here add each corresponding checkbox to the view
-                IndividualGoal newGoal = new IndividualGoal(title, date);
-                goalArrayList.add(newGoal);
-                adapter.notifyDataSetChanged();
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        //on load, we want to read all of the task objects into the view
-        //load them in the same way they are printed in the AddNewItem way
-        //maybe make a new method (that comes from this onCreate method) that adds
-        //    the previously stored goals to the view
-        adapter=new GoalDataAdapter(this, goalArrayList);
-        listLayout.setAdapter(adapter);
+//        try {
+//
+//            FileInputStream fis = openFileInput(FILENAME);
+//            BufferedInputStream bis = new BufferedInputStream(fis);
+//            StringBuffer b = new StringBuffer();
+//            while (bis.available() != 0) {
+//                char c = (char) bis.read();
+//                b.append(c);
+//            }
+//            bis.close();
+//            fis.close();
+//
+//            goalList = new JSONArray(b.toString());
+//            Toast toast = Toast.makeText(context, String.valueOf(goalList.length()), duration);
+//            toast.show();
+//
+//            for (int i = 0; i < goalList.length(); i++) {
+//                String title = goalList.getJSONObject(i).getString("title");
+//                String date = goalList.getJSONObject(i).getString("date");
+//
+//                //here add each corresponding checkbox to the view
+//                IndividualGoal newGoal = new IndividualGoal(title, date);
+//                goalArrayList.add(newGoal);
+//                adapter.notifyDataSetChanged();
+//
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        adapter=new GoalDataAdapter(this, goalArrayList);
+//        listLayout.setAdapter(adapter);
     }
 
 
@@ -127,51 +123,51 @@ public class HomeScreenActivity extends AppCompatActivity {
 
                 //add new goal to local storage
 //                String FILENAME = "goal_file";
-                try {
-                    //here is where you would make a javascript object and add it to local storage
-//                    JSONArray goalList = new JSONArray();
-                    JSONObject goal;
-
-                    goal = new JSONObject();
-                    goal.put("title", title);
-                    goal.put("date", date);
-                    goalList.put(goal);
-
-                    String goals = goalList.toString();
-
-                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-//                    String combinedString = title + " " + date;
-                    fos.write(goals.getBytes());
-                    fos.close();
-
-                    //Making a test toast
-                    String text = "Goal successfully written to device!\n" + goals;
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-//                CheckBox cBox = createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString());
-//                cBox.setOnClickListener(onClickBox(cBox));
-//                mLayout.addView(cBox);
-//                mTransition.addChild(mLayout,cBox);
-//                CheckBox cBox = createNewCheckBox(taskContent.getText().toString() + " " + dueDate.getText().toString());
-//                cBox.setOnClickListener(onClickBox(cBox));
-//                listLayout.addFooterView(cBox);
-//                mTransition.addChild(listLayout,cBox);
-
-                InputMethodManager inputManager = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-             //   taskContent.setText("");
-               // dueDate.setText("");
+//                try {
+//                    //here is where you would make a javascript object and add it to local storage
+////                    JSONArray goalList = new JSONArray();
+//                    JSONObject goal;
+//
+//                    goal = new JSONObject();
+//                    goal.put("title", title);
+//                    goal.put("date", date);
+//                    goalList.put(goal);
+//
+//                    String goals = goalList.toString();
+//
+//                    FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+////                    String combinedString = title + " " + date;
+//                    fos.write(goals.getBytes());
+//                    fos.close();
+//
+//                    //Making a test toast
+//                    String text = "Goal successfully written to device!\n" + goals;
+//                    Toast toast = Toast.makeText(context, text, duration);
+//                    toast.show();
+//                } catch (FileNotFoundException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+////                CheckBox cBox = createNewCheckBox(mText1.getText().toString() + " " + mText2.getText().toString());
+////                cBox.setOnClickListener(onClickBox(cBox));
+////                mLayout.addView(cBox);
+////                mTransition.addChild(mLayout,cBox);
+////                CheckBox cBox = createNewCheckBox(taskContent.getText().toString() + " " + dueDate.getText().toString());
+////                cBox.setOnClickListener(onClickBox(cBox));
+////                listLayout.addFooterView(cBox);
+////                mTransition.addChild(listLayout,cBox);
+//
+//                InputMethodManager inputManager = (InputMethodManager)
+//                        getSystemService(Context.INPUT_METHOD_SERVICE);
+//                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+//                        InputMethodManager.HIDE_NOT_ALWAYS);
+//             //   taskContent.setText("");
+//               // dueDate.setText("");
             }
         };
     }
