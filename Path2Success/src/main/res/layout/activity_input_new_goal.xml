@@ -14,6 +14,8 @@
         android:layout_width="359dp"
         android:layout_height="58dp"
         android:layout_marginTop="60px"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
         android:hint="@string/hint_to_add" />
 
 

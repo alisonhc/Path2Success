@@ -2,10 +2,12 @@ package com.example.tyler.Path2Success;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -32,12 +34,25 @@ public class InputNewGoal extends AppCompatActivity {
         //dueDate = (DatePicker) findViewById(R.id.datePicker);
         taskContent = (EditText) findViewById(R.id.taskContent);
         dateInput = (EditText) findViewById(R.id.datePicker);
+
         dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 pickDate();
             }
         });
+
+        taskContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        dateInput.setKeyListener(null);
+
+
     }
 
     public void addNewItem(View view){
@@ -45,11 +60,17 @@ public class InputNewGoal extends AppCompatActivity {
         String task = taskContent.getText().toString();
         //String date = Integer.toString(dueDate.getMonth()+1) + "/" + Integer.toString(dueDate.getDayOfMonth());
         String date = dateInput.getText().toString();
+
         intent.putExtra(EXTRA_MESSAGE, task);
         intent.putExtra(EXTRA_MESSAGE2, date);
         setResult(Activity.RESULT_OK, intent);
         finish();
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     Calendar myCalendar = Calendar.getInstance();
