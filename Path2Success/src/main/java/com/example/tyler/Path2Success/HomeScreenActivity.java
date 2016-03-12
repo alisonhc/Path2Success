@@ -1,6 +1,7 @@
 package com.example.tyler.Path2Success;
 
 import android.animation.LayoutTransition;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ import java.io.IOException;
 public class HomeScreenActivity extends AppCompatActivity {
 
     public static final String FILENAME = "goal_file";
+    public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
+    public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
     private ListView listLayout;
   //  private EditText taskContent;
   //  private EditText dueDate;
@@ -56,49 +59,41 @@ public class HomeScreenActivity extends AppCompatActivity {
         setTitle("Path 2 Success");
         adapter=new GoalDataAdapter(this,goalArrayList);
         listLayout.setAdapter(adapter);
-
-        //add prior goals stored locally
         goalList = new JSONArray();
 
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_LONG;
+//        Context context = getApplicationContext();
+//        int duration = Toast.LENGTH_LONG;
 
             //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
-//        try {
-//
-//            FileInputStream fis = openFileInput(FILENAME);
-//            BufferedInputStream bis = new BufferedInputStream(fis);
-//            StringBuffer b = new StringBuffer();
-//            while (bis.available() != 0) {
-//                char c = (char) bis.read();
-//                b.append(c);
-//            }
-//            bis.close();
-//            fis.close();
-//
-//            goalList = new JSONArray(b.toString());
+        try {
+            FileInputStream fis = openFileInput(FILENAME);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            StringBuffer b = new StringBuffer();
+            while (bis.available() != 0) {
+                char c = (char) bis.read();
+                b.append(c);
+            }
+            bis.close();
+            fis.close();
+
+            goalList = new JSONArray(b.toString());
 //            Toast toast = Toast.makeText(context, String.valueOf(goalList.length()), duration);
+//            Toast toast = Toast.makeText(context, String.valueOf(goalList), duration);
 //            toast.show();
-//
-//            for (int i = 0; i < goalList.length(); i++) {
-//                String title = goalList.getJSONObject(i).getString("title");
-//                String date = goalList.getJSONObject(i).getString("date");
-//
-//                //here add each corresponding checkbox to the view
-//                IndividualGoal newGoal = new IndividualGoal(title, date);
-//                goalArrayList.add(newGoal);
-//                adapter.notifyDataSetChanged();
-//
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        adapter=new GoalDataAdapter(this, goalArrayList);
-//        listLayout.setAdapter(adapter);
+
+            for (int i = 0; i < goalList.length(); i++) {
+                String task = goalList.getJSONObject(i).getString("title");
+                String date = goalList.getJSONObject(i).getString("date");
+                IndividualGoal newGoal = new IndividualGoal(task, date);
+                goalArrayList.add(newGoal);
+                adapter.notifyDataSetChanged();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 //    private View.OnClickListener onClick() {
@@ -205,6 +200,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         if (requestCode == RESULT_CODE) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
+
+                //what does tContent mean?? what is it's purpose in the code?
                 String tContent = data.getStringExtra(InputNewGoal.EXTRA_MESSAGE);
                 String tDate = data.getStringExtra((InputNewGoal.EXTRA_MESSAGE2));
                 if(!tContent.isEmpty()) {
