@@ -13,14 +13,20 @@
     <EditText android:id="@+id/taskContent"
         android:layout_width="359dp"
         android:layout_height="58dp"
+        android:layout_marginTop="60px"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
         android:hint="@string/hint_to_add" />
 
 
-    <DatePicker
-        android:layout_width="wrap_content"
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"
-        android:layout_gravity="center_horizontal" />
+        android:hint="When do you want to finish?"
+        android:layout_marginTop="60px"
+        android:layout_gravity="center_horizontal"
+        />
 
     <Button android:id="@+id/add_and_back"
         android:layout_width="78dp"
@@ -29,6 +35,7 @@
         android:layout_gravity="center_horizontal"
         android:onClick="addNewItem"
         android:background="#fd8e2e"
+        android:layout_marginTop="60px"
         android:textColorHighlight="#ffffff" />
 
 

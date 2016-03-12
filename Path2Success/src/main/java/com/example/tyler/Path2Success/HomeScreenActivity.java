@@ -48,21 +48,19 @@ public class HomeScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.checkboxes);
 
-    //    addButton = (Button) findViewById(R.id.add_a_new_task);
-     //   taskContent = (EditText) findViewById(R.id.edit_message);
-    //    mTransition = new LayoutTransition();
-     //   addButton.setOnClickListener(onClick());
-      //  listLayout.setLayoutTransition(mTransition);
-       // mTransition.setAnimateParentHierarchy(false);
+        //    addButton = (Button) findViewById(R.id.add_a_new_task);
+        //   taskContent = (EditText) findViewById(R.id.edit_message);
+        //    mTransition = new LayoutTransition();
+        //   addButton.setOnClickListener(onClick());
+        //  listLayout.setLayoutTransition(mTransition);
+        // mTransition.setAnimateParentHierarchy(false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Path 2 Success");
-        adapter=new GoalDataAdapter(this,goalArrayList);
+        adapter = new GoalDataAdapter(this, goalArrayList);
         listLayout.setAdapter(adapter);
         goalList = new JSONArray();
 
-//        Context context = getApplicationContext();
-//        int duration = Toast.LENGTH_LONG;
 
             //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
         try {
@@ -95,6 +93,27 @@ public class HomeScreenActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+//
+//            for (int i = 0; i < goalList.length(); i++) {
+//                String title = goalList.getJSONObject(i).getString("title");
+//                String date = goalList.getJSONObject(i).getString("date");
+//
+//                //here add each corresponding checkbox to the view
+//                IndividualGoal newGoal = new IndividualGoal(title, date);
+//                goalArrayList.add(newGoal);
+//                adapter.notifyDataSetChanged();
+//
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        adapter=new GoalDataAdapter(this, goalArrayList);
+//        listLayout.setAdapter(adapter);
+//    }
 
 //    private View.OnClickListener onClick() {
 //        return new View.OnClickListener() {
@@ -163,27 +182,27 @@ public class HomeScreenActivity extends AppCompatActivity {
 //
 //    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_my, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up buttton, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_my, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up buttton, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     /** Called when the user clicks the Send button */
     public void goToInputScreen(View view) {
