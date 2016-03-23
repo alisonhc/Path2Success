@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import java.util.ArrayList;
@@ -60,6 +62,23 @@ public class HomeScreenActivity extends AppCompatActivity {
         adapter = new GoalDataAdapter(this, goalArrayList);
         listLayout.setAdapter(adapter);
         goalList = new JSONArray();
+        listLayout.setItemsCanFocus(false);
+        listLayout.setChoiceMode(listLayout.CHOICE_MODE_MULTIPLE);
+        listLayout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                IndividualGoal iG = adapter.getItem(position);
+                CheckedTextView a = (CheckedTextView) view;
+                if (a.isChecked()) {
+                    iG.goalIsDone();
+                    Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
+
+                } else {
+                    iG.goalIsUndone();
+                    Toast.makeText(HomeScreenActivity.this, "unchecked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
 
             //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/

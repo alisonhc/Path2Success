@@ -41,6 +41,7 @@ public class IndividualGoal {
     public void goalIsUndone(){
         isDone=false;
     }
+
     public Boolean getIfIsDone(){
         return isDone;
     }

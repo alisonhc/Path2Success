@@ -62,7 +62,7 @@ public class GoalDataAdapter extends BaseAdapter{
         }
 
         IndividualGoal currentGoalInList=getItem(position);
-        viewHolder.task.setText(currentGoalInList.getTitle());
+        viewHolder.task.setText(currentGoalInList.getDate()+"   "+currentGoalInList.getTitle());
 
         return convertView;
 
