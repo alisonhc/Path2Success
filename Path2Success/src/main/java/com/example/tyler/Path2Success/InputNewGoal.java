@@ -69,7 +69,10 @@ public class InputNewGoal extends AppCompatActivity {
         dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                pickDate();
+                if (dateInput.hasFocus()) {
+                    pickDate();
+                    dateInput.clearFocus();
+                }
             }
         });
 
@@ -141,6 +144,7 @@ public class InputNewGoal extends AppCompatActivity {
             myCalendar.set(Calendar.YEAR, year);
             myCalendar.set(Calendar.MONTH, monthOfYear);
             myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
             updateLabel();
         }
 
@@ -157,5 +161,6 @@ public class InputNewGoal extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         dateInput.setText(sdf.format(myCalendar.getTime()));
+
     }
 }
