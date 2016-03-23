@@ -109,6 +109,7 @@ public class InputNewGoal extends AppCompatActivity {
             goal = new JSONObject();
             goal.put("title", task);
             goal.put("date", date);
+            goal.put("isChecked", false);
             goalList.put(goal);
             String goals = goalList.toString();
 
