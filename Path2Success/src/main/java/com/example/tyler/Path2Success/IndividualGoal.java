@@ -7,13 +7,15 @@ import java.util.Date;
  */
 public class IndividualGoal {
 
-    String title;
-    String dueDate;
+    private String title;
+    private String dueDate;
+    private Boolean isDone;
 
 
     public IndividualGoal(String title,String date){
         this.title=title;
         this.dueDate=date;
+        isDone=false;
     }
 
     public String getTitle() {
@@ -30,6 +32,17 @@ public class IndividualGoal {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void goalIsDone(){
+        isDone=true;
+    }
+
+    public void goalIsUndone(){
+        isDone=false;
+    }
+    public Boolean getIfIsDone(){
+        return isDone;
     }
 
     @Override

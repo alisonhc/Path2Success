@@ -1,11 +1,14 @@
 package com.example.tyler.Path2Success;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,13 +27,9 @@ public class GoalDataAdapter extends BaseAdapter{
     }
 
     private class ViewHolder{
-        TextView task;
-        TextView dueDate;
-        CheckBox checkBox;
+        CheckedTextView task;
         public ViewHolder(View item){
-            task = (TextView)item.findViewById(R.id.taskContent);
-            dueDate=(TextView)item.findViewById(R.id.taskDueDate);
-            checkBox=(CheckBox)item.findViewById(R.id.taskCheckbox);
+            task = (CheckedTextView)item.findViewById(R.id.taskContent);
         }
     }
 
@@ -63,7 +62,6 @@ public class GoalDataAdapter extends BaseAdapter{
         }
 
         IndividualGoal currentGoalInList=getItem(position);
-        viewHolder.dueDate.setText(currentGoalInList.getDate());
         viewHolder.task.setText(currentGoalInList.getTitle());
 
         return convertView;

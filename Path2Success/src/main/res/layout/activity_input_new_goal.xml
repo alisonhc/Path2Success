@@ -10,6 +10,7 @@
     android:weightSum="1">
 
 
+
     <EditText android:id="@+id/taskContent"
         android:layout_width="359dp"
         android:layout_height="58dp"
@@ -37,6 +38,7 @@
         android:background="#fd8e2e"
         android:layout_marginTop="60px"
         android:textColorHighlight="#ffffff" />
+
 
 
 </LinearLayout>
