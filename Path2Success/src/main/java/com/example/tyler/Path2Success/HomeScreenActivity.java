@@ -49,39 +49,36 @@ public class HomeScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.checkboxes);
-
-        //    addButton = (Button) findViewById(R.id.add_a_new_task);
-        //   taskContent = (EditText) findViewById(R.id.edit_message);
-        //    mTransition = new LayoutTransition();
-        //   addButton.setOnClickListener(onClick());
-        //  listLayout.setLayoutTransition(mTransition);
-        // mTransition.setAnimateParentHierarchy(false);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Path 2 Success");
         adapter = new GoalDataAdapter(this, goalArrayList);
         listLayout.setAdapter(adapter);
-        goalList = new JSONArray();
         listLayout.setItemsCanFocus(false);
         listLayout.setChoiceMode(listLayout.CHOICE_MODE_MULTIPLE);
         listLayout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                IndividualGoal iG = adapter.getItem(position);
-                CheckedTextView a = (CheckedTextView) view;
-                if (a.isChecked()) {
-                    iG.goalIsDone();
-                    Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            IndividualGoal iG = adapter.getItem(position);
+            CheckedTextView a = (CheckedTextView) view;
+            if (a.isChecked()) {
+                iG.goalIsDone();
+                Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
 
-                } else {
-                    iG.goalIsUndone();
-                    Toast.makeText(HomeScreenActivity.this, "unchecked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                iG.goalIsUndone();
+                Toast.makeText(HomeScreenActivity.this, "unchecked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
             }
+        }
         });
+        renderStoredGoals();
+    }
 
+    private void renderStoredGoals() {
+        /*Renders previously entered goals from internal storage.*/
 
-            //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
+        goalList = new JSONArray();
+        //Code copied from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedInputStream bis = new BufferedInputStream(fis);
