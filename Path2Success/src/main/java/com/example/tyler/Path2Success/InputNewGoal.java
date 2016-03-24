@@ -3,7 +3,9 @@ package com.example.tyler.Path2Success;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,7 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,19 +24,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class InputNewGoal extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
+
+    public final static String EXTRA_MESSAGE3 = "com.example.tyler.myfirstapp.MESSAGE3";
     public final static String FILENAME = "goal_file";
     private Button addButton;
+    private Integer category;
     //private DatePicker dueDate;
     private EditText taskContent;
     private JSONArray goalList;
     private EditText dateInput;
+    private EditText categoryInput;
+
+    //Make this an array that is retrieved from internal storage every time.
+    private CharSequence categories[] =new CharSequence[]{"Fitness","Academics", "Miscellaneous"};
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +95,37 @@ public class InputNewGoal extends AppCompatActivity {
             }
         });
         dateInput.setKeyListener(null);
+
+        categoryInput = (EditText)findViewById(R.id.categoryPicker);
+
+        categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(categoryInput.hasFocus()){
+                    pickCategory();
+
+                    categoryInput.clearFocus();
+
+
+                }
+            }
+        });
     }
+    private void pickCategory(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick a category");
+        builder.setItems(categories, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                category = which;
+                categoryInput.setText(categories[category]);
+            }
+        });
+        builder.show();
+
+
+    }
+
 
     public void addNewItem(View view){
         ////            Making a test toast
@@ -96,7 +136,6 @@ public class InputNewGoal extends AppCompatActivity {
 //        toast.show();
         Intent intent = new Intent();
         String task = taskContent.getText().toString();
-        //String date = Integer.toString(dueDate.getMonth()+1) + "/" + Integer.toString(dueDate.getDayOfMonth());
         String date = dateInput.getText().toString();
 
         intent.putExtra(EXTRA_MESSAGE, task);
@@ -129,7 +168,7 @@ public class InputNewGoal extends AppCompatActivity {
         }
     }
 
-    public void hideKeyboard(View view) {
+    private void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
@@ -151,7 +190,7 @@ public class InputNewGoal extends AppCompatActivity {
     };
 
 
-    public void pickDate(){
+    private void pickDate(){
         new DatePickerDialog(InputNewGoal.this, date,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 

@@ -24,7 +24,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"
-        android:hint="When do you want to finish?"
+        android:hint="@string/hint_of_time"
+        android:layout_marginTop="60px"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/categoryPicker"
+        android:hint="@string/hint_of_category"
         android:layout_marginTop="60px"
         android:layout_gravity="center_horizontal"
         />

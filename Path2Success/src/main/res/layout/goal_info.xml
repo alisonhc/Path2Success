@@ -7,6 +7,6 @@
     android:paddingBottom="20px"
     android:textSize="50px"
     android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
-    android:text="aaa"
+    android:text=""
     xmlns:android="http://schemas.android.com/apk/res/android" />
 

@@ -10,23 +10,25 @@ public class IndividualGoal {
     private String title;
     private String dueDate;
     private Boolean isDone;
+    private Integer category;
 
 
-    public IndividualGoal(String title,String date){
+    public IndividualGoal(String title,String date, Integer category){
         this.title=title;
         this.dueDate=date;
         isDone=false;
+        this.category=category;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getDate() {
+    public String getDueDate() {
         return dueDate;
     }
 
-    public void setDate(String date) {
+    public void setDueDate(String date) {
         this.dueDate = date;
     }
 
@@ -44,6 +46,14 @@ public class IndividualGoal {
 
     public Boolean getIfIsDone(){
         return isDone;
+    }
+
+    public Integer getCategory(){
+        return category;
+    }
+
+    public void setCategory(Integer category){
+        this.category=category;
     }
 
     @Override

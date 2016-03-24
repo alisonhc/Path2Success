@@ -71,7 +71,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 CheckedTextView a = (CheckedTextView) view;
                 if (a.isChecked()) {
                     iG.goalIsDone();
-                    Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle()+" "+iG.getCategory(), Toast.LENGTH_SHORT).show();
 
                 } else {
                     iG.goalIsUndone();
@@ -101,7 +101,9 @@ public class HomeScreenActivity extends AppCompatActivity {
             for (int i = 0; i < goalList.length(); i++) {
                 String task = goalList.getJSONObject(i).getString("title");
                 String date = goalList.getJSONObject(i).getString("date");
-                IndividualGoal newGoal = new IndividualGoal(task, date);
+
+                //Please change the code here since we have added a new input for the constructor of IndividualGoal)
+                IndividualGoal newGoal = new IndividualGoal(task, date,0);
                 goalArrayList.add(newGoal);
                 adapter.notifyDataSetChanged();
             }
@@ -132,8 +134,9 @@ public class HomeScreenActivity extends AppCompatActivity {
                 //what does tContent mean?? what is it's purpose in the code?
                 String tContent = data.getStringExtra(InputNewGoal.EXTRA_MESSAGE);
                 String tDate = data.getStringExtra((InputNewGoal.EXTRA_MESSAGE2));
+                Integer tCategory=data.getIntExtra((InputNewGoal.EXTRA_MESSAGE3),0);
                 if(!tContent.isEmpty()) {
-                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate);
+                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate,tCategory);
                     goalArrayList.add(newGoal);
                     adapter.notifyDataSetChanged();
                 }
