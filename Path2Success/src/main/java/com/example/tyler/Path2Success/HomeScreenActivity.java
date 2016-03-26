@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -43,6 +46,11 @@ public class HomeScreenActivity extends AppCompatActivity {
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
     private GoalDataAdapter adapter;
     private JSONArray goalList;
+    private ListView goalDrawer;
+    private ArrayAdapter<String> drawerAdapter;
+    private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +67,13 @@ public class HomeScreenActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Path 2 Success");
+
+        goalDrawer = (ListView)findViewById(R.id.drawer_list_layout);
+        addDrawerItems();
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
+
+
         adapter = new GoalDataAdapter(this, goalArrayList);
         listLayout.setAdapter(adapter);
         goalList = new JSONArray();
@@ -113,6 +128,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void addDrawerItems(){
+        String[] dArray = {"aaa", "bbb", "ccc"};
+        drawerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dArray);
+        goalDrawer.setAdapter(drawerAdapter);
     }
 
     /** Called when the user clicks the Send button */
