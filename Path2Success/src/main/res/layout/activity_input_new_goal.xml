@@ -10,6 +10,16 @@
     android:weightSum="1">
 
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/input_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+
 
     <EditText android:id="@+id/taskContent"
         android:layout_width="359dp"

@@ -4,7 +4,6 @@ import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -61,7 +60,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         // mTransition.setAnimateParentHierarchy(false);
 
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.homescreen_toolbar);
         setSupportActionBar(myToolbar);
         setTitle("Path 2 Success");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -157,7 +156,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void goToInputScreen(View view) {
         Intent intent = new Intent(this, InputNewGoal.class);
         startActivityForResult(intent, RESULT_CODE);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override

@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -53,6 +55,13 @@ public class InputNewGoal extends AppCompatActivity {
         addButton = (Button) findViewById(R.id.add_and_back);
         //dueDate = (DatePicker) findViewById(R.id.datePicker);
         taskContent = (EditText) findViewById(R.id.taskContent);
+
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
+        setSupportActionBar(myToolbar);
+        setTitle("Path 2 Success");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         goalList = new JSONArray();
 
         //goalList must be the goal list that has accumulated all the previous goals
@@ -143,7 +152,7 @@ public class InputNewGoal extends AppCompatActivity {
         intent.putExtra(EXTRA_MESSAGE3, category);
         setResult(Activity.RESULT_OK, intent);
         finish();
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
         //adds a javascript object to local storage
         try {
@@ -175,6 +184,12 @@ public class InputNewGoal extends AppCompatActivity {
     }
 
     Calendar myCalendar = Calendar.getInstance();
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        return super.onOptionsItemSelected(item);
+    }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
