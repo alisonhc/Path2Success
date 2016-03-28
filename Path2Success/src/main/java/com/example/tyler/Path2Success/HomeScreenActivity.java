@@ -1,23 +1,19 @@
 package com.example.tyler.Path2Success;
 
 import android.animation.LayoutTransition;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
-import android.widget.EditText;
 import android.widget.ListView;
 import java.util.ArrayList;
 
@@ -25,11 +21,9 @@ import java.util.ArrayList;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class HomeScreenActivity extends AppCompatActivity {
@@ -52,6 +46,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,15 +59,18 @@ public class HomeScreenActivity extends AppCompatActivity {
         //   addButton.setOnClickListener(onClick());
         //  listLayout.setLayoutTransition(mTransition);
         // mTransition.setAnimateParentHierarchy(false);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
         setTitle("Path 2 Success");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         goalDrawer = (ListView)findViewById(R.id.drawer_list_layout);
         addDrawerItems();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
-
+        setupDrawer();
 
         adapter = new GoalDataAdapter(this, goalArrayList);
         listLayout.setAdapter(adapter);
@@ -130,6 +128,25 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
+    private void setupDrawer() {
+        drawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.drawer_open,R.string.drawer_close)
+        {
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                invalidateOptionsMenu();// creates call to onPrepareOptionsMenu()
+            }
+        };
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerListener(drawerToggle);
+    }
+
     private void addDrawerItems(){
         String[] dArray = {"aaa", "bbb", "ccc"};
         drawerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dArray);
@@ -140,7 +157,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void goToInputScreen(View view) {
         Intent intent = new Intent(this, InputNewGoal.class);
         startActivityForResult(intent, RESULT_CODE);
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
@@ -163,5 +180,22 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if(id==R.id.action_settings){
+            return true;
+        }
+        if (drawerToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState){
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
 }

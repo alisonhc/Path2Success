@@ -96,7 +96,7 @@ public class InputNewGoal extends AppCompatActivity {
         });
         dateInput.setKeyListener(null);
 
-        categoryInput = (EditText)findViewById(R.id.categoryPicker);
+        categoryInput = (EditText)findViewById(R.id.categorySelector);
 
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

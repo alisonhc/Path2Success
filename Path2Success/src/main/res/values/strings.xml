@@ -10,5 +10,6 @@
     <string name="add_button">Add</string>
     <string name="intro">Add new tasks here</string>
     <string name="hint_of_category">What type of goal is this?</string>
-    <string name="drawer_open">Drawer</string>
+    <string name="drawer_open">Open navigation drawer </string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>
