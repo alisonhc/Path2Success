@@ -15,10 +15,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -42,6 +45,7 @@ public class InputNewGoal extends AppCompatActivity {
     private JSONArray goalList;
     private EditText dateInput;
     private EditText categoryInput;
+    private TextView repeatOptionView;
 
     //Make this an array that is retrieved from internal storage every time.
     private CharSequence categories[] =new CharSequence[]{"Fitness","Academics", "Miscellaneous"};

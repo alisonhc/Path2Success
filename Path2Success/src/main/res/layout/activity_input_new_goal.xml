@@ -49,25 +49,53 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="60px">
-        <ImageView
+        android:layout_margin="60px"
+        android:weightSum="1">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:layout_weight="0.5">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_repeat"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/repeatOption"
+                    android:text="No repeat"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_repeat"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/repeatOption"
-            android:text="No repeat"/>
+            android:layout_weight="0.5">
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_reminder_icon"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reminder"
+                android:textSize="20sp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
 
     <Button android:id="@+id/add_and_back"
-        android:layout_width="78dp"
+        android:layout_width="100dp"
         android:layout_height="58dp"
+        android:textSize="70px"
         android:hint="@string/add_button"
         android:layout_gravity="center_horizontal"
         android:onClick="addNewItem"
-        android:background="#fd8e2e"
+        android:background="@drawable/button_rounded_corner"
         android:layout_marginTop="60px"
         android:textColorHighlight="#ffffff" />
 

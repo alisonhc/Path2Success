@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="30px"
         android:padding="20px"
-        android:background="@drawable/rounded_corner"
+        android:background="@drawable/goal_rounded_corner"
         android:textSize="50px"
         android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
         android:text="jh"
