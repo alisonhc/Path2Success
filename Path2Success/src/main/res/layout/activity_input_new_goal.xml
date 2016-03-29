@@ -92,12 +92,13 @@
         android:layout_width="100dp"
         android:layout_height="58dp"
         android:textSize="70px"
+        android:textColor="@android:color/white"
         android:hint="@string/add_button"
         android:layout_gravity="center_horizontal"
         android:onClick="addNewItem"
         android:background="@drawable/button_rounded_corner"
         android:layout_marginTop="60px"
-        android:textColorHighlight="#ffffff" />
+        />
 
 
 
