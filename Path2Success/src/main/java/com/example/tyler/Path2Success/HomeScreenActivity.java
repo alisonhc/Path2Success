@@ -2,6 +2,8 @@ package com.example.tyler.Path2Success;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.effect.Effect;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import java.util.ArrayList;
 
@@ -43,6 +46,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private ArrayAdapter<String> drawerAdapter;
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
+    private MediaPlayer soundPlayer;
 
 
 
@@ -59,6 +63,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         //  listLayout.setLayoutTransition(mTransition);
         // mTransition.setAnimateParentHierarchy(false);
 
+        soundPlayer = MediaPlayer.create(this,R.raw.harp);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.homescreen_toolbar);
         setSupportActionBar(myToolbar);
@@ -80,14 +85,17 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 IndividualGoal iG = adapter.getItem(position);
-                CheckedTextView a = (CheckedTextView) view;
+                CheckedTextView a = (CheckedTextView)((LinearLayout) view).getChildAt(0);
                 if (a.isChecked()) {
-                    iG.goalIsDone();
-                    Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle()+" "+iG.getCategory(), Toast.LENGTH_SHORT).show();
+                    iG.goalIsUndone();
+                    a.setChecked(false);
+                    Toast.makeText(HomeScreenActivity.this, "unchecked: "+iG.getTitle()+" "+iG.getCategory(), Toast.LENGTH_SHORT).show();
 
                 } else {
-                    iG.goalIsUndone();
-                    Toast.makeText(HomeScreenActivity.this, "unchecked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
+                    soundPlayer.start();
+                    iG.goalIsDone();
+                    a.setChecked(true);
+                    Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
                 }
             }
         });
