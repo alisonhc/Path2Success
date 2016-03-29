@@ -22,9 +22,9 @@
 
 
     <EditText android:id="@+id/taskContent"
-        android:layout_width="359dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="60px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="60px"
         android:clickable="true"
         android:focusableInTouchMode="true"
         android:hint="@string/hint_to_add" />
@@ -35,18 +35,31 @@
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"
         android:hint="@string/hint_of_time"
-        android:layout_marginTop="60px"
-        android:layout_gravity="center_horizontal"
-        />
+        android:layout_margin="60px" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/categorySelector"
         android:hint="@string/hint_of_category"
-        android:layout_marginTop="60px"
+        android:layout_margin="60px"
         android:layout_gravity="center_horizontal"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="60px">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_repeat"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/repeatOption"
+            android:text="No repeat"/>
+    </LinearLayout>
 
     <Button android:id="@+id/add_and_back"
         android:layout_width="78dp"

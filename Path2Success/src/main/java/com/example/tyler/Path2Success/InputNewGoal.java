@@ -59,7 +59,7 @@ public class InputNewGoal extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
         setSupportActionBar(myToolbar);
-        setTitle("Path 2 Success");
+        setTitle("");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         goalList = new JSONArray();

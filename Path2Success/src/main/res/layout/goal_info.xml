@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheckedTextView
-    android:id="@+id/taskContent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="20px"
-    android:paddingBottom="20px"
-    android:layout_marginBottom="20px"
-    android:layout_marginTop="20px"
-    android:background="@android:color/white"
-    android:textSize="50px"
-    android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
-    android:text="jh"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:allowUndo="false" />
-
+    android:background="@android:color/transparent"
+    android:padding="10px">
+    <CheckedTextView
+        android:id="@+id/taskContent"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30px"
+        android:padding="20px"
+        android:background="@drawable/rounded_corner"
+        android:textSize="50px"
+        android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
+        android:text="jh"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:allowUndo="false"
+        />
+</LinearLayout>
