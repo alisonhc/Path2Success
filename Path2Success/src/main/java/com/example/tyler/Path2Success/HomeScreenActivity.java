@@ -97,6 +97,37 @@ public class HomeScreenActivity extends AppCompatActivity {
                     a.setChecked(false);
                     Toast.makeText(HomeScreenActivity.this, "unchecked: "+iG.getTitle()+" "+iG.getCategory(), Toast.LENGTH_SHORT).show();
 
+                    try {
+                        FileInputStream fis = openFileInput(FILENAME);
+                        BufferedInputStream bis = new BufferedInputStream(fis);
+                        StringBuffer b = new StringBuffer();
+                        while (bis.available() != 0) {
+                            char c = (char) bis.read();
+                            b.append(c);
+                        }
+                        bis.close();
+                        fis.close();
+                        goalList = new JSONArray(b.toString());
+                        goalToChange = goalList.getJSONObject(position);
+
+                        goalToChange.put("isChecked", false);
+
+                        //now put the goalList back in to local storage
+                        String goals = goalList.toString();
+
+                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                        fos.write(goals.getBytes());
+                        fos.close();
+
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+
                 } else {
                     soundPlayer.start();
                     iG.goalIsDone();
