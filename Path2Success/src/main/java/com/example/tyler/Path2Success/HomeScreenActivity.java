@@ -1,6 +1,7 @@
 package com.example.tyler.Path2Success;
 
 import android.animation.LayoutTransition;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.effect.Effect;
@@ -17,12 +18,16 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 //Import statements for writing to local memory
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -42,6 +47,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
     private GoalDataAdapter adapter;
     private JSONArray goalList;
+    private JSONObject goalToChange;
     private ListView goalDrawer;
     private ArrayAdapter<String> drawerAdapter;
     private ActionBarDrawerToggle drawerToggle;
@@ -96,6 +102,38 @@ public class HomeScreenActivity extends AppCompatActivity {
                     iG.goalIsDone();
                     a.setChecked(true);
                     Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
+
+                    goalList = new JSONArray();
+                    goalToChange = new JSONObject();
+
+                    try {
+                        FileInputStream fis = openFileInput(FILENAME);
+                        BufferedInputStream bis = new BufferedInputStream(fis);
+                        StringBuffer b = new StringBuffer();
+                        while (bis.available() != 0) {
+                            char c = (char) bis.read();
+                            b.append(c);
+                        }
+                        bis.close();
+                        fis.close();
+                        goalList = new JSONArray(b.toString());
+                        goalToChange = goalList.getJSONObject(position);
+
+                        goalToChange.put("isChecked", true);
+
+                        //now put the goalList back in to local storage
+                        String goals = goalList.toString();
+
+                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                        fos.write(goals.getBytes());
+                        fos.close();
+
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -119,13 +157,16 @@ public class HomeScreenActivity extends AppCompatActivity {
 //            toast.show();
 
             for (int i = 0; i < goalList.length(); i++) {
-                String task = goalList.getJSONObject(i).getString("title");
-                String date = goalList.getJSONObject(i).getString("date");
+                Boolean checked = goalList.getJSONObject(i).getBoolean("isChecked");
+                if (!checked) {
+                    String task = goalList.getJSONObject(i).getString("title");
+                    String date = goalList.getJSONObject(i).getString("date");
 
-                //Please change the code here since we have added a new input for the constructor of IndividualGoal)
-                IndividualGoal newGoal = new IndividualGoal(task, date,0);
-                goalArrayList.add(newGoal);
-                adapter.notifyDataSetChanged();
+                    //Please change the code here since we have added a new input for the constructor of IndividualGoal)
+                    IndividualGoal newGoal = new IndividualGoal(task, date, 0);
+                    goalArrayList.add(newGoal);
+                    adapter.notifyDataSetChanged();
+                }
             }
 
         } catch (IOException e) {
