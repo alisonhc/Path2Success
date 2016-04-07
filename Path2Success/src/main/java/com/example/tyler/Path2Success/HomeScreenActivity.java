@@ -53,19 +53,15 @@ public class HomeScreenActivity extends AppCompatActivity {
     private MediaPlayer soundPlayer;
 
 
-
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
-
-        //    addButton = (Button) findViewById(R.id.add_a_new_task);
-        //   taskContent = (EditText) findViewById(R.id.edit_message);
-        //    mTransition = new LayoutTransition();
-        //   addButton.setOnClickListener(onClick());
-        //  listLayout.setLayoutTransition(mTransition);
-        // mTransition.setAnimateParentHierarchy(false);
 
         soundPlayer = MediaPlayer.create(this,R.raw.harp);
 
@@ -205,6 +201,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets up navigation drawer and navigation drawer toggle
+     */
     private void setupDrawer() {
         drawerToggle = new ActionBarDrawerToggle(this,drawerLayout, R.string.drawer_open,R.string.drawer_close)
         {
@@ -224,19 +223,28 @@ public class HomeScreenActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(drawerToggle);
     }
 
+    /**
+     * Adds elements of an array to the navigation drawer
+     * Sets up and initializes an adapter for the drawer
+     */
     private void addDrawerItems(){
         String[] dArray = {"aaa", "bbb", "ccc"};
-        drawerAdapter = new ArrayAdapter<>(this, R.layout.drawer_item_info, dArray);
+        drawerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dArray);
         goalDrawer.setAdapter(drawerAdapter);
     }
 
-    /** Called when the user clicks the Send button */
+    /** Called when the user clicks the plus button */
     public void goToInputScreen(View view) {
         Intent intent = new Intent(this, InputNewGoal.class);
         startActivityForResult(intent, RESULT_CODE);
-        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
+    /**
+     * Gets data from InputNewGoal screen
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -258,6 +266,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
