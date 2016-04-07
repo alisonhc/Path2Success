@@ -229,7 +229,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      * Sets up and initializes an adapter for the drawer
      */
     private void addDrawerItems(){
-        String[] dArray = {"History","aaa", "bbb", "ccc"};
+        String[] dArray = {"History","Academics", "Fitness", "Misc"};
         drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, dArray);
         goalDrawer.setAdapter(drawerAdapter);
     }
