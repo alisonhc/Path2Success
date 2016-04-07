@@ -20,7 +20,6 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -32,19 +31,20 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class InputNewGoal extends AppCompatActivity {
-
-    public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
-    public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
-
-    public final static String EXTRA_MESSAGE3 = "com.example.tyler.myfirstapp.MESSAGE3";
+    //final string to bring information to the main activity
+    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
+    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";
+    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE3";
     public final static String FILENAME = "goal_file";
-    private Button addButton;
+    //an integer to indicate the category of the goal
     private Integer category;
     //private DatePicker dueDate;
     private EditText taskContent;
+    private Button addButton;
     private JSONArray goalList;
     private EditText dateInput;
     private EditText categoryInput;
+    private Calendar myCalendar;
     private TextView repeatOptionView;
 
     //Make this an array that is retrieved from internal storage every time.
@@ -55,6 +55,7 @@ public class InputNewGoal extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myCalendar = Calendar.getInstance();
         setContentView(R.layout.activity_input_new_goal);
         addButton = (Button) findViewById(R.id.add_and_back);
         //dueDate = (DatePicker) findViewById(R.id.datePicker);
@@ -87,8 +88,9 @@ public class InputNewGoal extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        dateInput = (EditText) findViewById(R.id.datePicker);
 
+        //Handle date input
+        dateInput = (EditText) findViewById(R.id.datePicker);
         dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -98,7 +100,6 @@ public class InputNewGoal extends AppCompatActivity {
                 }
             }
         });
-
         taskContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -109,21 +110,22 @@ public class InputNewGoal extends AppCompatActivity {
         });
         dateInput.setKeyListener(null);
 
-        categoryInput = (EditText)findViewById(R.id.categorySelector);
 
+        //Handle category input
+        categoryInput = (EditText)findViewById(R.id.categorySelector);
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(categoryInput.hasFocus()){
                     pickCategory();
-
                     categoryInput.clearFocus();
-
 
                 }
             }
         });
     }
+
+
     private void pickCategory(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a category");
@@ -135,11 +137,13 @@ public class InputNewGoal extends AppCompatActivity {
             }
         });
         builder.show();
-
-
     }
 
 
+    /**
+     * Add a new itme, and bring the information from this activity to the main activity
+     * @param view
+     */
     public void addNewItem(View view){
         ////            Making a test toast
 //        Context context = getApplicationContext();
@@ -150,10 +154,9 @@ public class InputNewGoal extends AppCompatActivity {
         Intent intent = new Intent();
         String task = taskContent.getText().toString();
         String date = dateInput.getText().toString();
-
-        intent.putExtra(EXTRA_MESSAGE, task);
-        intent.putExtra(EXTRA_MESSAGE2, date);
-        intent.putExtra(EXTRA_MESSAGE3, category);
+        intent.putExtra(GOAL_TITLE, task);
+        intent.putExtra(DUE_DATE, date);
+        intent.putExtra(GOAL_CATEGORY, category);
         setResult(Activity.RESULT_OK, intent);
         finish();
         //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -182,18 +185,17 @@ public class InputNewGoal extends AppCompatActivity {
         }
     }
 
+    /**
+     * Hide keyboard
+     * @param view
+     */
     private void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    Calendar myCalendar = Calendar.getInstance();
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        return super.onOptionsItemSelected(item);
-    }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -214,12 +216,18 @@ public class InputNewGoal extends AppCompatActivity {
         new DatePickerDialog(InputNewGoal.this, date,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
+    /**
+     * This method will update the text in the date field to the date that is selected
+     */
     private void updateLabel() {
-
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
         dateInput.setText(sdf.format(myCalendar.getTime()));
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        return super.onOptionsItemSelected(item);
     }
 }

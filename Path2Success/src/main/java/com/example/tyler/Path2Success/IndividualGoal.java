@@ -1,6 +1,5 @@
 package com.example.tyler.Path2Success;
 
-import java.util.Date;
 
 /**
  * Created by angelica on 3/2/16.
@@ -65,4 +64,3 @@ public class IndividualGoal {
     }
 
 }
-

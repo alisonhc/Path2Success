@@ -4,7 +4,6 @@ import android.animation.LayoutTransition;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.media.effect.Effect;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,7 +18,6 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
@@ -249,9 +247,9 @@ public class HomeScreenActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
 
                 //what does tContent mean?? what is it's purpose in the code?
-                String tContent = data.getStringExtra(InputNewGoal.EXTRA_MESSAGE);
-                String tDate = data.getStringExtra((InputNewGoal.EXTRA_MESSAGE2));
-                Integer tCategory=data.getIntExtra((InputNewGoal.EXTRA_MESSAGE3),0);
+                String tContent = data.getStringExtra(InputNewGoal.GOAL_TITLE);
+                String tDate = data.getStringExtra((InputNewGoal.DUE_DATE));
+                Integer tCategory=data.getIntExtra((InputNewGoal.GOAL_CATEGORY),0);
                 if(!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate,tCategory);
                     goalArrayList.add(newGoal);

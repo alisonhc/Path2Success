@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/repeatOption"
-                    android:text="No repeat"
+                    android:text="No Repeat   "
                     android:textSize="20sp"
                     android:layout_gravity="center"/>
         </LinearLayout>
@@ -82,7 +82,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reminder"
+                android:text="Push Notification"
                 android:textSize="20sp"
                 android:layout_gravity="center"/>
         </LinearLayout>
