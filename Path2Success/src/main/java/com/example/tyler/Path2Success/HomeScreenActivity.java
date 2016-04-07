@@ -71,6 +71,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         goalDrawer = (ListView)findViewById(R.id.drawer_list_layout);
+        goalDrawer.setOnItemClickListener(new DrawerItemClickListener());
         addDrawerItems();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
@@ -228,8 +229,8 @@ public class HomeScreenActivity extends AppCompatActivity {
      * Sets up and initializes an adapter for the drawer
      */
     private void addDrawerItems(){
-        String[] dArray = {"aaa", "bbb", "ccc"};
-        drawerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dArray);
+        String[] dArray = {"History","aaa", "bbb", "ccc"};
+        drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, dArray);
         goalDrawer.setAdapter(drawerAdapter);
     }
 
@@ -278,6 +279,22 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener{
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+        private void selectItem(int position){
+            switch (position){
+                case 0:
+                    Intent a = new Intent(HomeScreenActivity.this, HistoryStore.class);
+                    startActivity(a);
+                    break;
+            }
+        }
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
