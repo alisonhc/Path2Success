@@ -58,7 +58,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        listLayout = (ListView) findViewById(R.id.checkboxes);
+        listLayout = (ListView) findViewById(R.id.homescreen_listview);
 
         //    addButton = (Button) findViewById(R.id.add_a_new_task);
         //   taskContent = (EditText) findViewById(R.id.edit_message);
@@ -226,7 +226,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private void addDrawerItems(){
         String[] dArray = {"aaa", "bbb", "ccc"};
-        drawerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dArray);
+        drawerAdapter = new ArrayAdapter<>(this, R.layout.drawer_item_info, dArray);
         goalDrawer.setAdapter(drawerAdapter);
     }
 

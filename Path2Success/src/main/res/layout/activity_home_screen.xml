@@ -29,7 +29,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/checkboxes"
+            android:id="@+id/homescreen_listview"
             android:orientation="vertical"
             android:drawSelectorOnTop="false"
             android:layout_weight="0.89"
@@ -56,6 +56,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_gravity="left|start"
-        android:background="@android:color/white">
+        android:background="#99000000"
+        >
     </ListView>
 </android.support.v4.widget.DrawerLayout>
