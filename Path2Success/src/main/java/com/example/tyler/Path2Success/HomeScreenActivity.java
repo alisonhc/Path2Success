@@ -63,7 +63,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
 
-        soundPlayer = MediaPlayer.create(this,R.raw.harp);
+        soundPlayer = MediaPlayer.create(this,R.raw.cheer);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.homescreen_toolbar);
         setSupportActionBar(myToolbar);
