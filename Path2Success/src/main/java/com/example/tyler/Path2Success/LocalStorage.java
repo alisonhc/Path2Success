@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
+import java.util.HashSet;
 
 /**
  * Created by pbertel on 4/7/16.
@@ -66,6 +68,32 @@ public class LocalStorage extends AppCompatActivity{
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            HashSet<String> currentGoalIDs = new HashSet<String>();
+            JSONObject goals;
+            JSONObject goal1;
+            Integer goalID;
+            goals = new JSONObject();
+            goal1 = new JSONObject();
+
+            goal1.put("title", "First Goal!");
+
+            Random rand = new Random();
+            goalID = rand.nextInt(10000);
+
+            while (currentGoalIDs.contains(goalID.toString())) {
+                goalID = rand.nextInt(10000);
+            }
+
+            goals.put(goalID.toString(), goal1);
+
+            String something;
+            something = goals.getJSONObject("goal1").getString("title");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
