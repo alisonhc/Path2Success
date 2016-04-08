@@ -1,5 +1,6 @@
 package com.example.tyler.Path2Success;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.view.View;
 import com.example.tyler.Path2Success.R;
 
 public class HistoryStore extends AppCompatActivity {
+    public static final int RESULT_CODE = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,12 +20,12 @@ public class HistoryStore extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_button_on_history);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(HistoryStore.this, InputNewGoal.class);
+                startActivityForResult(intent, RESULT_CODE);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

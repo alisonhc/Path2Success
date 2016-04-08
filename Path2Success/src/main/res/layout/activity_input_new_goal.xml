@@ -89,14 +89,15 @@
     </LinearLayout>
 
     <Button android:id="@+id/add_and_back"
-        android:layout_width="100dp"
-        android:layout_height="58dp"
-        android:textSize="70px"
-        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14pt"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="#BBDEFB"
         android:hint="Save"
         android:layout_gravity="center_horizontal"
         android:onClick="addNewItem"
-        android:background="@drawable/button_rounded_corner"
         android:layout_marginTop="60px"
         />
 
