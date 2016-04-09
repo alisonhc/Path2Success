@@ -124,6 +124,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                    //get the right json goal object
+
 
 
                 } else {
@@ -169,6 +171,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         JSONObject goalsToShow = storage.getGoals();
         for (int i = 0; i < goalsToShow.length(); i++) {
+            //Iterator code found from
+            // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
             Iterator<String> iter = goalsToShow.keys();
             while (iter.hasNext()) {
                 String key = iter.next();
@@ -180,8 +184,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                         String date = iteratedGoal.getString("date");
                         Integer category = iteratedGoal.getInt("category");
 
-                        //Please change the code here since we have added a new input for the constructor of IndividualGoal)
                         IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                        goalArrayList.add(newGoal);
                         adapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
