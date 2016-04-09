@@ -185,6 +185,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                         Integer category = iteratedGoal.getInt("category");
 
                         IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                        //add newGoal to local storage
                         goalArrayList.add(newGoal);
                         adapter.notifyDataSetChanged();
                     }

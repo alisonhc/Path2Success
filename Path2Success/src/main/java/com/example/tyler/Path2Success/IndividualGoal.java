@@ -1,6 +1,8 @@
 package com.example.tyler.Path2Success;
 
 
+import java.util.SimpleTimeZone;
+
 /**
  * Created by angelica on 3/2/16.
  */
@@ -10,6 +12,7 @@ public class IndividualGoal {
     private String dueDate;
     private Boolean isDone;
     private Integer category;
+    private String randomID;
 
 
     public IndividualGoal(String title,String date, Integer category){
