@@ -51,25 +51,36 @@ public class LocalStorage extends AppCompatActivity{
         return goals;
     }
 
-    public void saveGoalLocally(String title, String date, Integer category) {
+    public void saveGoalLocally(IndividualGoal goalToAdd) {
         try {
             JSONObject newGoal;
-            Integer goalID;
+            String title;
+            String dueDate;
+            Integer category;
+            Integer randInt;
+            String goalID;
+
+            title = goalToAdd.getTitle();
+            dueDate = goalToAdd.getDueDate();
+            category = goalToAdd.getCategory();
 
             newGoal = new JSONObject();
             newGoal.put("title", title);
-            newGoal.put("date", date);
+            newGoal.put("dueDate", dueDate);
             newGoal.put("category", category);
             newGoal.put("isChecked", false);
 
             Random rand = new Random();
-            goalID = rand.nextInt(10000);
+            randInt = rand.nextInt(10000);
+            goalID = randInt.toString();
 
-            while (goals.has(goalID.toString())) {
-                goalID = rand.nextInt(10000);
+            while (goals.has(goalID)) {
+                randInt = rand.nextInt(10000);
+                goalID = randInt.toString();
             }
 
-            goals.put(goalID.toString(), newGoal);
+            goals.put(goalID, newGoal);
+            goalToAdd.setRandomID(goalID);
 
             //The goals JSON Object must be converted to a string before being
             // written to local storage
@@ -91,12 +102,10 @@ public class LocalStorage extends AppCompatActivity{
     //this method is difficult, should probably work on new method of storage (uniqueID for each goal, a single JSON object, etc.)
     public void setIsChecked(IndividualGoal goal, Boolean value) {
         JSONObject goalToChange;
-        JSONObject goals;
 
         //need to use the parameter of "goal" in order to determine which to change
 
         goalToChange = new JSONObject();
-        goals = this.goals;
 
         try {
             FileInputStream fis = openFileInput(FILENAME);

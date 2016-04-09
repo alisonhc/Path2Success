@@ -131,13 +131,8 @@ public class InputNewGoal extends AppCompatActivity {
         intent.putExtra(DUE_DATE, date);
         intent.putExtra(GOAL_CATEGORY, category);
         setResult(Activity.RESULT_OK, intent);
-        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
-        //adds a javascript object to local storage
-        storage = new LocalStorage();
-        storage.saveGoalLocally(task, date, category);
-
         finish();
+        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /**

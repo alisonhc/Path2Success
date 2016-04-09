@@ -94,77 +94,14 @@ public class HomeScreenActivity extends AppCompatActivity {
                     iG.goalIsUndone();
                     a.setChecked(false);
                     Toast.makeText(HomeScreenActivity.this, "unchecked: "+iG.getTitle()+" "+iG.getCategory(), Toast.LENGTH_SHORT).show();
-
-                    try {
-                        FileInputStream fis = openFileInput(FILENAME);
-                        BufferedInputStream bis = new BufferedInputStream(fis);
-                        StringBuffer b = new StringBuffer();
-                        while (bis.available() != 0) {
-                            char c = (char) bis.read();
-                            b.append(c);
-                        }
-                        bis.close();
-                        fis.close();
-                        goalList = new JSONArray(b.toString());
-                        goalToChange = goalList.getJSONObject(position);
-
-                        goalToChange.put("isChecked", false);
-
-                        //now put the goalList back in to local storage
-                        String goals = goalList.toString();
-
-                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                        fos.write(goals.getBytes());
-                        fos.close();
-
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    //get the right json goal object
-
-
+                    storage.setIsChecked(iG, false);
 
                 } else {
                     soundPlayer.start();
                     iG.goalIsDone();
                     a.setChecked(true);
                     Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
-
-                    goalList = new JSONArray();
-                    goalToChange = new JSONObject();
-
-                    try {
-                        FileInputStream fis = openFileInput(FILENAME);
-                        BufferedInputStream bis = new BufferedInputStream(fis);
-                        StringBuffer b = new StringBuffer();
-                        while (bis.available() != 0) {
-                            char c = (char) bis.read();
-                            b.append(c);
-                        }
-                        bis.close();
-                        fis.close();
-                        goalList = new JSONArray(b.toString());
-                        goalToChange = goalList.getJSONObject(position);
-
-                        goalToChange.put("isChecked", true);
-
-                        //now put the goalList back in to local storage
-                        String goals = goalList.toString();
-
-                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                        fos.write(goals.getBytes());
-                        fos.close();
-
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    storage.setIsChecked(iG, true);
                 }
             }
         });
@@ -256,6 +193,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 if(!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate,tCategory);
                     goalArrayList.add(newGoal);
+                    storage.saveGoalLocally(newGoal);
                     adapter.notifyDataSetChanged();
                 }
             }

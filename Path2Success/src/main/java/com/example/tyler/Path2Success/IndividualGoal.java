@@ -20,6 +20,7 @@ public class IndividualGoal {
         this.dueDate=date;
         isDone=false;
         this.category=category;
+        this.randomID = "";
         //add the object to local storage with the above parameters
         //addToLocalStorage();
     }
@@ -45,11 +46,11 @@ public class IndividualGoal {
     }
 
     public void goalIsDone(){
-        isDone=true;
+        this.isDone=true;
     }
 
     public void goalIsUndone(){
-        isDone=false;
+        this.isDone=false;
     }
 
     public Boolean getIfIsDone(){
@@ -62,6 +63,14 @@ public class IndividualGoal {
 
     public void setCategory(Integer category){
         this.category=category;
+    }
+
+    public String getRandomID() {
+        return randomID;
+    }
+
+    public void setRandomID(String randomID) {
+        this.randomID = randomID;
     }
 
     @Override
