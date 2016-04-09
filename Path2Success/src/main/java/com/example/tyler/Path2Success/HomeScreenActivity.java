@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Iterator;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
@@ -37,6 +38,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
     private ListView listLayout;
+    private LocalStorage storage;
   //  private EditText taskContent;
   //  private EditText dueDate;
     private Button addButton;
@@ -59,6 +61,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.storage = new LocalStorage();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
@@ -164,41 +167,27 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
+        JSONObject goalsToShow = storage.getGoals();
+        for (int i = 0; i < goalsToShow.length(); i++) {
+            Iterator<String> iter = goalsToShow.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    JSONObject iteratedGoal = goalsToShow.getJSONObject(key);
+                    Boolean checked = iteratedGoal.getBoolean("isChecked");
+                    if (!checked) {
+                        String title = iteratedGoal.getString("title");
+                        String date = iteratedGoal.getString("date");
+                        Integer category = iteratedGoal.getInt("category");
 
-            //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            StringBuffer b = new StringBuffer();
-            while (bis.available() != 0) {
-                char c = (char) bis.read();
-                b.append(c);
-            }
-            bis.close();
-            fis.close();
-
-            goalList = new JSONArray(b.toString());
-//            Toast toast = Toast.makeText(context, String.valueOf(goalList.length()), duration);
-//            Toast toast = Toast.makeText(context, String.valueOf(goalList), duration);
-//            toast.show();
-
-            for (int i = 0; i < goalList.length(); i++) {
-                Boolean checked = goalList.getJSONObject(i).getBoolean("isChecked");
-                if (!checked) {
-                    String task = goalList.getJSONObject(i).getString("title");
-                    String date = goalList.getJSONObject(i).getString("date");
-
-                    //Please change the code here since we have added a new input for the constructor of IndividualGoal)
-                    IndividualGoal newGoal = new IndividualGoal(task, date, 0);
-                    goalArrayList.add(newGoal);
-                    adapter.notifyDataSetChanged();
+                        //Please change the code here since we have added a new input for the constructor of IndividualGoal)
+                        IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                        adapter.notifyDataSetChanged();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 

@@ -17,16 +17,19 @@ import java.util.HashSet;
 
 /**
  * Created by pbertel on 4/7/16.
+ * Referenced from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
  */
 public class LocalStorage extends AppCompatActivity{
     public final static String FILENAME = "goal_file";
-    private JSONArray goalList;
+    private JSONObject goals;
 
-    public JSONArray getJSONArray() {
-        this.goalList = new JSONArray();
+    public LocalStorage() {
+        this.goals = getGoals();
+    }
 
-        //goalList must be the goal list that has accumulated all the previous goals
-        //so, we need this below chunk of code to make sure goalList is up to date
+    public JSONObject getGoals() {
+        goals = new JSONObject();
+
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedInputStream bis = new BufferedInputStream(fis);
@@ -37,7 +40,7 @@ public class LocalStorage extends AppCompatActivity{
             }
             bis.close();
             fis.close();
-            goalList = new JSONArray(b.toString());
+            goals = new JSONObject(b.toString());
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -45,23 +48,35 @@ public class LocalStorage extends AppCompatActivity{
             e.printStackTrace();
         }
 
-        return goalList;
+        return goals;
     }
 
-    public void saveGoalLocally(String title, String date, String category) {
+    public void saveGoalLocally(String title, String date, Integer category) {
         try {
-            JSONObject goal;
+            JSONObject newGoal;
+            Integer goalID;
 
-            goal = new JSONObject();
-            goal.put("title", title);
-            goal.put("date", date);
-            goal.put("category", category);
-            goal.put("isChecked", false);
-            goalList.put(goal);
-            String goals = goalList.toString();
+            newGoal = new JSONObject();
+            newGoal.put("title", title);
+            newGoal.put("date", date);
+            newGoal.put("category", category);
+            newGoal.put("isChecked", false);
+
+            Random rand = new Random();
+            goalID = rand.nextInt(10000);
+
+            while (goals.has(goalID.toString())) {
+                goalID = rand.nextInt(10000);
+            }
+
+            goals.put(goalID.toString(), newGoal);
+
+            //The goals JSON Object must be converted to a string before being
+            // written to local storage
+            String convertedGoals = goals.toString();
 
             FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            fos.write(goals.getBytes());
+            fos.write(convertedGoals.getBytes());
             fos.close();
 
         } catch (FileNotFoundException e) {
@@ -71,39 +86,17 @@ public class LocalStorage extends AppCompatActivity{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        try {
-            HashSet<String> currentGoalIDs = new HashSet<String>();
-            JSONObject goals;
-            JSONObject goal1;
-            Integer goalID;
-            goals = new JSONObject();
-            goal1 = new JSONObject();
-
-            goal1.put("title", "First Goal!");
-
-            Random rand = new Random();
-            goalID = rand.nextInt(10000);
-
-            while (currentGoalIDs.contains(goalID.toString())) {
-                goalID = rand.nextInt(10000);
-            }
-
-            goals.put(goalID.toString(), goal1);
-
-            String something;
-            something = goals.getJSONObject("goal1").getString("title");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     //this method is difficult, should probably work on new method of storage (uniqueID for each goal, a single JSON object, etc.)
     public void setIsChecked(IndividualGoal goal, Boolean value) {
         JSONObject goalToChange;
-        goalList = new JSONArray();
+        JSONObject goals;
+
+        //need to use the parameter of "goal" in order to determine which to change
+
         goalToChange = new JSONObject();
+        goals = this.goals;
 
         try {
             FileInputStream fis = openFileInput(FILENAME);
@@ -115,17 +108,17 @@ public class LocalStorage extends AppCompatActivity{
             }
             bis.close();
             fis.close();
-            goalList = new JSONArray(b.toString());
+            goals = new JSONObject(b.toString());
             //goalToChange = goalList.getJSONObject(position);
             //instead, here we will get the JSON object that corresponds to the unique ID provided from the Individual Goal class
 
-            goalToChange.put("isChecked", true);
+            goalToChange.put("isChecked", value);
 
             //now put the goalList back in to local storage
-            String goals = goalList.toString();
+            String convertedGoals = goals.toString();
 
             FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            fos.write(goals.getBytes());
+            fos.write(convertedGoals.getBytes());
             fos.close();
 
         }

@@ -18,12 +18,12 @@ public class IndividualGoal {
         isDone=false;
         this.category=category;
         //add the object to local storage with the above parameters
-        addToLocalStorage();
+        //addToLocalStorage();
     }
 
-    private void addToLocalStorage() {
-
-    }
+//    private void addToLocalStorage() {
+//
+//    }
 
     public String getTitle() {
         return title;
