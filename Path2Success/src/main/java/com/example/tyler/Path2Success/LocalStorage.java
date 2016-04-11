@@ -17,15 +17,11 @@ import java.util.HashSet;
 
 /**
  * Created by pbertel on 4/7/16.
- * Referenced from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
+ * Referenced from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files
  */
 public class LocalStorage extends AppCompatActivity{
     public final static String FILENAME = "goal_file";
     private JSONObject goals;
-
-    public LocalStorage() {
-        this.goals = getGoals();
-    }
 
     public JSONObject getGoals() {
         goals = new JSONObject();
@@ -33,20 +29,21 @@ public class LocalStorage extends AppCompatActivity{
         try {
             FileInputStream fis = openFileInput(FILENAME);
             BufferedInputStream bis = new BufferedInputStream(fis);
-            StringBuffer b = new StringBuffer();
-            while (bis.available() != 0) {
-                char c = (char) bis.read();
-                b.append(c);
-            }
-            bis.close();
-            fis.close();
-            goals = new JSONObject(b.toString());
+//            StringBuffer b = new StringBuffer();
+//            while (bis.available() != 0) {
+//                char c = (char) bis.read();
+//                b.append(c);
+//            }
+//            bis.close();
+//            fis.close();
+//            goals = new JSONObject(b.toString());
         }
         catch (IOException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+//        catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         return goals;
     }
@@ -73,6 +70,8 @@ public class LocalStorage extends AppCompatActivity{
             Random rand = new Random();
             randInt = rand.nextInt(10000);
             goalID = randInt.toString();
+
+            goals = getGoals();
 
             while (goals.has(goalID)) {
                 randInt = rand.nextInt(10000);
