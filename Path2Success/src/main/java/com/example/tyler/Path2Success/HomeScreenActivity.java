@@ -34,8 +34,6 @@ import java.io.IOException;
 public class HomeScreenActivity extends AppCompatActivity {
 
     public static final String FILENAME = "goal_file";
-    public final static String EXTRA_MESSAGE = "com.example.tyler.myfirstapp.MESSAGE";
-    public final static String EXTRA_MESSAGE2 = "com.example.tyler.myfirstapp.MESSAGE2";
     private ListView listLayout;
   //  private EditText taskContent;
   //  private EditText dueDate;
