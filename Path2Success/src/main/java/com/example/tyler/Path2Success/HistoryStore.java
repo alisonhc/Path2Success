@@ -11,7 +11,8 @@ import android.view.View;
 import com.example.tyler.Path2Success.R;
 
 public class HistoryStore extends AppCompatActivity {
-    public static final int RESULT_CODE = 9;
+
+    private HistoryDataAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class HistoryStore extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HistoryStore.this, InputNewGoal.class);
-                startActivityForResult(intent, RESULT_CODE);
+                startActivityForResult(intent, HomeScreenActivity.RESULT_CODE);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
