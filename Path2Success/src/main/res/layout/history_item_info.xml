@@ -5,10 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="20px"
     android:padding="20px"
-    android:background="@drawable/goal_rounded_corner"
     android:textSize="50px"
-    android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
-    android:text="DEFAULT"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:allowUndo="false">
+    android:text="DEFAULT">
 </TextView>

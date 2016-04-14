@@ -1,6 +1,7 @@
 package com.example.tyler.Path2Success;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,55 +16,49 @@ import java.util.ArrayList;
 /**
  * Created by angelica on 3/2/16.
  */
-public class HistoryDataAdapter extends BaseAdapter{
+public class HistoryDataAdapter extends RecyclerView.Adapter<HistoryDataAdapter.ViewHolder>{
     private ArrayList<IndividualGoal> goalList;
     private Context context;
     private LayoutInflater inflater;
-    public HistoryDataAdapter(Context context, ArrayList<IndividualGoal> goalList) {
-        this.context = context;
-        this.goalList=goalList;
-        inflater = LayoutInflater.from(this.context);
-    }
-    private class ViewHolder{
-        TextView task;
-        public ViewHolder(View item){
-            task = (TextView)item.findViewById(R.id.history_item);
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView task;
+
+        public ViewHolder (View itemView) {
+            super(itemView);
+            task = (TextView)itemView.findViewById(R.id.history_item);
+        }
+        public void onClick(View v) {
         }
     }
 
-    @Override
-    public int getCount() {
-        return goalList.size();
+    public HistoryDataAdapter(ArrayList<IndividualGoal> goalList) {
+        this.goalList = goalList;
     }
 
+
+
     @Override
-    public IndividualGoal getItem(int position) {
-        return goalList.get(position);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.history_item_info,parent,false);
+        ViewHolder vh = new ViewHolder(v);
+        return vh;
+    }
+
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.task.setText(goalList.get(position).getTitle());
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-
-        if(convertView==null){
-            convertView =inflater.inflate(R.layout.history_item_info,parent,false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        }
-        else{
-            viewHolder = (ViewHolder)convertView.getTag();
-        }
-
-        IndividualGoal currentGoalInList=getItem(position);
-        viewHolder.task.setText(currentGoalInList.getTitle());
-
-        return convertView;
-
+    public int getItemCount() {
+        return goalList.size();
     }
 
 }
