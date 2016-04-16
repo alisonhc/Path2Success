@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
@@ -59,7 +61,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.storage = new LocalStorage();
+        this.storage = new LocalStorage(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
@@ -91,14 +93,14 @@ public class HomeScreenActivity extends AppCompatActivity {
                 if (a.isChecked()) {
                     iG.goalIsUndone();
                     a.setChecked(false);
-                    Toast.makeText(HomeScreenActivity.this, "unchecked: " + iG.getTitle() + " " + iG.getCategory(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(HomeScreenActivity.this, "unchecked: " + iG.getTitle() + " " + iG.getCategory(), Toast.LENGTH_SHORT).show();
                     storage.setIsChecked(iG, false);
 
                 } else {
                     soundPlayer.start();
                     iG.goalIsDone();
                     a.setChecked(true);
-                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
                     storage.setIsChecked(iG, true);
                 }
             }
@@ -129,6 +131,29 @@ public class HomeScreenActivity extends AppCompatActivity {
 //                }
 //            }
 //        }
+        String testFile = "hello_file";
+        String string = "hello world!";
+
+        String DEBUGTAG = HomeScreenActivity.class.getSimpleName();
+
+        Log.d(DEBUGTAG, "Working!!");
+
+        FileOutputStream fos = null;
+        try {
+            fos = openFileOutput(testFile, Context.MODE_PRIVATE);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            fos.write(string.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

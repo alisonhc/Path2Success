@@ -2,6 +2,7 @@ package com.example.tyler.Path2Success;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -20,31 +21,37 @@ import java.util.HashSet;
  * Created by pbertel on 4/7/16.
  * Referenced from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files
  */
-public class LocalStorage extends AppCompatActivity{
+public class LocalStorage {
+    private static final String DEBUGTAG = LocalStorage.class.getSimpleName();
     public final static String FILENAME = "goal_file";
     private JSONObject goals;
+    private Context appContext;
+
+    public LocalStorage(Context c) {
+        goals = new JSONObject();
+        appContext = c;
+    }
 
     public JSONObject getGoals() {
-        goals = new JSONObject();
 
         try {
-            FileInputStream fis = openFileInput(FILENAME);
+            FileInputStream fis = appContext.openFileInput(FILENAME);
             BufferedInputStream bis = new BufferedInputStream(fis);
-//            StringBuffer b = new StringBuffer();
-//            while (bis.available() != 0) {
-//                char c = (char) bis.read();
-//                b.append(c);
-//            }
-//            bis.close();
-//            fis.close();
-//            goals = new JSONObject(b.toString());
+            StringBuffer b = new StringBuffer();
+            while (bis.available() != 0) {
+                char c = (char) bis.read();
+                b.append(c);
+            }
+            bis.close();
+            fis.close();
+            goals = new JSONObject(b.toString());
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-//        catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return goals;
     }
@@ -73,37 +80,43 @@ public class LocalStorage extends AppCompatActivity{
             goalID = randInt.toString();
 
             goals = new JSONObject();
-//
-//            goals = getGoals();
-//
-//            while (goals.has(goalID)) {
-//                randInt = rand.nextInt(10000);
-//                goalID = randInt.toString();
-//            }
-//
+
+            goals = getGoals();
+
+            while (goals.has(goalID)) {
+                randInt = rand.nextInt(10000);
+                goalID = randInt.toString();
+            }
+
             goals.put(goalID, newGoal);
             goalToAdd.setRandomID(goalID);
 
             //The goals JSON Object must be converted to a string before being
             // written to local storage
+            String convertedGoals = goals.toString();
 
-            JSONArray tempArray;
-            tempArray = new JSONArray();
+            FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            fos.write(convertedGoals.getBytes());
+            fos.close();
 
-            tempArray.put(goals);
-
-            String convertedGoals = tempArray.toString();
-
-//            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-//            fos.write(convertedGoals.getBytes());
+//            String testFile = "hello_file";
+//            String string = "hello world!";
+//
+//            FileOutputStream fos = appContext.openFileOutput(testFile, Context.MODE_PRIVATE);
+//            fos.write(string.getBytes());
 //            fos.close();
+//            Log.d(DEBUGTAG, "Working!!");
+
 
         }
-//        catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
+
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         catch (JSONException e) {
             e.printStackTrace();
         }
@@ -118,7 +131,7 @@ public class LocalStorage extends AppCompatActivity{
         goalToChange = new JSONObject();
 
         try {
-            FileInputStream fis = openFileInput(FILENAME);
+            FileInputStream fis = appContext.openFileInput(FILENAME);
             BufferedInputStream bis = new BufferedInputStream(fis);
             StringBuffer b = new StringBuffer();
             while (bis.available() != 0) {
@@ -136,7 +149,7 @@ public class LocalStorage extends AppCompatActivity{
             //now put the goalList back in to local storage
             String convertedGoals = goals.toString();
 
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             fos.write(convertedGoals.getBytes());
             fos.close();
 
