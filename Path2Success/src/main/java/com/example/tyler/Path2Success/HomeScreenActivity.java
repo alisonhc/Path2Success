@@ -104,7 +104,8 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
-        goalsToShow = storage.getGoals();
+        //goalsToShow = storage.getGoals();
+
 //        for (int i = 0; i < goalsToShow.length(); i++) {
 //            //Iterator code found from
 //            // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a

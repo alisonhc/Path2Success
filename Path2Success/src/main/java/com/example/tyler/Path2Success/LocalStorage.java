@@ -2,6 +2,7 @@ package com.example.tyler.Path2Success;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,29 +72,39 @@ public class LocalStorage extends AppCompatActivity{
             randInt = rand.nextInt(10000);
             goalID = randInt.toString();
 
-            goals = getGoals();
-
-            while (goals.has(goalID)) {
-                randInt = rand.nextInt(10000);
-                goalID = randInt.toString();
-            }
-
+            goals = new JSONObject();
+//
+//            goals = getGoals();
+//
+//            while (goals.has(goalID)) {
+//                randInt = rand.nextInt(10000);
+//                goalID = randInt.toString();
+//            }
+//
             goals.put(goalID, newGoal);
             goalToAdd.setRandomID(goalID);
 
             //The goals JSON Object must be converted to a string before being
             // written to local storage
-            String convertedGoals = goals.toString();
 
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            fos.write(convertedGoals.getBytes());
-            fos.close();
+            JSONArray tempArray;
+            tempArray = new JSONArray();
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+            tempArray.put(goals);
+
+            String convertedGoals = tempArray.toString();
+
+//            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+//            fos.write(convertedGoals.getBytes());
+//            fos.close();
+
+        }
+//        catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        catch (JSONException e) {
             e.printStackTrace();
         }
     }
