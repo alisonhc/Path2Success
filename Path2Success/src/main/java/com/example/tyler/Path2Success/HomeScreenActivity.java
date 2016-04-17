@@ -36,6 +36,8 @@ import java.util.Iterator;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
+    private static final String DEBUGTAG = HomeScreenActivity.class.getSimpleName();
+
     private ListView listLayout;
     private LocalStorage storage;
   //  private EditText taskContent;
@@ -47,7 +49,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private GoalDataAdapter adapter;
     private JSONArray goalList;
     private JSONObject goalToChange;
-    private JSONObject goalsToShow;
+    private JSONArray goalsToShow;
     private ListView goalDrawer;
     private ArrayAdapter<String> drawerAdapter;
     private ActionBarDrawerToggle drawerToggle;
@@ -94,65 +96,39 @@ public class HomeScreenActivity extends AppCompatActivity {
                     iG.goalIsUndone();
                     a.setChecked(false);
 //                    Toast.makeText(HomeScreenActivity.this, "unchecked: " + iG.getTitle() + " " + iG.getCategory(), Toast.LENGTH_SHORT).show();
-                    storage.setIsChecked(iG, false);
+                    storage.setCompleted(iG, false);
 
                 } else {
                     soundPlayer.start();
                     iG.goalIsDone();
                     a.setChecked(true);
 //                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
-                    storage.setIsChecked(iG, true);
+                    storage.setCompleted(iG, true);
                 }
             }
         });
 
-        //goalsToShow = storage.getGoals();
+        goalsToShow = storage.getCompletedOrUncompletedGoals(false);
 
-//        for (int i = 0; i < goalsToShow.length(); i++) {
-//            //Iterator code found from
-//            // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
-//            Iterator<String> iter = goalsToShow.keys();
-//            while (iter.hasNext()) {
-//                String key = iter.next();
-//                try {
-//                    JSONObject iteratedGoal = goalsToShow.getJSONObject(key);
-//                    Boolean checked = iteratedGoal.getBoolean("isChecked");
-//                    if (!checked) {
-//                        String title = iteratedGoal.getString("title");
-//                        String date = iteratedGoal.getString("date");
-//                        Integer category = iteratedGoal.getInt("category");
-//
-//                        IndividualGoal newGoal = new IndividualGoal(title, date, category);
-//                        goalArrayList.add(newGoal);
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-        String testFile = "hello_file";
-        String string = "hello world!";
+        Log.d(DEBUGTAG, "Showing goals: " + goalsToShow.toString());
 
-        String DEBUGTAG = HomeScreenActivity.class.getSimpleName();
+        for (int i = 0; i < goalsToShow.length(); i++) {
+            try {
+                JSONObject goalToShow = goalsToShow.getJSONObject(i);
 
-        Log.d(DEBUGTAG, "Working!!");
+                //Code that updates the view
+                String title = goalToShow.getString("title");
+                Log.d(DEBUGTAG, "Title is: " + title);
+                String date = goalToShow.getString("dueDate");
+                Integer category = goalToShow.getInt("category");
 
-        FileOutputStream fos = null;
-        try {
-            fos = openFileOutput(testFile, Context.MODE_PRIVATE);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            fos.write(string.getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+                IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                goalArrayList.add(newGoal);
+                adapter.notifyDataSetChanged();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -209,7 +185,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
 
-                //what does tContent mean?? what is it's purpose in the code?
                 String tContent = data.getStringExtra(InputNewGoal.GOAL_TITLE);
                 String tDate = data.getStringExtra((InputNewGoal.DUE_DATE));
                 Integer tCategory=data.getIntExtra((InputNewGoal.GOAL_CATEGORY),0);
