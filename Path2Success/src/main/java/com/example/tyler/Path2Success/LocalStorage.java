@@ -25,15 +25,9 @@ import java.util.HashSet;
 public class LocalStorage {
     private static final String DEBUGTAG = LocalStorage.class.getSimpleName();
     public final static String FILENAME = "goal_file";
-//    private JSONObject allGoals;
-//    private JSONObject completedGoals;
-//    private JSONObject uncompletedGoals;
     private Context appContext;
 
     public LocalStorage(Context c) {
-//        allGoals = new JSONObject();
-//        completedGoals = new JSONObject();
-//        uncompletedGoals = new JSONObject();
         appContext = c;
 //        Log.d(DEBUGTAG, "Working!!");
     }
@@ -69,9 +63,7 @@ public class LocalStorage {
         JSONArray completedOrUncompletedGoals = new JSONArray();
 
         JSONObject allGoals = getAllGoals();
-        Log.d(DEBUGTAG, "All the goals are: " + allGoals.toString());
-
-//        for (int i = 0; i < allGoals.length(); i++) {
+//        Log.d(DEBUGTAG, "All the goals are: " + allGoals.toString());
 
         //Iterator code found from
         // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
@@ -92,41 +84,30 @@ public class LocalStorage {
                         completedOrUncompletedGoals.put(iteratedGoal);
                     }
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-//        }
-
-        Log.d(DEBUGTAG, "Goals to be returned are: " + completedOrUncompletedGoals.toString());
-
+//        Log.d(DEBUGTAG, "Goals to be returned are: " + completedOrUncompletedGoals.toString());
         return completedOrUncompletedGoals;
     }
 
     public void saveGoalLocally(IndividualGoal goalToAdd) {
         try {
-            JSONObject newGoal;
-            String title;
-            String dueDate;
-            Integer category;
-            Integer randInt;
-            String goalID;
+            String title = goalToAdd.getTitle();
+            String dueDate = goalToAdd.getDueDate();
+            Integer category = goalToAdd.getCategory();
 
-            title = goalToAdd.getTitle();
-            dueDate = goalToAdd.getDueDate();
-            category = goalToAdd.getCategory();
-
-            newGoal = new JSONObject();
+            JSONObject newGoal = new JSONObject();
             newGoal.put("title", title);
             newGoal.put("dueDate", dueDate);
             newGoal.put("category", category);
             newGoal.put("completed", false);
 
             Random rand = new Random();
-            randInt = rand.nextInt(10000);
-            goalID = randInt.toString();
+            Integer randInt = rand.nextInt(10000);
+            String goalID = randInt.toString();
 
             JSONObject allGoals = getAllGoals();
 
@@ -146,12 +127,6 @@ public class LocalStorage {
             fos.write(convertedGoals.getBytes());
             fos.close();
 
-//            String testFile = "hello_file";
-//            String string = "hello world!";
-//
-//            FileOutputStream fos = appContext.openFileOutput(testFile, Context.MODE_PRIVATE);
-//            fos.write(string.getBytes());
-//            fos.close();
 //            Log.d(DEBUGTAG, "Working!!");
         }
 
@@ -166,14 +141,10 @@ public class LocalStorage {
         }
     }
 
+    //this does not work yet
     //this method is difficult, should probably work on new method of storage (uniqueID for each goal, a single JSON object, etc.)
     public void setCompleted(IndividualGoal goal, Boolean value) {
-        JSONObject goalToChange;
-        JSONObject allGoals;
-
-        //need to use the parameter of "goal" in order to determine which to change
-
-        goalToChange = new JSONObject();
+        JSONObject goalToChange = new JSONObject();
 
         try {
             FileInputStream fis = appContext.openFileInput(FILENAME);
@@ -185,7 +156,7 @@ public class LocalStorage {
             }
             bis.close();
             fis.close();
-            allGoals = new JSONObject(b.toString());
+            JSONObject allGoals = new JSONObject(b.toString());
             //goalToChange = goalList.getJSONObject(position);
             //instead, here we will get the JSON object that corresponds to the unique ID provided from the Individual Goal class
 

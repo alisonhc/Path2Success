@@ -113,7 +113,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
 //        goalArrayList = new ArrayList<>();
 
-        Log.d(DEBUGTAG, "Showing goals: " + goalsToShow.toString());
+//        Log.d(DEBUGTAG, "Showing goals: " + goalsToShow.toString());
 
         for (int i = 0; i < goalsToShow.length(); i++) {
             try {
@@ -181,9 +181,6 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Toast.makeText(HomeScreenActivity.this, "stuff is happening", Toast.LENGTH_SHORT).show();
-
 
         // Check which request we're responding to
         if (requestCode == RESULT_CODE) {
