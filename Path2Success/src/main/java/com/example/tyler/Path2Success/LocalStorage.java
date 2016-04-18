@@ -35,7 +35,7 @@ public class LocalStorage {
 //        completedGoals = new JSONObject();
 //        uncompletedGoals = new JSONObject();
         appContext = c;
-        Log.d(DEBUGTAG, "Working!!");
+//        Log.d(DEBUGTAG, "Working!!");
     }
 
     public JSONObject getAllGoals() {
@@ -69,34 +69,38 @@ public class LocalStorage {
         JSONArray completedOrUncompletedGoals = new JSONArray();
 
         JSONObject allGoals = getAllGoals();
+        Log.d(DEBUGTAG, "All the goals are: " + allGoals.toString());
 
-        for (int i = 0; i < allGoals.length(); i++) {
-            //Iterator code found from
-            // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
-            Iterator<String> iterator = allGoals.keys();
-            while (iterator.hasNext()) {
-                String key = iterator.next();
-                try {
-                    JSONObject iteratedGoal = allGoals.getJSONObject(key);
-                    Boolean completed = iteratedGoal.getBoolean("completed");
-                    if (bool) {
-                        if (completed) {
-                            //then add the goal to the array that is to be returned
-                            completedOrUncompletedGoals.put(iteratedGoal);
-                        }
+//        for (int i = 0; i < allGoals.length(); i++) {
+
+        //Iterator code found from
+        // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
+        Iterator<String> iterator = allGoals.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            try {
+                JSONObject iteratedGoal = allGoals.getJSONObject(key);
+                Boolean completed = iteratedGoal.getBoolean("completed");
+                if (bool) {
+                    if (completed) {
+                        //then add the goal to the array that is to be returned
+                        completedOrUncompletedGoals.put(iteratedGoal);
                     }
-                    else {
-                        if (!completed) {
-                            completedOrUncompletedGoals.put(iteratedGoal);
-                        }
-                    }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+                else {
+                    if (!completed) {
+                        completedOrUncompletedGoals.put(iteratedGoal);
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
+
+//        }
+
+        Log.d(DEBUGTAG, "Goals to be returned are: " + completedOrUncompletedGoals.toString());
 
         return completedOrUncompletedGoals;
     }

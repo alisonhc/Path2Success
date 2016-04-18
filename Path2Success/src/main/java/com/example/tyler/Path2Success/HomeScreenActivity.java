@@ -64,6 +64,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.storage = new LocalStorage(this.getApplicationContext());
+        Log.d(DEBUGTAG, "Happening");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
@@ -110,6 +111,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         goalsToShow = storage.getCompletedOrUncompletedGoals(false);
 
+//        goalArrayList = new ArrayList<>();
+
         Log.d(DEBUGTAG, "Showing goals: " + goalsToShow.toString());
 
         for (int i = 0; i < goalsToShow.length(); i++) {
@@ -118,7 +121,6 @@ public class HomeScreenActivity extends AppCompatActivity {
 
                 //Code that updates the view
                 String title = goalToShow.getString("title");
-                Log.d(DEBUGTAG, "Title is: " + title);
                 String date = goalToShow.getString("dueDate");
                 Integer category = goalToShow.getInt("category");
 
@@ -179,6 +181,9 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Toast.makeText(HomeScreenActivity.this, "stuff is happening", Toast.LENGTH_SHORT).show();
+
 
         // Check which request we're responding to
         if (requestCode == RESULT_CODE) {
