@@ -4,18 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListAdapter;
+import android.widget.AdapterView;
+import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.example.tyler.Path2Success.R;
 
 import java.util.ArrayList;
 
@@ -34,8 +30,7 @@ public class HistoryStore extends AppCompatActivity {
         //Initialize goalArrayList here
         goalArrayList=new ArrayList<>();
 
-        setHistoryListView();
-        LinearLayoutManager llm = new LinearLayoutManager(this);
+        setArrayList();
 
         historyList = (ListView) findViewById(R.id.historyscreen_listview);
         adapter = new HistoryDataAdapter(this,goalArrayList);
@@ -55,10 +50,31 @@ public class HistoryStore extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         adapter.notifyDataSetChanged();
 
+        //TODO OnItemClickListener storage implement
+        historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                IndividualGoal iG = adapter.getItem(position);
+                CheckedTextView a = (CheckedTextView) ((LinearLayout) view).getChildAt(0);
+                if (a.isChecked()) {
+                    iG.goalIsUndone();
+                    a.setChecked(false);
+//                    Toast.makeText(HomeScreenActivity.this, "unchecked: " + iG.getTitle() + " " + iG.getCategory(), Toast.LENGTH_SHORT).show();
+                 //   storage.setCompleted(iG, false);
+
+                } else {
+                    iG.goalIsDone();
+                    a.setChecked(true);
+//                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
+                 //   storage.setCompleted(iG, true);
+                }
+            }
+        });
+
     }
 
 
-    private void setHistoryListView(){
+    private void setArrayList(){
         for(int i=0; i<=5;i++) {
             goalArrayList.add(new IndividualGoal("haha", "haha", 0));
             goalArrayList.add(new IndividualGoal("bo", "haha", 0));

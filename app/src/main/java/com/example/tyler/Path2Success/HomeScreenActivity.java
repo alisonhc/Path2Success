@@ -146,7 +146,7 @@ public class HomeScreenActivity extends AppCompatActivity {
      * Sets up and initializes an adapter for the drawer
      */
     private void addDrawerItems(){
-        String[] dArray = {"History","Academics", "Fitness", "Misc"};
+        String[] dArray = {"All","Academics", "Fitness", "Misc","History"};
         drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, dArray);
         goalDrawer.setAdapter(drawerAdapter);
     }
@@ -205,12 +205,38 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
         private void selectItem(int position){
             switch (position){
-                case 0:
+                case 4:
                     Intent a = new Intent(HomeScreenActivity.this, HistoryStore.class);
                     startActivity(a);
                     break;
+                //TODO this is filtering the goal
+                /**
+                 * Get the
+                 */
+                case 0:
+                    break;
+                case 1:
+                    //TODO not done yet. Doesn't do what I want it to do right now.
+                    ArrayList<IndividualGoal> aha = new ArrayList<>();
+                    setArrayList(aha);
+                    goalArrayList = aha;
+                    Toast.makeText(HomeScreenActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
             }
         }
+
+    private void setArrayList(ArrayList<IndividualGoal> ha) {
+        for (int i = 0; i <= 5; i++) {
+            ha.add(new IndividualGoal("haha", "haha", 0));
+            ha.add(new IndividualGoal("bo", "haha", 0));
+            ha.add(new IndividualGoal("no", "haha", 0));
+        }
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState){

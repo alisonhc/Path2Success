@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:id="@+id/input_new_goal_linearLayout"
+    android:background="@drawable/cloud"
     android:weightSum="1">
 
 
@@ -45,48 +46,6 @@
         android:layout_margin="60px"
         android:layout_gravity="center_horizontal"
         />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="60px"
-        android:weightSum="1">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:layout_weight="0.5">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_repeat"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/repeatOption"
-                    android:text="No Repeat   "
-                    android:textSize="20sp"
-                    android:layout_gravity="center"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5">
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_reminder_icon"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Push Notification"
-                android:textSize="20sp"
-                android:layout_gravity="center"/>
-        </LinearLayout>
-    </LinearLayout>
 
     <Button android:id="@+id/add_and_back"
         android:layout_width="wrap_content"
