@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class HistoryStore extends AppCompatActivity {
 
-    private GoalDataAdapter adapter;
+    private HistoryDataAdapter adapter;
     private ListView historyList;
     private LinearLayoutManager llm;
     private CollapsingToolbarLayout collapsingToolbar;
@@ -38,7 +38,7 @@ public class HistoryStore extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
 
         historyList = (ListView) findViewById(R.id.historyscreen_listview);
-        adapter = new GoalDataAdapter(this,goalArrayList);
+        adapter = new HistoryDataAdapter(this,goalArrayList);
         historyList.setAdapter(adapter);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.historyscreen_toolbar);
