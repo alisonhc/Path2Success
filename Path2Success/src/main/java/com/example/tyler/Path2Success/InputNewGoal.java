@@ -35,7 +35,6 @@ public class InputNewGoal extends AppCompatActivity {
     public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";
     public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE3";
-    public final static String FILENAME = "goal_file";
     //an integer to indicate the category of the goal
     private Integer category;
     //private DatePicker dueDate;
@@ -66,28 +65,6 @@ public class InputNewGoal extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         setTitle("Start a new goal");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        goalList = new JSONArray();
-
-        //goalList must be the goal list that has accumulated all the previous goals
-        //so, we need this below chunk of code to make sure goalList is up to date
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            StringBuffer b = new StringBuffer();
-            while (bis.available() != 0) {
-                char c = (char) bis.read();
-                b.append(c);
-            }
-            bis.close();
-            fis.close();
-            goalList = new JSONArray(b.toString());
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         //Handle date input
         dateInput = (EditText) findViewById(R.id.datePicker);
@@ -145,12 +122,7 @@ public class InputNewGoal extends AppCompatActivity {
      * @param view
      */
     public void addNewItem(View view){
-        ////            Making a test toast
-//        Context context = getApplicationContext();
-//        int duration = Toast.LENGTH_LONG;
-//        String text = "Goal successfully written to device!\n";
-//        Toast toast = Toast.makeText(context, text, duration);
-//        toast.show();
+        LocalStorage storage;
         Intent intent = new Intent();
         String task = taskContent.getText().toString();
         String date = dateInput.getText().toString();
@@ -160,29 +132,6 @@ public class InputNewGoal extends AppCompatActivity {
         setResult(Activity.RESULT_OK, intent);
         finish();
         //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
-        //adds a javascript object to local storage
-        try {
-            JSONObject goal;
-
-            goal = new JSONObject();
-            goal.put("title", task);
-            goal.put("date", date);
-            goal.put("isChecked", false);
-            goalList.put(goal);
-            String goals = goalList.toString();
-
-            FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            fos.write(goals.getBytes());
-            fos.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

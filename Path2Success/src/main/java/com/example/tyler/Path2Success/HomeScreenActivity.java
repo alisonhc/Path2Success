@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -17,24 +18,17 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-//Import statements for writing to local memory
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 public class HomeScreenActivity extends AppCompatActivity {
-
-    public static final String FILENAME = "goal_file";
+    private static final String DEBUGTAG = HomeScreenActivity.class.getSimpleName();
     private ListView listLayout;
+    private LocalStorage storage;
   //  private EditText taskContent;
   //  private EditText dueDate;
     private Button addButton;
@@ -44,6 +38,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     private GoalDataAdapter adapter;
     private JSONArray goalList;
     private JSONObject goalToChange;
+    private JSONArray goalsToShow;
     private ListView goalDrawer;
     private ArrayAdapter<String> drawerAdapter;
     private ActionBarDrawerToggle drawerToggle;
@@ -57,6 +52,8 @@ public class HomeScreenActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.storage = new LocalStorage(this.getApplicationContext());
+//        Log.d(DEBUGTAG, "Happening");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
@@ -84,119 +81,41 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 IndividualGoal iG = adapter.getItem(position);
-                CheckedTextView a = (CheckedTextView)((LinearLayout) view).getChildAt(0);
+                CheckedTextView a = (CheckedTextView) ((LinearLayout) view).getChildAt(0);
                 if (a.isChecked()) {
                     iG.goalIsUndone();
                     a.setChecked(false);
-                    Toast.makeText(HomeScreenActivity.this, "unchecked: "+iG.getTitle()+" "+iG.getCategory(), Toast.LENGTH_SHORT).show();
-
-                    try {
-                        FileInputStream fis = openFileInput(FILENAME);
-                        BufferedInputStream bis = new BufferedInputStream(fis);
-                        StringBuffer b = new StringBuffer();
-                        while (bis.available() != 0) {
-                            char c = (char) bis.read();
-                            b.append(c);
-                        }
-                        bis.close();
-                        fis.close();
-                        goalList = new JSONArray(b.toString());
-                        goalToChange = goalList.getJSONObject(position);
-
-                        goalToChange.put("isChecked", false);
-
-                        //now put the goalList back in to local storage
-                        String goals = goalList.toString();
-
-                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                        fos.write(goals.getBytes());
-                        fos.close();
-
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
+//                    Toast.makeText(HomeScreenActivity.this, "unchecked: " + iG.getTitle() + " " + iG.getCategory(), Toast.LENGTH_SHORT).show();
+                    storage.setCompleted(iG, false);
 
                 } else {
                     soundPlayer.start();
                     iG.goalIsDone();
                     a.setChecked(true);
-                    Toast.makeText(HomeScreenActivity.this, "checked: "+iG.getTitle(), Toast.LENGTH_SHORT).show();
-
-                    goalList = new JSONArray();
-                    goalToChange = new JSONObject();
-
-                    try {
-                        FileInputStream fis = openFileInput(FILENAME);
-                        BufferedInputStream bis = new BufferedInputStream(fis);
-                        StringBuffer b = new StringBuffer();
-                        while (bis.available() != 0) {
-                            char c = (char) bis.read();
-                            b.append(c);
-                        }
-                        bis.close();
-                        fis.close();
-                        goalList = new JSONArray(b.toString());
-                        goalToChange = goalList.getJSONObject(position);
-
-                        goalToChange.put("isChecked", true);
-
-                        //now put the goalList back in to local storage
-                        String goals = goalList.toString();
-
-                        FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                        fos.write(goals.getBytes());
-                        fos.close();
-
-                    }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+//                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
+                    storage.setCompleted(iG, true);
                 }
             }
         });
 
+        goalsToShow = storage.getCompletedOrUncompletedGoals(false);
+//        Log.d(DEBUGTAG, "Showing goals: " + goalsToShow.toString());
 
-            //Code used from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files/
-        try {
-            FileInputStream fis = openFileInput(FILENAME);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            StringBuffer b = new StringBuffer();
-            while (bis.available() != 0) {
-                char c = (char) bis.read();
-                b.append(c);
+        for (int i = 0; i < goalsToShow.length(); i++) {
+            try {
+                JSONObject goalToShow = goalsToShow.getJSONObject(i);
+
+                //Code that updates the view
+                String title = goalToShow.getString("title");
+                String date = goalToShow.getString("dueDate");
+                Integer category = goalToShow.getInt("category");
+
+                IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                goalArrayList.add(newGoal);
+                adapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-            bis.close();
-            fis.close();
-
-            goalList = new JSONArray(b.toString());
-//            Toast toast = Toast.makeText(context, String.valueOf(goalList.length()), duration);
-//            Toast toast = Toast.makeText(context, String.valueOf(goalList), duration);
-//            toast.show();
-
-            for (int i = 0; i < goalList.length(); i++) {
-                Boolean checked = goalList.getJSONObject(i).getBoolean("isChecked");
-                if (!checked) {
-                    String task = goalList.getJSONObject(i).getString("title");
-                    String date = goalList.getJSONObject(i).getString("date");
-
-                    //Please change the code here since we have added a new input for the constructor of IndividualGoal)
-                    IndividualGoal newGoal = new IndividualGoal(task, date, 0);
-                    goalArrayList.add(newGoal);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
@@ -253,13 +172,13 @@ public class HomeScreenActivity extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
 
-                //what does tContent mean?? what is it's purpose in the code?
                 String tContent = data.getStringExtra(InputNewGoal.GOAL_TITLE);
                 String tDate = data.getStringExtra((InputNewGoal.DUE_DATE));
                 Integer tCategory=data.getIntExtra((InputNewGoal.GOAL_CATEGORY),0);
                 if(!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate,tCategory);
                     goalArrayList.add(newGoal);
+                    storage.saveGoalLocally(newGoal);
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -292,7 +211,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                     break;
             }
         }
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState){

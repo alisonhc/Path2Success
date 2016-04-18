@@ -1,6 +1,8 @@
 package com.example.tyler.Path2Success;
 
 
+import java.util.SimpleTimeZone;
+
 /**
  * Created by angelica on 3/2/16.
  */
@@ -10,6 +12,7 @@ public class IndividualGoal {
     private String dueDate;
     private Boolean isDone;
     private Integer category;
+    private String randomID;
 
 
     public IndividualGoal(String title,String date, Integer category){
@@ -17,7 +20,14 @@ public class IndividualGoal {
         this.dueDate=date;
         isDone=false;
         this.category=category;
+        this.randomID = "";
+        //add the object to local storage with the above parameters
+        //addToLocalStorage();
     }
+
+//    private void addToLocalStorage() {
+//
+//    }
 
     public String getTitle() {
         return title;
@@ -36,11 +46,11 @@ public class IndividualGoal {
     }
 
     public void goalIsDone(){
-        isDone=true;
+        this.isDone=true;
     }
 
     public void goalIsUndone(){
-        isDone=false;
+        this.isDone=false;
     }
 
     public Boolean getIfIsDone(){
@@ -53,6 +63,14 @@ public class IndividualGoal {
 
     public void setCategory(Integer category){
         this.category=category;
+    }
+
+    public String getRandomID() {
+        return randomID;
+    }
+
+    public void setRandomID(String randomID) {
+        this.randomID = randomID;
     }
 
     @Override
