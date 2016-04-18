@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class HistoryStore extends AppCompatActivity {
 
-    private HistoryDataAdapter adapter;
-    private RecyclerView historyList;
+    private GoalDataAdapter adapter;
+    private ListView historyList;
     private LinearLayoutManager llm;
     private CollapsingToolbarLayout collapsingToolbar;
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();//This need to be from the internal, of the goal that is checked.
@@ -33,17 +33,18 @@ public class HistoryStore extends AppCompatActivity {
         setContentView(R.layout.activity_history_store);
         //Initialize goalArrayList here
         goalArrayList=new ArrayList<>();
+
         setHistoryListView();
         LinearLayoutManager llm = new LinearLayoutManager(this);
 
-        historyList = (RecyclerView) findViewById(R.id.history_view);
-        adapter = new HistoryDataAdapter(goalArrayList);
+        historyList = (ListView) findViewById(R.id.historyscreen_listview);
+        adapter = new GoalDataAdapter(this,goalArrayList);
         historyList.setAdapter(adapter);
-        historyList.setLayoutManager(llm);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.historyscreen_toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_button_on_history);
+        toolbar.setTitle("History!");
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.history_add_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,8 +55,6 @@ public class HistoryStore extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         adapter.notifyDataSetChanged();
 
-        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        collapsingToolbar.setTitle("History");
     }
 
 
