@@ -203,23 +203,27 @@ public class HomeScreenActivity extends AppCompatActivity {
             selectItem(position);
         }
     }
+    //TODO however, since there might be more categories, it might be a good idea to use something else then switch.
+    //Right now, it is switch
         private void selectItem(int position){
             switch (position){
-                case 4:
+
+                case 4://HistoryPage
                     Intent a = new Intent(HomeScreenActivity.this, HistoryStore.class);
                     startActivity(a);
                     break;
+
                 //TODO this is filtering the goal
-                /**
-                 * Get the
-                 */
-                case 0:
+
+                case 0://Get All
+                    getAllUnfinishedGoalsSaved();
                     break;
+
                 case 1:
-                    //TODO not done yet. Doesn't do what I want it to do right now.
-                    ArrayList<IndividualGoal> aha = new ArrayList<>();
-                    setArrayList(aha);
-                    goalArrayList = aha;
+                    //TODO Ok so it is working now. What we need is to just get the goals in the same category,
+                    //TODO and remove everything in ths goalArrayList, and put all the wanted goal in the goalArrayList, and notifyDataSetChanged()
+                    IndividualGoal newTest = new IndividualGoal("haha","haha",0);
+                    goalArrayList.add(newTest);
                     Toast.makeText(HomeScreenActivity.this, "clicked", Toast.LENGTH_SHORT).show();
                     adapter.notifyDataSetChanged();
                     break;
@@ -229,6 +233,27 @@ public class HomeScreenActivity extends AppCompatActivity {
                     break;
             }
         }
+
+    private void getAllUnfinishedGoalsSaved() {
+        JSONArray temp = storage.getCompletedOrUncompletedGoals(false);
+        goalArrayList.clear();
+        for (int i = 0; i < temp.length(); i++) {
+            try {
+                JSONObject goalToShow = temp.getJSONObject(i);
+
+                //Code that updates the view
+                String title = goalToShow.getString("title");
+                String date = goalToShow.getString("dueDate");
+                Integer category = goalToShow.getInt("category");
+
+                IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                goalArrayList.add(newGoal);
+                adapter.notifyDataSetChanged();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void setArrayList(ArrayList<IndividualGoal> ha) {
         for (int i = 0; i <= 5; i++) {
