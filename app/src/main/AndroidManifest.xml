@@ -28,6 +28,11 @@
                 android:value=".HomeScreenActivity" />
         </activity>
         <activity
+            android:name=".CategoryPopup"
+            android:label="Category"
+            android:theme="@style/AppTheme.CustomTheme">
+        </activity>
+        <activity
             android:name=".HistoryStore"
             android:label="@string/title_activity_history_store"
             android:parentActivityName=".HomeScreenActivity"
@@ -36,6 +41,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.tyler.Path2Success.HomeScreenActivity" />
         </activity>
+
     </application>
 
 </manifest>

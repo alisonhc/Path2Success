@@ -88,6 +88,8 @@ public class InputNewGoal extends AppCompatActivity {
         dateInput.setKeyListener(null);
 
 
+
+
         //Handle category input
         categoryInput = (EditText)findViewById(R.id.categorySelector);
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -104,7 +106,7 @@ public class InputNewGoal extends AppCompatActivity {
 
 
     private void pickCategory(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a category");
         builder.setItems(categories, new DialogInterface.OnClickListener() {
             @Override
@@ -113,7 +115,8 @@ public class InputNewGoal extends AppCompatActivity {
                 categoryInput.setText(categories[category]);
             }
         });
-        builder.show();
+        builder.show();*/
+        startActivity(new Intent(InputNewGoal.this, CategoryPopup.class));
     }
 
 
