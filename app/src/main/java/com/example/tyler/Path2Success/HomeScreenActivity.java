@@ -111,6 +111,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 Integer category = goalToShow.getInt("category");
 
                 IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                newGoal.setRandomID(goalToShow.getString("id"));
                 goalArrayList.add(newGoal);
                 adapter.notifyDataSetChanged();
             } catch (JSONException e) {

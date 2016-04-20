@@ -116,6 +116,8 @@ public class LocalStorage {
                 goalID = randInt.toString();
             }
 
+            newGoal.put("id", goalID);
+
             allGoals.put(goalID, newGoal);
             goalToAdd.setRandomID(goalID);
 
@@ -126,8 +128,6 @@ public class LocalStorage {
             FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             fos.write(convertedGoals.getBytes());
             fos.close();
-
-//            Log.d(DEBUGTAG, "Working!!");
         }
 
         catch (FileNotFoundException e) {
@@ -144,21 +144,26 @@ public class LocalStorage {
     //this does not work yet
     //this method is difficult, should probably work on new method of storage (uniqueID for each goal, a single JSON object, etc.)
     public void setCompleted(IndividualGoal goal, Boolean value) {
-        JSONObject goalToChange = new JSONObject();
+
+        Log.d(DEBUGTAG, "Working!!");
 
         try {
-            FileInputStream fis = appContext.openFileInput(FILENAME);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            StringBuffer b = new StringBuffer();
-            while (bis.available() != 0) {
-                char c = (char) bis.read();
-                b.append(c);
-            }
-            bis.close();
-            fis.close();
-            JSONObject allGoals = new JSONObject(b.toString());
+
+//            FileInputStream fis = appContext.openFileInput(FILENAME);
+//            BufferedInputStream bis = new BufferedInputStream(fis);
+//            StringBuffer b = new StringBuffer();
+//            while (bis.available() != 0) {
+//                char c = (char) bis.read();
+//                b.append(c);
+//            }
+//            bis.close();
+//            fis.close();
+            JSONObject allGoals = getAllGoals();
             //goalToChange = goalList.getJSONObject(position);
             //instead, here we will get the JSON object that corresponds to the unique ID provided from the Individual Goal class
+
+            String goalID = goal.getRandomID();
+            JSONObject goalToChange = allGoals.getJSONObject(goalID);
 
             goalToChange.put("completed", value);
 

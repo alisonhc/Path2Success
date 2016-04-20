@@ -44,8 +44,6 @@ public class HistoryStore extends AppCompatActivity {
 
         completedGoals = storage.getCompletedOrUncompletedGoals(true);
 
-        Toast.makeText(HistoryStore.this, "Successfully loaded HistoryStore", Toast.LENGTH_LONG).show();
-
         for (int i = 0; i < completedGoals.length(); i++) {
             try {
                 JSONObject goalToShow = completedGoals.getJSONObject(i);
@@ -56,6 +54,7 @@ public class HistoryStore extends AppCompatActivity {
                 Integer category = goalToShow.getInt("category");
 
                 IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                newGoal.setRandomID(goalToShow.getString("id"));
                 goalArrayList.add(newGoal);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -90,17 +89,16 @@ public class HistoryStore extends AppCompatActivity {
                     iG.goalIsUndone();
                     a.setChecked(false);
 //                    Toast.makeText(HomeScreenActivity.this, "unchecked: " + iG.getTitle() + " " + iG.getCategory(), Toast.LENGTH_SHORT).show();
-                 //   storage.setCompleted(iG, false);
+                    storage.setCompleted(iG, false);
 
                 } else {
                     iG.goalIsDone();
                     a.setChecked(true);
 //                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
-                 //   storage.setCompleted(iG, true);
+                    storage.setCompleted(iG, true);
                 }
             }
         });
-
     }
 
 
