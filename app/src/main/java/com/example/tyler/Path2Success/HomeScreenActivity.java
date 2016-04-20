@@ -54,7 +54,6 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.storage = new LocalStorage(this.getApplicationContext());
-//        Log.d(DEBUGTAG, "Happening");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
         listLayout = (ListView) findViewById(R.id.homescreen_listview);

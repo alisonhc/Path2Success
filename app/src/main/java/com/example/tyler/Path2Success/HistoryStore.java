@@ -12,6 +12,11 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -22,15 +27,40 @@ public class HistoryStore extends AppCompatActivity {
     private LinearLayoutManager llm;
     private CollapsingToolbarLayout collapsingToolbar;
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();//This need to be from the internal, of the goal that is checked.
+    private LocalStorage storage;
+    private JSONArray completedGoals;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        storage = new LocalStorage(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_store);
         //Initialize goalArrayList here
         goalArrayList=new ArrayList<>();
 
-        setArrayList();
+        //setArrayList();
+        //instead of this, we need to add all of the goals from local storage
+        //  that are checked to the goalArrayList
+
+        completedGoals = storage.getCompletedOrUncompletedGoals(true);
+
+        Toast.makeText(HistoryStore.this, "Successfully loaded HistoryStore", Toast.LENGTH_LONG).show();
+
+        for (int i = 0; i < completedGoals.length(); i++) {
+            try {
+                JSONObject goalToShow = completedGoals.getJSONObject(i);
+
+                //Code that updates the view
+                String title = goalToShow.getString("title");
+                String date = goalToShow.getString("dueDate");
+                Integer category = goalToShow.getInt("category");
+
+                IndividualGoal newGoal = new IndividualGoal(title, date, category);
+                goalArrayList.add(newGoal);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
 
         historyList = (ListView) findViewById(R.id.historyscreen_listview);
         adapter = new HistoryDataAdapter(this,goalArrayList);
