@@ -39,7 +39,13 @@
         <activity
             android:name=".EditGoal"
             android:label="@string/title_activity_edit_goal"
-            android:theme="@style/AppTheme"></activity>
+            android:screenOrientation="portrait"
+            android:parentActivityName=".HomeScreenActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.tyler.Path2Success.HomeScreenActivity" />
+        </activity>
     </application>
 
 </manifest>
