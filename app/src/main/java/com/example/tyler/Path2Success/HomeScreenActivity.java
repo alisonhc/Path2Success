@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import java.util.ArrayList;
 
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,7 +82,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 IndividualGoal iG = adapter.getItem(position);
-                CheckedTextView a = (CheckedTextView) ((LinearLayout) view).getChildAt(0);
+                CheckedTextView a = (CheckedTextView) ((RelativeLayout) view).getChildAt(0);
                 if (a.isChecked()) {
                     iG.goalIsUndone();
                     a.setChecked(false);
