@@ -30,8 +30,7 @@
         <activity
             android:name=".CategoryPopup"
             android:label="Category"
-            android:theme="@style/AppTheme.CustomTheme">
-        </activity>
+            android:theme="@style/AppTheme.CustomTheme"></activity>
         <activity
             android:name=".HistoryStore"
             android:label="@string/title_activity_history_store"
@@ -41,7 +40,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.tyler.Path2Success.HomeScreenActivity" />
         </activity>
-
+        <activity
+            android:name=".EditGoal"
+            android:label="@string/title_activity_edit_goal"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

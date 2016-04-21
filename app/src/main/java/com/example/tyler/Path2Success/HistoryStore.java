@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,7 +72,7 @@ public class HistoryStore extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HistoryStore.this, InputNewGoal.class);
-                startActivityForResult(intent, HomeScreenActivity.RESULT_CODE);
+                startActivityForResult(intent, HomeScreenActivity.RESULT_CODE_ADD);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

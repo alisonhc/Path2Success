@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:id="@+id/edit_goal_linearLayout"
+    android:background="@drawable/cloud"
+    android:weightSum="1">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/input_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+
+
+    <EditText android:id="@+id/taskContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="60px"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:hint="@string/hint_to_add" />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/datePicker"
+        android:hint="@string/hint_of_time"
+        android:layout_margin="60px" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/categorySelector"
+        android:hint="@string/hint_of_category"
+        android:layout_margin="60px"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <Button android:id="@+id/add_and_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14pt"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:background="#BBDEFB"
+        android:hint="Save"
+        android:layout_gravity="center_horizontal"
+        android:onClick="addNewItem"
+        android:layout_marginTop="60px"
+        />
+
+
+
+</LinearLayout>

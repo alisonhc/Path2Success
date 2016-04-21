@@ -1,12 +1,13 @@
 package com.example.tyler.Path2Success;
 
 
+import java.io.Serializable;
 import java.util.SimpleTimeZone;
 
 /**
  * Created by angelica on 3/2/16.
  */
-public class IndividualGoal {
+public class IndividualGoal implements Serializable {
 
     private String title;
     private String dueDate;

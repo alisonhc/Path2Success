@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class InputNewGoal extends AppCompatActivity {
+public class EditGoal extends AppCompatActivity {
     //final string to bring information to the main activity
     public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";
@@ -45,20 +45,23 @@ public class InputNewGoal extends AppCompatActivity {
     private EditText categoryInput;
     private Calendar myCalendar;
     private TextView repeatOptionView;
+    private IndividualGoal goal;
 
     //Make this an array that is retrieved from internal storage every time.
     private CharSequence categories[] =new CharSequence[]{"Fitness","Academics", "Miscellaneous"};
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent homeIntent = getIntent();
+        goal = (IndividualGoal) homeIntent.getSerializableExtra("IndividualGoal");
         myCalendar = Calendar.getInstance();
-        setContentView(R.layout.activity_input_new_goal);
+        setContentView(R.layout.activity_edit_goal);
         addButton = (Button) findViewById(R.id.add_and_back);
         //dueDate = (DatePicker) findViewById(R.id.datePicker);
         taskContent = (EditText) findViewById(R.id.taskContent);
+        taskContent.setText(goal.getTitle());
 
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
@@ -68,6 +71,7 @@ public class InputNewGoal extends AppCompatActivity {
 
         //Handle date input
         dateInput = (EditText) findViewById(R.id.datePicker);
+        dateInput.setText(goal.getDueDate());
         dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -92,6 +96,7 @@ public class InputNewGoal extends AppCompatActivity {
 
         //Handle category input
         categoryInput = (EditText)findViewById(R.id.categorySelector);
+        categoryInput.setText(categories[goal.getCategory()]);
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -103,7 +108,7 @@ public class InputNewGoal extends AppCompatActivity {
             }
         });
     }
-
+// get info from putExtra and then setText to
 
     private void pickCategory(){
         /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -116,7 +121,7 @@ public class InputNewGoal extends AppCompatActivity {
             }
         });
         builder.show();*/
-        startActivity(new Intent(InputNewGoal.this, CategoryPopup.class));
+        startActivity(new Intent(EditGoal.this, CategoryPopup.class));
     }
 
 
@@ -165,7 +170,7 @@ public class InputNewGoal extends AppCompatActivity {
 
 
     private void pickDate(){
-        new DatePickerDialog(InputNewGoal.this, date,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        new DatePickerDialog(EditGoal.this, date,myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     /**
