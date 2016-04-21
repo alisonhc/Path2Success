@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 IndividualGoal iG = adapter.getItem(position);
-                CheckedTextView a = (CheckedTextView) ((LinearLayout) view).getChildAt(0);
+                CheckedTextView a = (CheckedTextView) ((RelativeLayout) view).getChildAt(0);
                 if (a.isChecked()) {
                     iG.goalIsUndone();
                     a.setChecked(false);

@@ -111,7 +111,7 @@ public class EditGoal extends AppCompatActivity {
 // get info from putExtra and then setText to
 
     private void pickCategory(){
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a category");
         builder.setItems(categories, new DialogInterface.OnClickListener() {
             @Override
@@ -120,8 +120,8 @@ public class EditGoal extends AppCompatActivity {
                 categoryInput.setText(categories[category]);
             }
         });
-        builder.show();*/
-        startActivity(new Intent(EditGoal.this, CategoryPopup.class));
+        builder.show();
+
     }
 
 
