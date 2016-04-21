@@ -2,7 +2,6 @@ package com.example.tyler.Path2Success;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -18,14 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -35,6 +27,7 @@ public class InputNewGoal extends AppCompatActivity {
     public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";
     public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE3";
+    public final static String POPUP_PICKED = "com.example.tyler.myfirstapp.MESSAGE4";
     //an integer to indicate the category of the goal
     private Integer category;
     //private DatePicker dueDate;
@@ -45,6 +38,7 @@ public class InputNewGoal extends AppCompatActivity {
     private EditText categoryInput;
     private Calendar myCalendar;
     private TextView repeatOptionView;
+    private static final int PICK_CATEGORY_REQUEST = 8;
 
     //Make this an array that is retrieved from internal storage every time.
     private CharSequence categories[] =new CharSequence[]{"Fitness","Academics", "Miscellaneous"};
@@ -106,7 +100,7 @@ public class InputNewGoal extends AppCompatActivity {
 
 
     private void pickCategory(){
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a category");
         builder.setItems(categories, new DialogInterface.OnClickListener() {
             @Override
@@ -115,10 +109,8 @@ public class InputNewGoal extends AppCompatActivity {
                 categoryInput.setText(categories[category]);
             }
         });
-        builder.show();*/
-        startActivity(new Intent(InputNewGoal.this, CategoryPopup.class));
+        builder.show();
     }
-
 
     /**
      * Add a new itme, and bring the information from this activity to the main activity
@@ -126,7 +118,7 @@ public class InputNewGoal extends AppCompatActivity {
      */
     public void addNewItem(View view){
         LocalStorage storage;
-        Intent intent = new Intent();
+        Intent intent = this.getIntent();
         String task = taskContent.getText().toString();
         String date = dateInput.getText().toString();
         intent.putExtra(GOAL_TITLE, task);
