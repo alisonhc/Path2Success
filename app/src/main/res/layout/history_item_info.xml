@@ -4,15 +4,15 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:padding="10px">
+    android:padding="4dp">
     <CheckedTextView
         android:id="@+id/history_taskContent"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20px"
-        android:padding="20px"
+        android:layout_margin="8dp"
+        android:padding="8dp"
         android:background="@drawable/goal_rounded_corner"
-        android:textSize="50px"
+        android:textSize="20dp"
         android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
         android:text="DEFAULT"
         xmlns:android="http://schemas.android.com/apk/res/android"

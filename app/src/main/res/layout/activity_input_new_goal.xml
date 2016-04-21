@@ -25,7 +25,7 @@
     <EditText android:id="@+id/taskContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="60px"
+        android:layout_margin="24dp"
         android:clickable="true"
         android:focusableInTouchMode="true"
         android:maxLength="35"
@@ -37,14 +37,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"
         android:hint="@string/hint_of_time"
-        android:layout_margin="60px" />
+        android:layout_margin="24dp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/categorySelector"
         android:hint="@string/hint_of_category"
-        android:layout_margin="60px"
+        android:layout_margin="24dp"
         android:layout_gravity="center_horizontal"
         />
 
@@ -58,7 +58,7 @@
         android:hint="Save"
         android:layout_gravity="center_horizontal"
         android:onClick="addNewItem"
-        android:layout_marginTop="60px"
+        android:layout_marginTop="24dp"
         />
 
 

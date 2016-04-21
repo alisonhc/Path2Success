@@ -9,10 +9,10 @@
         android:id="@+id/taskContent"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20px"
-        android:padding="20px"
+        android:layout_margin="8dp"
+        android:padding="8dp"
         android:background="@drawable/goal_rounded_corner"
-        android:textSize="50px"
+        android:textSize="20dp"
         android:drawableLeft="?android:attr/listChoiceIndicatorMultiple"
         android:text="DEFAULT"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,6 +27,6 @@
         android:layout_alignBottom="@+id/taskContent"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="25px"
-        android:layout_marginBottom="5px"/>
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="2dp"/>
 </RelativeLayout>

@@ -58,7 +58,7 @@ public class HistoryDataAdapter extends BaseAdapter {
             }
 
             IndividualGoal currentGoalInList=getItem(position);
-            viewHolder.task.setText(currentGoalInList.getDueDate()+"   "+currentGoalInList.getTitle());
+            viewHolder.task.setText(currentGoalInList.getTitle());
 
             return convertView;
 
