@@ -46,7 +46,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private MediaPlayer soundPlayer;
-    private String[] dArray = {"All","Academics", "Fitness", "Misc","History"};
+    private String[] dArray = {"All","Fitness","Academics",  "Misc","History"};
 
 
     /**
