@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:padding="10px">
+    android:padding="4dp">
     <CheckedTextView
         android:id="@+id/taskContent"
         android:layout_width="fill_parent"

@@ -179,7 +179,7 @@ public class InputNewGoal extends AppCompatActivity {
     private void updateLabel() {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        dateInput.setText(sdf.format(myCalendar.getTime()));
+        dateInput.setText(sdf.format(myCalendar.getTime()).substring(0,5));
         putDateIn=true;
 
     }
