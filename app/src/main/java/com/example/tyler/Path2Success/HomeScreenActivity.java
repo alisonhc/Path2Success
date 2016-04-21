@@ -235,8 +235,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             selectItem(position);
         }
     }
-    //TODO however, since there might be more categories, it might be a good idea to use something else then switch.
-    //Right now, it is switch
         private void selectItem(int position){
             //getAll
             if (position==0) {
@@ -276,13 +274,13 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         }
     }
 
+    //TODO I might got the code wrong.
     private void getAllUnfinishedGoalsSaved() {
-        JSONArray temp = storage.getCompletedOrUncompletedGoals(false);
+        JSONArray temp = storage.getCompletedOrUncompletedGoals(false);//This seems to get all the goals whether checked or unchecked.
         goalArrayList.clear();
         for (int i = 0; i < temp.length(); i++) {
             try {
                 JSONObject goalToShow = temp.getJSONObject(i);
-
                 //Code that updates the view
                 String title = goalToShow.getString("title");
                 String date = goalToShow.getString("dueDate");

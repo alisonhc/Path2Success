@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,9 +71,11 @@ public class HistoryStore extends AppCompatActivity {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.history_add_button);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
+            //TODO BUG the logic of the startAcitivity is a problem!
             public void onClick(View view) {
                 Intent intent = new Intent(HistoryStore.this, InputNewGoal.class);
-                startActivityForResult(intent, HomeScreenActivity.RESULT_CODE_ADD);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -24,8 +25,10 @@ public class GoalDataAdapter extends BaseAdapter{
 
     private class ViewHolder{
         CheckedTextView task;
+        TextView date;
         public ViewHolder(View item){
             task = (CheckedTextView)item.findViewById(R.id.taskContent);
+            date = (TextView)item.findViewById(R.id.taskDate);
         }
     }
 
@@ -58,7 +61,8 @@ public class GoalDataAdapter extends BaseAdapter{
         }
 
         IndividualGoal currentGoalInList=getItem(position);
-        viewHolder.task.setText(currentGoalInList.getDueDate()+"   "+currentGoalInList.getTitle());
+        viewHolder.task.setText(currentGoalInList.getTitle());
+        viewHolder.date.setText(currentGoalInList.getDueDate());
 
         return convertView;
 

@@ -28,6 +28,7 @@
         android:layout_margin="60px"
         android:clickable="true"
         android:focusableInTouchMode="true"
+        android:maxLength="35"
         android:hint="@string/hint_to_add" />
 
 
