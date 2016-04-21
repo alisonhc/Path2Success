@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 
@@ -42,6 +43,10 @@ public class InputNewGoal extends AppCompatActivity {
 
     //Make this an array that is retrieved from internal storage every time.
     private CharSequence categories[] =new CharSequence[]{"Fitness","Academics", "Miscellaneous"};
+
+    private boolean putTitelIn = false;
+    private boolean putDateIn = false;
+    private boolean putCategoryIn = false;
 
 
 
@@ -107,6 +112,7 @@ public class InputNewGoal extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 category = which;
                 categoryInput.setText(categories[category]);
+                putCategoryIn = true;
             }
         });
         builder.show();
@@ -118,14 +124,21 @@ public class InputNewGoal extends AppCompatActivity {
      */
     public void addNewItem(View view){
         LocalStorage storage;
-        Intent intent = this.getIntent();
-        String task = taskContent.getText().toString();
-        String date = dateInput.getText().toString();
-        intent.putExtra(GOAL_TITLE, task);
-        intent.putExtra(DUE_DATE, date);
-        intent.putExtra(GOAL_CATEGORY, category);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
+        putTitelIn=(taskContent.getText().toString().trim().length()>0);
+
+        if(putTitelIn&&putDateIn&&putCategoryIn){
+            Intent intent = this.getIntent();
+            String task = taskContent.getText().toString();
+            String date = dateInput.getText().toString();
+            intent.putExtra(GOAL_TITLE, task);
+            intent.putExtra(DUE_DATE, date);
+            intent.putExtra(GOAL_CATEGORY, category);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
+        else{
+            Toast.makeText(InputNewGoal.this, "Cannot save an empty goal", Toast.LENGTH_SHORT).show();
+        }
         //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
@@ -167,6 +180,7 @@ public class InputNewGoal extends AppCompatActivity {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateInput.setText(sdf.format(myCalendar.getTime()));
+        putDateIn=true;
 
     }
 
