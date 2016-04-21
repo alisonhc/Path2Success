@@ -1,15 +1,14 @@
 package com.example.tyler.Path2Success;
 
 import android.animation.LayoutTransition;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import java.io.Serializable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -18,15 +17,16 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class HomeScreenActivity extends AppCompatActivity {
+public class HomeScreenActivity extends AppCompatActivity implements Serializable {
     private static final String DEBUGTAG = HomeScreenActivity.class.getSimpleName();
     private ListView listLayout;
     private LocalStorage storage;
@@ -34,7 +34,8 @@ public class HomeScreenActivity extends AppCompatActivity {
   //  private EditText dueDate;
     private Button addButton;
     private LayoutTransition mTransition;
-    public static final int RESULT_CODE = 9;
+    public static final int RESULT_CODE_ADD = 9;
+    public static final int RESULT_CODE_EDIT = 12;
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
     private GoalDataAdapter adapter;
     private JSONArray goalList;
@@ -78,6 +79,17 @@ public class HomeScreenActivity extends AppCompatActivity {
         goalList = new JSONArray();
         listLayout.setItemsCanFocus(false);
         listLayout.setChoiceMode(listLayout.CHOICE_MODE_MULTIPLE);
+        listLayout.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // or i could have changed to java.lang.object instead. which is better? idk you tell me
+                Object g = parent.getAdapter().getItem(position);
+                goToEditScreen(view, g);
+                return true;
+            }
+
+
+        });
         listLayout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -152,10 +164,16 @@ public class HomeScreenActivity extends AppCompatActivity {
         goalDrawer.setAdapter(drawerAdapter);
     }
 
+    public void goToEditScreen(View view, Object g) {
+        Intent intent = new Intent(this, EditGoal.class);
+        intent.putExtra("IndividualGoal", (Serializable) g); // or could be serializable
+        startActivityForResult(intent, RESULT_CODE_EDIT);
+    }
+
     /** Called when the user clicks the plus button */
     public void goToInputScreen(View view) {
         Intent intent = new Intent(this, InputNewGoal.class);
-        startActivityForResult(intent, RESULT_CODE);
+        startActivityForResult(intent, RESULT_CODE_ADD);
     }
 
     /**
@@ -169,7 +187,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Check which request we're responding to
-        if (requestCode == RESULT_CODE) {
+        if (requestCode == RESULT_CODE_ADD) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
 
@@ -178,6 +196,20 @@ public class HomeScreenActivity extends AppCompatActivity {
                 Integer tCategory=data.getIntExtra((InputNewGoal.GOAL_CATEGORY),0);
                 if(!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate,tCategory);
+                    goalArrayList.add(newGoal);
+                    storage.saveGoalLocally(newGoal);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        }
+
+        else if (requestCode == RESULT_CODE_EDIT) {
+            if (resultCode == RESULT_OK) {
+                String tContent = data.getStringExtra(EditGoal.GOAL_TITLE);
+                String tDate = data.getStringExtra((EditGoal.DUE_DATE));
+                Integer tCategory=data.getIntExtra((EditGoal.GOAL_CATEGORY),0);
+                if(!tContent.isEmpty()) {
+                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
                     goalArrayList.add(newGoal);
                     storage.saveGoalLocally(newGoal);
                     adapter.notifyDataSetChanged();
