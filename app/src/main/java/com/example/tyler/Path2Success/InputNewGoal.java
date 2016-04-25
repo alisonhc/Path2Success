@@ -28,7 +28,6 @@ public class InputNewGoal extends AppCompatActivity {
     public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";
     public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE3";
-    public final static String POPUP_PICKED = "com.example.tyler.myfirstapp.MESSAGE4";
     //an integer to indicate the category of the goal
     private Integer category;
     //private DatePicker dueDate;

@@ -131,7 +131,7 @@ public class EditGoal extends AppCompatActivity {
      */
     public void addNewItem(View view){
         LocalStorage storage;
-        Intent intent = new Intent();
+        Intent intent = getIntent();
         String task = taskContent.getText().toString();
         String date = dateInput.getText().toString();
         intent.putExtra(GOAL_TITLE, task);
