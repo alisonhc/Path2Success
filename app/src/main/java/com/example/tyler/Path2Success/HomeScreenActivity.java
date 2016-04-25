@@ -2,6 +2,7 @@ package com.example.tyler.Path2Success;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import java.io.Serializable;
@@ -15,11 +16,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,6 +47,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     public static final int RESULT_CODE_EDIT = 12;
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
     private GoalDataAdapter adapter;
+    private Toolbar homeToolBar;
     private JSONArray goalList;
     private JSONObject goalToChange;
     private JSONArray goalsToShow;
@@ -52,6 +59,8 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private String[] dArray = {"All","Fitness","Academics",  "Misc","History"};
     private int currentCategory = -1;
     private int editGoalPosition = -1;
+    public final static String FIRST_RUN = "com.example.tyler.myfirstapp.MESSAGE4";
+    SharedPreferences prefs = null;
 
 
     /**
@@ -66,9 +75,15 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
 
         soundPlayer = MediaPlayer.create(this,R.raw.cheer);
+        int maxVolume = 50;
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.homescreen_toolbar);
-        setSupportActionBar(myToolbar);
+        float log1=(float)(Math.log(maxVolume-20)/Math.log(maxVolume));
+        soundPlayer.setVolume(1-log1,1-log1);
+
+        prefs = getSharedPreferences(FIRST_RUN,MODE_PRIVATE);
+
+        homeToolBar = (Toolbar) findViewById(R.id.homescreen_toolbar);
+        setSupportActionBar(homeToolBar);
         setTitle("Path 2 Success");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -331,4 +346,38 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
     }
+
+
+    //TODO This is the code for first-time tutorial.
+
+//    @Override
+//    protected void onResume(){
+//        super.onResume();
+//
+//        if(prefs.getBoolean("firstrun",true)){
+//            Toast.makeText(HomeScreenActivity.this, "First run!", Toast.LENGTH_SHORT).show();
+//
+//            View addTargetView = null;
+//            for(int i=0; i<homeToolBar.getChildCount();i++){
+//                View child = homeToolBar.getChildAt(i);
+//                if (ImageButton.class.isInstance(child)){
+//                    addTargetView=child;
+//                    break;
+//                }
+//                if (addTargetView==null){
+//                    addTargetView = homeToolBar;
+//                }
+//            }
+//
+//            ViewTarget addTarget = new ViewTarget(addTargetView);
+//
+//            new ShowcaseView.Builder(this)
+//                    .setTarget(addTarget)
+//                    .setContentTitle("ShowcaseView")
+//                    .setContentText("This is the hilighting the home button")
+//                    .hideOnTouchOutside()
+//                    .build();
+//            prefs.edit().putBoolean("firstrun",false).commit();
+//        }
+//    }
 }
