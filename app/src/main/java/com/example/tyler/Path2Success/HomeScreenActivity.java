@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 if (a.isChecked()) {
                     iG.goalIsUndone();
                     a.setChecked(false);
-//                    Toast.makeText(HomeScreenActivity.this, "unchecked: " + iG.getTitle() + " " + iG.getCategory(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeScreenActivity.this, "Goal unchecked.", Toast.LENGTH_SHORT).show();
                     storage.setCompleted(iG, false);
 
                 } else {
