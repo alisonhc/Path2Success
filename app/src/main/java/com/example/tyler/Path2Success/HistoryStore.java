@@ -32,6 +32,7 @@ public class HistoryStore extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        int shownGoalLimit = 50;
         storage = new LocalStorage(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_store);
@@ -44,7 +45,9 @@ public class HistoryStore extends AppCompatActivity {
 
         completedGoals = storage.getCompletedOrUncompletedGoals(true);
 
-        for (int i = 0; i < completedGoals.length(); i++) {
+//        if (completedGoals.length() <= shownGoalLimit) {
+        for (int i = 0; i < shownGoalLimit; i++) {
+//        for (int i = 0; i < completedGoals.length(); i++) {
             try {
                 JSONObject goalToShow = completedGoals.getJSONObject(i);
 
@@ -60,6 +63,7 @@ public class HistoryStore extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+//        }
 
         historyList = (ListView) findViewById(R.id.historyscreen_listview);
         adapter = new HistoryDataAdapter(this,goalArrayList);
