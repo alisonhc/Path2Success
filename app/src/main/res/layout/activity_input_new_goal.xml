@@ -28,6 +28,7 @@
         android:layout_margin="24dp"
         android:clickable="true"
         android:focusableInTouchMode="true"
+        android:textSize="16sp"
         android:singleLine="true"
         android:maxLength="35"
         android:hint="@string/hint_to_add" />
@@ -37,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/datePicker"
+        android:textSize="16sp"
         android:hint="@string/hint_of_time"
         android:layout_margin="24dp" />
 
@@ -46,6 +48,7 @@
         android:id="@+id/categorySelector"
         android:hint="@string/hint_of_category"
         android:layout_margin="24dp"
+        android:textSize="16sp"
         android:layout_gravity="center_horizontal"
         />
 
