@@ -18,7 +18,6 @@ import android.widget.CheckedTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private MediaPlayer soundPlayer;
     private String[] dArray = {"All","Fitness","Academics",  "Misc","History"};
     private int currentCategory = -1;
-    private int positionOfView=-1;
+
 
     /**
      *
@@ -86,7 +85,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // or i could have changed to java.lang.object instead. which is better? idk you tell me
                 Object g = parent.getAdapter().getItem(position);
-                goToEditScreen(view, g, position);
+                goToEditScreen(view, g);
                 return true;
             }
 
@@ -166,12 +165,10 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         goalDrawer.setAdapter(drawerAdapter);
     }
 
-    public void goToEditScreen(View view, Object g, int pos) {
+    public void goToEditScreen(View view, Object g) {
         Intent intent = new Intent(this, EditGoal.class);
-
         intent.putExtra("IndividualGoal", (Serializable) g); // or could be serializable
         startActivityForResult(intent, RESULT_CODE_EDIT);
-        positionOfView = pos;
     }
 
     /** Called when the user clicks the plus button */
@@ -200,7 +197,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 Integer tCategory = data.getIntExtra((InputNewGoal.GOAL_CATEGORY), 0);
                 if (!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
-                    storage.saveGoalLocally(newGoal);
+                    storage.saveNewGoal(newGoal);
                     if (currentCategory ==-1){
                         goalArrayList.add(newGoal);
                         adapter.notifyDataSetChanged();
@@ -217,17 +214,12 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             if (resultCode == RESULT_OK) {
                 String tContent = data.getStringExtra(EditGoal.GOAL_TITLE);
                 String tDate = data.getStringExtra((EditGoal.DUE_DATE));
-                Integer tCategory=data.getIntExtra((EditGoal.GOAL_CATEGORY),0);//This is the edited category of the goal.
+                Integer tCategory=data.getIntExtra((EditGoal.GOAL_CATEGORY),0);
                 if(!tContent.isEmpty()) {
-                    View viewToEdit = listLayout.getChildAt(positionOfView);
-                    CheckedTextView goalTitleView = (CheckedTextView) viewToEdit.findViewById(R.id.taskContent);
-                    goalTitleView.setText(tContent);
-                    TextView goalDateView = (TextView) viewToEdit.findViewById(R.id.taskDate);
-                    goalDateView.setText(tDate);
-     //               IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
-            //        goalArrayList.add(newGoal);
-           //         storage.saveGoalLocally(newGoal);
-              //      adapter.notifyDataSetChanged();
+                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
+                    goalArrayList.add(newGoal);
+                    storage.saveNewGoal(newGoal);
+                    adapter.notifyDataSetChanged();
                 }
             }
         }

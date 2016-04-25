@@ -93,7 +93,7 @@ public class LocalStorage {
         return completedOrUncompletedGoals;
     }
 
-    public void saveGoalLocally(IndividualGoal goalToAdd) {
+    public void saveNewGoal(IndividualGoal goalToAdd) {
         try {
             String title = goalToAdd.getTitle();
             String dueDate = goalToAdd.getDueDate();
@@ -123,19 +123,21 @@ public class LocalStorage {
 
             //The goals JSON Object must be converted to a string before being
             // written to local storage
-            String convertedGoals = allGoals.toString();
+//            String convertedGoals = allGoals.toString();
+//
+//            FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+//            fos.write(convertedGoals.getBytes());
+//            fos.close();
 
-            FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            fos.write(convertedGoals.getBytes());
-            fos.close();
+            writeAllGoalsLocally(allGoals);
         }
 
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
+//        catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
         catch (JSONException e) {
             e.printStackTrace();
         }
@@ -145,19 +147,10 @@ public class LocalStorage {
     //this method is difficult, should probably work on new method of storage (uniqueID for each goal, a single JSON object, etc.)
     public void setCompleted(IndividualGoal goal, Boolean value) {
 
-        Log.d(DEBUGTAG, "Working!!");
+//        Log.d(DEBUGTAG, "Working!!");
 
         try {
 
-//            FileInputStream fis = appContext.openFileInput(FILENAME);
-//            BufferedInputStream bis = new BufferedInputStream(fis);
-//            StringBuffer b = new StringBuffer();
-//            while (bis.available() != 0) {
-//                char c = (char) bis.read();
-//                b.append(c);
-//            }
-//            bis.close();
-//            fis.close();
             JSONObject allGoals = getAllGoals();
             //goalToChange = goalList.getJSONObject(position);
             //instead, here we will get the JSON object that corresponds to the unique ID provided from the Individual Goal class
@@ -178,6 +171,32 @@ public class LocalStorage {
         catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateGoal(String previousGoalID, IndividualGoal newGoal) {
+        JSONObject goals = getAllGoals();
+        goals.remove(previousGoalID);
+
+        writeAllGoalsLocally(goals);
+
+        //before this, all goals need to be updated
+        saveNewGoal(newGoal);
+    }
+
+    public void writeAllGoalsLocally(JSONObject allGoals) {
+        String convertedGoals = allGoals.toString();
+
+        try {
+            FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            fos.write(convertedGoals.getBytes());
+            fos.close();
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

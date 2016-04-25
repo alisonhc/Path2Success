@@ -130,10 +130,16 @@ public class EditGoal extends AppCompatActivity {
      * @param view
      */
     public void addNewItem(View view){
-        LocalStorage storage;
-        Intent intent = getIntent();
+        LocalStorage storage = new LocalStorage(this.getApplicationContext());
+        Intent intent = new Intent();
         String task = taskContent.getText().toString();
         String date = dateInput.getText().toString();
+
+        String id = goal.getRandomID();
+        goal.setTitle(task);
+        goal.setDueDate(date);
+        goal.setCategory(category);
+        storage.updateGoal(id, goal);
         intent.putExtra(GOAL_TITLE, task);
         intent.putExtra(DUE_DATE, date);
         intent.putExtra(GOAL_CATEGORY, category);
