@@ -17,23 +17,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ActionViewTarget;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class HomeScreenActivity extends AppCompatActivity implements Serializable {
     private static final String DEBUGTAG = HomeScreenActivity.class.getSimpleName();
@@ -56,7 +52,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private MediaPlayer soundPlayer;
-    private String[] dArray = {"All","Fitness","Academics",  "Misc","History"};
+    private String[] CATEGORY_ARRAY = {"All","Fitness","Academics",  "Misc","History"};
     private int currentCategory = -1;
     private int editGoalPosition = -1;
     public final static String FIRST_RUN = "com.example.tyler.myfirstapp.MESSAGE4";
@@ -77,7 +73,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         soundPlayer = MediaPlayer.create(this,R.raw.cheer);
         int maxVolume = 50;
 
-        float log1=(float)(Math.log(maxVolume-20)/Math.log(maxVolume));
+        float log1=(float)(Math.log(maxVolume-10)/Math.log(maxVolume));
         soundPlayer.setVolume(1-log1,1-log1);
 
         prefs = getSharedPreferences(FIRST_RUN,MODE_PRIVATE);
@@ -180,7 +176,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
      * Sets up and initializes an adapter for the drawer
      */
     private void addDrawerItems(){
-        drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, dArray);
+        drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, CATEGORY_ARRAY);
         goalDrawer.setAdapter(drawerAdapter);
     }
 
@@ -218,6 +214,17 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 if (!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
                     storage.saveNewGoal(newGoal);
+                    int i = listLayout.getChildCount();
+                    Toast.makeText(HomeScreenActivity.this, "First input!"+i, Toast.LENGTH_SHORT).show();
+                    editTut();
+                    if(listLayout.getChildCount()!=0
+                            &&prefs.getBoolean("firstinput",true)) {
+                        Toast.makeText(HomeScreenActivity.this, "First input!"+i, Toast.LENGTH_SHORT).show();
+                        editTut();
+                        prefs.edit().putBoolean("firstinput", false).commit();
+
+                    }
+
                     if (currentCategory ==-1){
                         goalArrayList.add(newGoal);
                         adapter.notifyDataSetChanged();
@@ -230,6 +237,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             }
         }
 
+        //TODO this is where the goal content and the date will change when it is edited.
         else if (requestCode == RESULT_CODE_EDIT) {
             if (resultCode == RESULT_OK) {
                 String tContent = data.getStringExtra(EditGoal.GOAL_TITLE);
@@ -272,11 +280,12 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             //getAll
             if (position==0) {
                 getAllUnfinishedGoalsSaved();
+                homeToolBar.setTitle("Path 2 Success");
                 drawerLayout.closeDrawers();
                 currentCategory = -1;
             }
             //HistoryPage
-            else if(position==dArray.length-1){
+            else if(position== CATEGORY_ARRAY.length-1){
                 Intent a = new Intent(HomeScreenActivity.this, HistoryStore.class);
                 startActivity(a);
             }
@@ -284,6 +293,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             else{
                 Integer categoryIndex=position-1;
                 filterGoal(categoryIndex);
+                homeToolBar.setTitle(CATEGORY_ARRAY[categoryIndex+1]);
                 drawerLayout.closeDrawers();
                 currentCategory = categoryIndex;
             }
@@ -333,14 +343,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         }
     }
 
-    private void setArrayList(ArrayList<IndividualGoal> ha) {
-        for (int i = 0; i <= 5; i++) {
-            ha.add(new IndividualGoal("haha", "haha", 0));
-            ha.add(new IndividualGoal("bo", "haha", 0));
-            ha.add(new IndividualGoal("no", "haha", 0));
-        }
-    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
@@ -348,36 +350,53 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     }
 
 
-    //TODO This is the code for first-time tutorial.
+    // This is the code for first-time tutorial.
 
-//    @Override
-//    protected void onResume(){
-//        super.onResume();
-//
-//        if(prefs.getBoolean("firstrun",true)){
-//            Toast.makeText(HomeScreenActivity.this, "First run!", Toast.LENGTH_SHORT).show();
-//
-//            View addTargetView = null;
-//            for(int i=0; i<homeToolBar.getChildCount();i++){
-//                View child = homeToolBar.getChildAt(i);
-//                if (ImageButton.class.isInstance(child)){
-//                    addTargetView=child;
-//                    break;
-//                }
-//                if (addTargetView==null){
-//                    addTargetView = homeToolBar;
-//                }
-//            }
-//
-//            ViewTarget addTarget = new ViewTarget(addTargetView);
-//
-//            new ShowcaseView.Builder(this)
-//                    .setTarget(addTarget)
-//                    .setContentTitle("ShowcaseView")
-//                    .setContentText("This is the hilighting the home button")
-//                    .hideOnTouchOutside()
-//                    .build();
-//            prefs.edit().putBoolean("firstrun",false).commit();
-//        }
-//    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        if(prefs.getBoolean("firstrun",true)){
+           // Toast.makeText(HomeScreenActivity.this, "First run!", Toast.LENGTH_SHORT).show();
+
+            navTut();
+            prefs.edit().putBoolean("firstrun",false).commit();
+        }
+    }
+
+    private void editTut(){
+        View editTargetView = listLayout.getChildAt(0).findViewById(R.id.taskContent);
+        ViewTarget editTarget = new ViewTarget(editTargetView);
+        new ShowcaseView.Builder(this)
+                .setTarget(editTarget)
+                .setContentTitle("Edit")
+                .setContentText("You can edit your goal by clicking and holding one!")
+                .hideOnTouchOutside()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .build();
+    }
+
+    private void navTut(){
+        View addTargetView = null;
+        for(int i=0; i<homeToolBar.getChildCount();i++){
+            View child = homeToolBar.getChildAt(i);
+            if (ImageButton.class.isInstance(child)){
+                addTargetView=child;
+                break;
+            }
+            if (addTargetView==null){
+                addTargetView = homeToolBar;
+            }
+        }
+
+        ViewTarget addTarget = new ViewTarget(addTargetView);
+
+        new ShowcaseView.Builder(this)
+                .setTarget(addTarget)
+                .setContentTitle("Menu")
+                .setContentText("You can filter your goal and access your history.")
+                .hideOnTouchOutside()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .build();
+    }
 }
