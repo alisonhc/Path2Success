@@ -47,6 +47,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private DrawerLayout drawerLayout;
     private MediaPlayer soundPlayer;
     private String[] dArray = {"All","Fitness","Academics",  "Misc","History"};
+    private int currentCategory = 0;
 
 
     /**
@@ -193,12 +194,14 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
 
                 String tContent = data.getStringExtra(InputNewGoal.GOAL_TITLE);
                 String tDate = data.getStringExtra((InputNewGoal.DUE_DATE));
-                Integer tCategory=data.getIntExtra((InputNewGoal.GOAL_CATEGORY),0);
-                if(!tContent.isEmpty()) {
-                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate,tCategory);
-                    goalArrayList.add(newGoal);
+                Integer tCategory = data.getIntExtra((InputNewGoal.GOAL_CATEGORY), 0);
+                if (!tContent.isEmpty()) {
+                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
                     storage.saveGoalLocally(newGoal);
-                    adapter.notifyDataSetChanged();
+                    if (newGoal.getCategory() == currentCategory) {
+                        goalArrayList.add(newGoal);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
         }
@@ -240,6 +243,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             //getAll
             if (position==0) {
                 getAllUnfinishedGoalsSaved();
+                drawerLayout.closeDrawers();
             }
             //HistoryPage
             else if(position==dArray.length-1){
@@ -250,6 +254,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             else{
                 Integer categoryIndex=position-1;
                 filterGoal(categoryIndex);
+                drawerLayout.closeDrawers();
             }
         }
 
@@ -269,6 +274,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                     goalArrayList.add(newGoal);
                 }
                 adapter.notifyDataSetChanged();
+                currentCategory = catIndex;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
