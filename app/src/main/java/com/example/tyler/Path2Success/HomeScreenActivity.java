@@ -216,7 +216,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                     storage.saveNewGoal(newGoal);
                     int i = listLayout.getChildCount();
                     Toast.makeText(HomeScreenActivity.this, "First input!"+i, Toast.LENGTH_SHORT).show();
-                    editTut();
                     if(listLayout.getChildCount()!=0
                             &&prefs.getBoolean("firstinput",true)) {
                         Toast.makeText(HomeScreenActivity.this, "First input!"+i, Toast.LENGTH_SHORT).show();
