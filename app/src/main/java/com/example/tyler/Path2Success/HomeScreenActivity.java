@@ -47,6 +47,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private DrawerLayout drawerLayout;
     private MediaPlayer soundPlayer;
     private String[] dArray = {"All","Fitness","Academics",  "Misc","History"};
+    private int currentCategory = -1;
 
 
     /**
@@ -197,7 +198,14 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 if (!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
                     storage.saveGoalLocally(newGoal);
-                    listLayout.invalidateViews();
+                    if (currentCategory ==-1){
+                        goalArrayList.add(newGoal);
+                        adapter.notifyDataSetChanged();
+                    }
+                    else if (newGoal.getCategory() == currentCategory) {
+                        goalArrayList.add(newGoal);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
         }
@@ -209,10 +217,9 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 Integer tCategory=data.getIntExtra((EditGoal.GOAL_CATEGORY),0);
                 if(!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
-                    //goalArrayList.add(newGoal);
+                    goalArrayList.add(newGoal);
                     storage.saveGoalLocally(newGoal);
-                    listLayout.invalidateViews();
-                   // adapter.notifyDataSetChanged();
+                    adapter.notifyDataSetChanged();
                 }
             }
         }
@@ -241,6 +248,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             if (position==0) {
                 getAllUnfinishedGoalsSaved();
                 drawerLayout.closeDrawers();
+                currentCategory = -1;
             }
             //HistoryPage
             else if(position==dArray.length-1){
@@ -252,6 +260,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 Integer categoryIndex=position-1;
                 filterGoal(categoryIndex);
                 drawerLayout.closeDrawers();
+                currentCategory = categoryIndex;
             }
         }
 
@@ -271,6 +280,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                     goalArrayList.add(newGoal);
                 }
                 adapter.notifyDataSetChanged();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
