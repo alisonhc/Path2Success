@@ -197,7 +197,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 Integer tCategory = data.getIntExtra((InputNewGoal.GOAL_CATEGORY), 0);
                 if (!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
-                    storage.saveGoalLocally(newGoal);
+                    storage.saveNewGoal(newGoal);
                     if (currentCategory ==-1){
                         goalArrayList.add(newGoal);
                         adapter.notifyDataSetChanged();
@@ -218,7 +218,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 if(!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
                     goalArrayList.add(newGoal);
-                    storage.saveGoalLocally(newGoal);
+                    storage.saveNewGoal(newGoal);
                     adapter.notifyDataSetChanged();
                 }
             }
