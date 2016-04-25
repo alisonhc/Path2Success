@@ -66,7 +66,7 @@ public class EditGoal extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
         setSupportActionBar(myToolbar);
-        setTitle("Start a new goal");
+        setTitle("Edit goal");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Handle date input

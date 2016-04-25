@@ -47,7 +47,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private DrawerLayout drawerLayout;
     private MediaPlayer soundPlayer;
     private String[] dArray = {"All","Fitness","Academics",  "Misc","History"};
-    private int currentCategory = 0;
 
 
     /**
@@ -198,10 +197,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 if (!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
                     storage.saveGoalLocally(newGoal);
-                    if (newGoal.getCategory() == currentCategory) {
-                        goalArrayList.add(newGoal);
-                        adapter.notifyDataSetChanged();
-                    }
+                    listLayout.invalidateViews();
                 }
             }
         }
@@ -213,9 +209,10 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 Integer tCategory=data.getIntExtra((EditGoal.GOAL_CATEGORY),0);
                 if(!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
-                    goalArrayList.add(newGoal);
+                    //goalArrayList.add(newGoal);
                     storage.saveGoalLocally(newGoal);
-                    adapter.notifyDataSetChanged();
+                    listLayout.invalidateViews();
+                   // adapter.notifyDataSetChanged();
                 }
             }
         }
@@ -274,7 +271,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                     goalArrayList.add(newGoal);
                 }
                 adapter.notifyDataSetChanged();
-                currentCategory = catIndex;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
