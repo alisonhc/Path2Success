@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@android:color/black"
+    android:textSize="15sp"
+    android:paddingLeft="25dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:text="DEFAULT"
+    android:id="@+id/category_item"
+    android:layout_margin="30sp" />
+<!--<RelativeLayout-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:clickable="true">-->
+    <!--<ViewSwitcher-->
+        <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/view_switcher"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/switcher_text"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:clickable="true"-->
+            <!--android:text="DEFAULT"-->
+            <!--android:textSize="15sp"-->
+            <!--android:paddingLeft="25dp"-->
+            <!--android:paddingTop="20dp"-->
+            <!--android:paddingBottom="20dp"-->
+            <!--android:layout_margin="30sp"/>-->
+
+<!--<EditText-->
+    <!--xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/category_edittext"-->
+    <!--android:singleLine="true"-->
+    <!--android:clickable="false"-->
+    <!--android:cursorVisible="false"-->
+    <!--android:focusable="false"-->
+    <!--android:focusableInTouchMode="false"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:hint="Input your own here"-->
+    <!--android:paddingLeft="25dp"-->
+    <!--android:paddingTop="20dp"-->
+    <!--android:paddingBottom="20dp"-->
+    <!--android:layout_margin="30sp">-->
+<!--</EditText>-->
+    <!--</ViewSwitcher>-->
+<!--</RelativeLayout>-->

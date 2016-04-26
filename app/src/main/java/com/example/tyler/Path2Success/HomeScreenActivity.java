@@ -6,12 +6,15 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import java.io.Serializable;
+
+import android.support.v4.view.ViewGroupCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +29,10 @@ import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -52,11 +59,14 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private MediaPlayer soundPlayer;
-    private String[] CATEGORY_ARRAY = {"All","Fitness","Academics",  "Misc","History"};
+    //private String[] CATEGORY_ARRAY = {"All","Fitness","Academics",  "Misc","History"};
+    private ArrayList<String> catsArray;
     private int currentCategory = -1;
     private int editGoalPosition = -1;
     public final static String FIRST_RUN = "com.example.tyler.myfirstapp.MESSAGE4";
-    SharedPreferences prefs = null;
+    public final static String CAT_STORE = "com.example.tyler.myfirstapp.MESSAGE5";
+    SharedPreferences runner_record = null;
+    SharedPreferences cat_record = null;
 
 
     /**
@@ -76,7 +86,11 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         float log1=(float)(Math.log(maxVolume-10)/Math.log(maxVolume));
         soundPlayer.setVolume(1-log1,1-log1);
 
-        prefs = getSharedPreferences(FIRST_RUN,MODE_PRIVATE);
+        runner_record = getSharedPreferences(FIRST_RUN,MODE_PRIVATE);
+        cat_record = getSharedPreferences(CAT_STORE,MODE_PRIVATE);
+
+
+        initializeCats();
 
         homeToolBar = (Toolbar) findViewById(R.id.homescreen_toolbar);
         setSupportActionBar(homeToolBar);
@@ -121,7 +135,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                     soundPlayer.start();
                     iG.goalIsDone();
                     a.setChecked(true);
-//                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
                     storage.setCompleted(iG, true);
                 }
             }
@@ -147,6 +160,29 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 e.printStackTrace();
             }
         }
+    }
+
+    private void initializeCats() {
+        SharedPreferences.Editor editor = cat_record.edit();
+        int cats_size = cat_record.getInt("cats_size", 0);
+        catsArray = new ArrayList<>(cats_size);
+        if (cats_size == 0) {
+            editor.putString("cat_" + 0, "Fitness");
+            catsArray.add("Fitness");
+            editor.putString("cat_" + 1, "Academic");
+            catsArray.add("Academic");
+            editor.putString("cat_" + 2, "Miscellaneous");
+            catsArray.add("Miscellaneous");
+            editor.putInt("cats_size", 3);
+            editor.commit();
+        }
+        else {
+            for (int i = 0; i < cats_size; i++) {
+                catsArray.add(cat_record.getString("cat_" + i, "Loading error"));
+               }
+        }
+        catsArray.add(0, "All");
+        catsArray.add("History");
     }
 
     /**
@@ -176,7 +212,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
      * Sets up and initializes an adapter for the drawer
      */
     private void addDrawerItems(){
-        drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, CATEGORY_ARRAY);
+        drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, catsArray);
         goalDrawer.setAdapter(drawerAdapter);
     }
 
@@ -211,17 +247,19 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 String tContent = data.getStringExtra(InputNewGoal.GOAL_TITLE);
                 String tDate = data.getStringExtra((InputNewGoal.DUE_DATE));
                 Integer tCategory = data.getIntExtra((InputNewGoal.GOAL_CATEGORY), 0);
+                String newCat = data.getStringExtra(InputNewGoal.NEW_CAT);
+                if(newCat.length()!=0){
+                    catsArray.add(catsArray.size()-1,newCat);
+                    drawerAdapter.notifyDataSetChanged();
+                }
                 if (!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
                     storage.saveNewGoal(newGoal);
                     int i = listLayout.getChildCount();
-                    Toast.makeText(HomeScreenActivity.this, "First input!"+i, Toast.LENGTH_SHORT).show();
                     if(listLayout.getChildCount()!=0
-                            &&prefs.getBoolean("firstinput",true)) {
-                        Toast.makeText(HomeScreenActivity.this, "First input!"+i, Toast.LENGTH_SHORT).show();
+                            && runner_record.getBoolean("firstinput",true)) {
                         editTut();
-                        prefs.edit().putBoolean("firstinput", false).commit();
-
+                        runner_record.edit().putBoolean("firstinput", false).commit();
                     }
 
                     if (currentCategory ==-1){
@@ -284,7 +322,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 currentCategory = -1;
             }
             //HistoryPage
-            else if(position== CATEGORY_ARRAY.length-1){
+            else if(position== catsArray.size()-1){
                 Intent a = new Intent(HomeScreenActivity.this, HistoryStore.class);
                 startActivity(a);
             }
@@ -292,7 +330,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             else{
                 Integer categoryIndex=position-1;
                 filterGoal(categoryIndex);
-                homeToolBar.setTitle(CATEGORY_ARRAY[categoryIndex+1]);
+                homeToolBar.setTitle(catsArray.get(categoryIndex+1));
                 drawerLayout.closeDrawers();
                 currentCategory = categoryIndex;
             }
@@ -355,11 +393,11 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     protected void onResume(){
         super.onResume();
 
-        if(prefs.getBoolean("firstrun",true)){
+        if(runner_record.getBoolean("firstrun",true)){
            // Toast.makeText(HomeScreenActivity.this, "First run!", Toast.LENGTH_SHORT).show();
 
             navTut();
-            prefs.edit().putBoolean("firstrun",false).commit();
+            runner_record.edit().putBoolean("firstrun",false).commit();
         }
     }
 
