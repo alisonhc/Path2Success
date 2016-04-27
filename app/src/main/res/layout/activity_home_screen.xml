@@ -56,7 +56,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_gravity="left|start"
-        android:background="#99000000"
+        android:background="#80000000"
         >
     </ListView>
 </android.support.v4.widget.DrawerLayout>

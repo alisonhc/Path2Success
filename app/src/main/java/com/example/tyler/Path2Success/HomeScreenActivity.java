@@ -2,32 +2,41 @@ package com.example.tyler.Path2Success;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import java.io.Serializable;
+
+import android.support.v4.view.ViewGroupCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 public class HomeScreenActivity extends AppCompatActivity implements Serializable {
     private static final String DEBUGTAG = HomeScreenActivity.class.getSimpleName();
@@ -41,6 +50,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     public static final int RESULT_CODE_EDIT = 12;
     private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
     private GoalDataAdapter adapter;
+    private Toolbar homeToolBar;
     private JSONArray goalList;
     private JSONObject goalToChange;
     private JSONArray goalsToShow;
@@ -49,9 +59,14 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
     private MediaPlayer soundPlayer;
-    private String[] dArray = {"All","Fitness","Academics",  "Misc","History"};
+    //private String[] CATEGORY_ARRAY = {"All","Fitness","Academics",  "Misc","History"};
+    private ArrayList<String> catsArray;
     private int currentCategory = -1;
     private int editGoalPosition = -1;
+    public final static String FIRST_RUN = "com.example.tyler.myfirstapp.MESSAGE4";
+    public final static String CAT_STORE = "com.example.tyler.myfirstapp.MESSAGE5";
+    SharedPreferences runner_record = null;
+    SharedPreferences cat_record = null;
 
 
     /**
@@ -66,9 +81,19 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
 
         soundPlayer = MediaPlayer.create(this,R.raw.cheer);
+        int maxVolume = 50;
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.homescreen_toolbar);
-        setSupportActionBar(myToolbar);
+        float log1=(float)(Math.log(maxVolume-10)/Math.log(maxVolume));
+        soundPlayer.setVolume(1-log1,1-log1);
+
+        runner_record = getSharedPreferences(FIRST_RUN,MODE_PRIVATE);
+        cat_record = getSharedPreferences(CAT_STORE,MODE_PRIVATE);
+
+
+        initializeCats();
+
+        homeToolBar = (Toolbar) findViewById(R.id.homescreen_toolbar);
+        setSupportActionBar(homeToolBar);
         setTitle("Path 2 Success");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -110,7 +135,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                     soundPlayer.start();
                     iG.goalIsDone();
                     a.setChecked(true);
-//                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
                     storage.setCompleted(iG, true);
                 }
             }
@@ -136,6 +160,29 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 e.printStackTrace();
             }
         }
+    }
+
+    private void initializeCats() {
+        SharedPreferences.Editor editor = cat_record.edit();
+        int cats_size = cat_record.getInt("cats_size", 0);
+        catsArray = new ArrayList<>(cats_size);
+        if (cats_size == 0) {
+            editor.putString("cat_" + 0, "Fitness");
+            catsArray.add("Fitness");
+            editor.putString("cat_" + 1, "Academic");
+            catsArray.add("Academic");
+            editor.putString("cat_" + 2, "Miscellaneous");
+            catsArray.add("Miscellaneous");
+            editor.putInt("cats_size", 3);
+            editor.commit();
+        }
+        else {
+            for (int i = 0; i < cats_size; i++) {
+                catsArray.add(cat_record.getString("cat_" + i, "Loading error"));
+               }
+        }
+        catsArray.add(0, "All");
+        catsArray.add("History");
     }
 
     /**
@@ -165,7 +212,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
      * Sets up and initializes an adapter for the drawer
      */
     private void addDrawerItems(){
-        drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, dArray);
+        drawerAdapter = new ArrayAdapter<>(this,R.layout.drawer_item_info, catsArray);
         goalDrawer.setAdapter(drawerAdapter);
     }
 
@@ -200,9 +247,21 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 String tContent = data.getStringExtra(InputNewGoal.GOAL_TITLE);
                 String tDate = data.getStringExtra((InputNewGoal.DUE_DATE));
                 Integer tCategory = data.getIntExtra((InputNewGoal.GOAL_CATEGORY), 0);
+                String newCat = data.getStringExtra(InputNewGoal.NEW_CAT);
+                if(newCat.length()!=0){
+                    catsArray.add(catsArray.size()-1,newCat);
+                    drawerAdapter.notifyDataSetChanged();
+                }
                 if (!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
                     storage.saveNewGoal(newGoal);
+                    int i = listLayout.getChildCount();
+                    if(listLayout.getChildCount()!=0
+                            && runner_record.getBoolean("firstinput",true)) {
+                        editTut();
+                        runner_record.edit().putBoolean("firstinput", false).commit();
+                    }
+
                     if (currentCategory ==-1){
                         goalArrayList.add(newGoal);
                         adapter.notifyDataSetChanged();
@@ -215,6 +274,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             }
         }
 
+        //TODO this is where the goal content and the date will change when it is edited.
         else if (requestCode == RESULT_CODE_EDIT) {
             if (resultCode == RESULT_OK) {
                 String tContent = data.getStringExtra(EditGoal.GOAL_TITLE);
@@ -257,11 +317,12 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             //getAll
             if (position==0) {
                 getAllUnfinishedGoalsSaved();
+                homeToolBar.setTitle("Path 2 Success");
                 drawerLayout.closeDrawers();
                 currentCategory = -1;
             }
             //HistoryPage
-            else if(position==dArray.length-1){
+            else if(position== catsArray.size()-1){
                 Intent a = new Intent(HomeScreenActivity.this, HistoryStore.class);
                 startActivity(a);
             }
@@ -269,6 +330,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             else{
                 Integer categoryIndex=position-1;
                 filterGoal(categoryIndex);
+                homeToolBar.setTitle(catsArray.get(categoryIndex+1));
                 drawerLayout.closeDrawers();
                 currentCategory = categoryIndex;
             }
@@ -318,17 +380,60 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         }
     }
 
-    private void setArrayList(ArrayList<IndividualGoal> ha) {
-        for (int i = 0; i <= 5; i++) {
-            ha.add(new IndividualGoal("haha", "haha", 0));
-            ha.add(new IndividualGoal("bo", "haha", 0));
-            ha.add(new IndividualGoal("no", "haha", 0));
-        }
-    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
+    }
+
+
+    // This is the code for first-time tutorial.
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        if(runner_record.getBoolean("firstrun",true)){
+           // Toast.makeText(HomeScreenActivity.this, "First run!", Toast.LENGTH_SHORT).show();
+
+            navTut();
+            runner_record.edit().putBoolean("firstrun",false).commit();
+        }
+    }
+
+    private void editTut(){
+        View editTargetView = listLayout.getChildAt(0).findViewById(R.id.taskContent);
+        ViewTarget editTarget = new ViewTarget(editTargetView);
+        new ShowcaseView.Builder(this)
+                .setTarget(editTarget)
+                .setContentTitle("Edit")
+                .setContentText("You can edit your goal by clicking and holding one!")
+                .hideOnTouchOutside()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .build();
+    }
+
+    private void navTut(){
+        View addTargetView = null;
+        for(int i=0; i<homeToolBar.getChildCount();i++){
+            View child = homeToolBar.getChildAt(i);
+            if (ImageButton.class.isInstance(child)){
+                addTargetView=child;
+                break;
+            }
+            if (addTargetView==null){
+                addTargetView = homeToolBar;
+            }
+        }
+
+        ViewTarget addTarget = new ViewTarget(addTargetView);
+
+        new ShowcaseView.Builder(this)
+                .setTarget(addTarget)
+                .setContentTitle("Menu")
+                .setContentText("You can filter your goal and access your history.")
+                .hideOnTouchOutside()
+                .setStyle(R.style.CustomShowcaseTheme2)
+                .build();
     }
 }
