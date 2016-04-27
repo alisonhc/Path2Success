@@ -38,6 +38,10 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class EditGoal extends AppCompatActivity {
+
+
+    //TODO can we have a common activities for EditGoal and InputNewGoal, that they will all extend this class
+
     //final string to bring information to the main activity
     public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
     public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";

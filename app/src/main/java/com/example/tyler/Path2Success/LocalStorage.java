@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.HashSet;
+import java.util.StringTokenizer;
 
 /**
  * Created by pbertel on 4/7/16.
@@ -25,6 +26,7 @@ import java.util.HashSet;
 public class LocalStorage {
     private static final String DEBUGTAG = LocalStorage.class.getSimpleName();
     public final static String FILENAME = "goal_file";
+    public final static String CATEGORY_FILENAME = "category_file";
     private Context appContext;
 
     public LocalStorage(Context c) {
@@ -32,7 +34,7 @@ public class LocalStorage {
 //        Log.d(DEBUGTAG, "Working!!");
     }
 
-    public JSONObject getAllGoals() {
+    private JSONObject getAllGoals() {
 
         JSONObject allGoals = new JSONObject();
 
@@ -54,11 +56,11 @@ public class LocalStorage {
         catch (JSONException e) {
             e.printStackTrace();
         }
-
         return allGoals;
     }
 
     //If the user passes in 'true' as the value of bool, they wish to retrieve all completed goals
+    //TODO return an ArrayList<IndividualGoal>
     public JSONArray getCompletedOrUncompletedGoals(Boolean bool) {
         JSONArray completedOrUncompletedGoals = new JSONArray();
 

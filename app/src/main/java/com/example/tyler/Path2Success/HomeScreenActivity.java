@@ -334,7 +334,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 currentCategory = categoryIndex;
             }
         }
-
+    //TODO refactor
     private void filterGoal(Integer catIndex) {
         goalArrayList.clear();
         JSONArray temp = storage.getCompletedOrUncompletedGoals(false);
@@ -358,7 +358,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         }
     }
 
-    //TODO I might got the code wrong.
+    //TODO be refactored
     private void getAllUnfinishedGoalsSaved() {
         JSONArray temp = storage.getCompletedOrUncompletedGoals(false);//This seems to get all the goals whether checked or unchecked.
         goalArrayList.clear();
@@ -434,5 +434,12 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 .hideOnTouchOutside()
                 .setStyle(R.style.CustomShowcaseTheme2)
                 .build();
+    }
+
+    //TODO finish this so that refactoring is done.
+    // Angelica will finish this.
+    private void refreshGoal(int filterIndex){
+        //assume that LocalStorage is returning an ArrayList
+
     }
 }
