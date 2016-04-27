@@ -72,41 +72,34 @@ public class InputNewGoal extends AppCompatActivity {
         myCalendar = Calendar.getInstance();
         setContentView(R.layout.activity_input_new_goal);
         addButton = (Button) findViewById(R.id.add_and_back);
-        //dueDate = (DatePicker) findViewById(R.id.datePicker);
-        taskContent = (EditText) findViewById(R.id.taskContent);
-
         cat_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
         initializeCats();
 
+        makeToolbar("Start a new goal");
+        makeGoalInput();
+        makeDateInput();
+        makeCategoryInput();
+    }
 
+    private void makeToolbar(String title) {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
         setSupportActionBar(myToolbar);
-        setTitle("Start a new goal");
+        setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        //Handle date input
-        dateInput = (EditText) findViewById(R.id.datePicker);
-        dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (dateInput.hasFocus()) {
-                    pickDate();
-                    dateInput.clearFocus();
-                }
-            }
-        });
-        taskContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-        dateInput.setKeyListener(null);
+    private void initializeCats() {
+        cats_count = cat_record.getInt("cats_size", 0);
+        catsArray = new ArrayList<>(cats_count + 1);
+        for (int i = 0; i < cats_count; i++) {
+            catsArray.add(cat_record.getString("cat_" + i, "Loading error"));
+        }
+//        Toast.makeText(InputNewGoal.this, cats_size, Toast.LENGTH_SHORT).show();
+        catsArray.add("Input your own");
+    }
 
 
-        //Handle category input
+    private void makeCategoryInput(){
         categoryInput = (EditText) findViewById(R.id.categorySelector);
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -118,16 +111,6 @@ public class InputNewGoal extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void initializeCats() {
-        cats_count = cat_record.getInt("cats_size", 0);
-        catsArray = new ArrayList<>(cats_count + 1);
-        for (int i = 0; i < cats_count; i++) {
-            catsArray.add(cat_record.getString("cat_" + i, "Loading error"));
-        }
-//        Toast.makeText(InputNewGoal.this, cats_size, Toast.LENGTH_SHORT).show();
-        catsArray.add("Input your own");
     }
 
 
@@ -152,6 +135,18 @@ public class InputNewGoal extends AppCompatActivity {
         alertDialog = builder.create();
         alertDialog.show();
         alertDialog.getWindow().setLayout(1200,800);
+    }
+
+    private void makeGoalInput() {
+        taskContent = (EditText) findViewById(R.id.taskContent);
+        taskContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
     }
 
     /**
@@ -202,6 +197,20 @@ public class InputNewGoal extends AppCompatActivity {
         }
 
     };
+
+    private void makeDateInput() {
+        dateInput = (EditText) findViewById(R.id.datePicker);
+        dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (dateInput.hasFocus()) {
+                    pickDate();
+                    dateInput.clearFocus();
+                }
+            }
+        });
+        dateInput.setKeyListener(null);
+    }
 
 
     private void pickDate() {
