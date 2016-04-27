@@ -45,6 +45,8 @@ public class EditGoal extends AppCompatActivity {
     private EditText categoryInput;
     private Calendar myCalendar;
     private TextView repeatOptionView;
+
+    // DIFFERENT
     private IndividualGoal goal;
 
     //Make this an array that is retrieved from internal storage every time.
@@ -55,60 +57,42 @@ public class EditGoal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent homeIntent = getIntent();
+
+        // DIFFERENT
         goal = (IndividualGoal) homeIntent.getSerializableExtra("IndividualGoal");
+
         myCalendar = Calendar.getInstance();
-        setContentView(R.layout.activity_edit_goal);
+        setContentView(R.layout.activity_edit_goal); //DIFFERENT
         addButton = (Button) findViewById(R.id.add_and_back);
-        //dueDate = (DatePicker) findViewById(R.id.datePicker);
-        taskContent = (EditText) findViewById(R.id.taskContent);
-        taskContent.setText(goal.getTitle());
 
+        makeToolbar("Edit goal");
+        makeGoalInput(goal.getTitle());
+        makeDateInput(goal.getDueDate());
+        makeCategoryInput(categories[goal.getCategory()]);
 
+    }
+
+    // SAME
+    private void makeToolbar(String title){
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
         setSupportActionBar(myToolbar);
-        setTitle("Edit goal");
+        setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        //Handle date input
-        dateInput = (EditText) findViewById(R.id.datePicker);
-        dateInput.setText(goal.getDueDate());
-        dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (dateInput.hasFocus()) {
-                    pickDate();
-                    dateInput.clearFocus();
-                }
-            }
-        });
-        taskContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
-        dateInput.setKeyListener(null);
-
-
-
-
-        //Handle category input
+    private void makeCategoryInput(CharSequence text){
         categoryInput = (EditText)findViewById(R.id.categorySelector);
-        categoryInput.setText(categories[goal.getCategory()]);
+        categoryInput.setText(text);
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(categoryInput.hasFocus()){
                     pickCategory();
                     categoryInput.clearFocus();
-
                 }
             }
         });
     }
-// get info from putExtra and then setText to
 
     private void pickCategory(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -124,9 +108,39 @@ public class EditGoal extends AppCompatActivity {
 
     }
 
+    private void makeDateInput(String date){
+        dateInput = (EditText) findViewById(R.id.datePicker);
+        dateInput.setText(date);
+        dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (dateInput.hasFocus()) {
+                    pickDate();
+                    dateInput.clearFocus();
+                }
+            }
+        });
+
+        dateInput.setKeyListener(null);
+    }
+
+    private void makeGoalInput(String t){
+        taskContent = (EditText) findViewById(R.id.taskContent);
+        taskContent.setText(t);
+        taskContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+    }
+
 
     /**
      * Add a new item, and bring the information from this activity to the main activity
+     * NEED TO MAKE MORE SIMILAR TO INPUTNEWGOAL
      * @param view
      */
     public void addNewItem(View view){
@@ -145,11 +159,11 @@ public class EditGoal extends AppCompatActivity {
         intent.putExtra(GOAL_CATEGORY, category);
         setResult(Activity.RESULT_OK, intent);
         finish();
-        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /**
      * Hide keyboard
+     * SAME
      * @param view
      */
     private void hideKeyboard(View view) {
@@ -159,7 +173,7 @@ public class EditGoal extends AppCompatActivity {
 
 
 
-
+    // SAME
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
         @Override
@@ -186,7 +200,6 @@ public class EditGoal extends AppCompatActivity {
         String myFormat = "MM/dd/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateInput.setText(sdf.format(myCalendar.getTime()));
-
     }
 
     @Override
