@@ -136,14 +136,6 @@ public class InputNewGoal extends AppCompatActivity {
         builder.setTitle("Pick a category");
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.category_selector, null);
-//        builder.setItems(categoryArray, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                category = which;
-//                categoryInput.setText(categoryArray[category]);
-//                putCategoryIn = true;
-//            }
-//        });
         builder.setView(convertView);
         adapter = new CategoryAdapter(this, catsArray);
         categoryList = (ListView) convertView.findViewById(R.id.category_selection);
@@ -228,6 +220,7 @@ public class InputNewGoal extends AppCompatActivity {
         private void selectItem(int pos) {
             if (pos < cats_count) {
                 categoryInput.setText(catsArray.get(pos));
+                category=pos;
                 putCategoryIn = true;
                 alertDialog.cancel();
             } else {

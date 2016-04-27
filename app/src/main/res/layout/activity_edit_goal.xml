@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:clickable="true"
+        android:singleLine="true"
         android:focusableInTouchMode="true"
         android:hint="@string/hint_to_add" />
 

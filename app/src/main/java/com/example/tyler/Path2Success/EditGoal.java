@@ -5,17 +5,23 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -47,9 +54,21 @@ public class EditGoal extends AppCompatActivity {
     private TextView repeatOptionView;
     private IndividualGoal goal;
 
-    //Make this an array that is retrieved from internal storage every time.
-    private CharSequence categories[] =new CharSequence[]{"Fitness","Academics", "Miscellaneous"};
+    private CategoryAdapter adapter;
+    private ListView categoryList;
 
+    private AlertDialog.Builder builder;
+    private AlertDialog alertDialog;
+
+    private boolean putTitelIn = false;
+    private boolean putDateIn = false;
+
+    private String newCat = "";
+    SharedPreferences cat_record = null;
+    private ArrayList<String> catsArray;
+    private int cats_count = 0;
+
+    //Make this an array that is retrieved from internal storage every time.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +81,10 @@ public class EditGoal extends AppCompatActivity {
         //dueDate = (DatePicker) findViewById(R.id.datePicker);
         taskContent = (EditText) findViewById(R.id.taskContent);
         taskContent.setText(goal.getTitle());
+        cat_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
+
+
+        initializeCats();
 
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
@@ -96,7 +119,7 @@ public class EditGoal extends AppCompatActivity {
 
         //Handle category input
         categoryInput = (EditText)findViewById(R.id.categorySelector);
-        categoryInput.setText(categories[goal.getCategory()]);
+        categoryInput.setText(catsArray.get(goal.getCategory()));
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -110,18 +133,83 @@ public class EditGoal extends AppCompatActivity {
     }
 // get info from putExtra and then setText to
 
-    private void pickCategory(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    private void pickCategory() {
+        builder = new AlertDialog.Builder(this);
         builder.setTitle("Pick a category");
-        builder.setItems(categories, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                category = which;
-                categoryInput.setText(categories[category]);
-            }
-        });
-        builder.show();
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.category_selector, null);
+//        builder.setItems(categoryArray, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                category = which;
+//                categoryInput.setText(categoryArray[category]);
+//                putCategoryIn = true;
+//            }
+//        });
+        builder.setView(convertView);
+        adapter = new CategoryAdapter(this, catsArray);
+        categoryList = (ListView) convertView.findViewById(R.id.category_selection);
+        categoryList.setAdapter(adapter);
+        categoryList.setOnItemClickListener(new CategoryItemClickListener());
+        alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getWindow().setLayout(1200,800);
+    }
+    private class CategoryItemClickListener implements ListView.OnItemClickListener {
 
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+
+        private void selectItem(int pos) {
+            if (pos < cats_count) {
+                categoryInput.setText(catsArray.get(pos));
+                category=pos;
+                alertDialog.cancel();
+            } else {
+                alertDialog.cancel();
+                inputNewCat();
+            }
+        }
+
+        private void inputNewCat() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditGoal.this);
+            builder.setTitle("Start a new category");
+
+            final EditText input = new EditText(EditGoal.this);
+
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            input.setSingleLine(true);
+            builder.setView(input);
+
+            builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    newCat = input.getText().toString();
+                    categoryInput.setText(newCat);
+                    if (newCat.length() != 0) {
+                        category = cats_count;
+                        writeInternally();
+                    }
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.show();
+        }
+
+        private void writeInternally() {
+            SharedPreferences.Editor editor = cat_record.edit();
+            editor.remove("cats_size");
+            editor.putInt("cats_size", cats_count + 1);
+            editor.putString("cat_" + cats_count, newCat);
+            editor.commit();
+        }
     }
 
 
@@ -133,18 +221,28 @@ public class EditGoal extends AppCompatActivity {
         LocalStorage storage = new LocalStorage(this.getApplicationContext());
         Intent intent = getIntent();
         String task = taskContent.getText().toString();
+        if (task.length()!=0){
+            putTitelIn = true;
+        }
         String date = dateInput.getText().toString();
-
-        String id = goal.getRandomID();
-        goal.setTitle(task);
-        goal.setDueDate(date);
-        goal.setCategory(category);
-        storage.updateGoal(id, goal);
-        intent.putExtra(GOAL_TITLE, task);
-        intent.putExtra(DUE_DATE, date);
-        intent.putExtra(GOAL_CATEGORY, category);
-        setResult(Activity.RESULT_OK, intent);
-        finish();
+        if (date.length()!=0){
+            putDateIn = true;
+        }
+        if(putDateIn&&putTitelIn) {
+            String id = goal.getRandomID();
+            goal.setTitle(task);
+            goal.setDueDate(date);
+            goal.setCategory(category);
+            storage.updateGoal(id, goal);
+            intent.putExtra(GOAL_TITLE, task);
+            intent.putExtra(DUE_DATE, date);
+            intent.putExtra(GOAL_CATEGORY, category);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
+        else {
+            Toast.makeText(EditGoal.this, "Cannot save an empty goal", Toast.LENGTH_SHORT).show();
+        }
         //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
@@ -187,6 +285,16 @@ public class EditGoal extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateInput.setText(sdf.format(myCalendar.getTime()));
 
+    }
+
+    private void initializeCats() {
+        cats_count = cat_record.getInt("cats_size", 0);
+        catsArray = new ArrayList<>(cats_count + 1);
+        for (int i = 0; i < cats_count; i++) {
+            catsArray.add(cat_record.getString("cat_" + i, "Loading error"));
+        }
+//        Toast.makeText(InputNewGoal.this, cats_size, Toast.LENGTH_SHORT).show();
+        catsArray.add("Input your own");
     }
 
     @Override
