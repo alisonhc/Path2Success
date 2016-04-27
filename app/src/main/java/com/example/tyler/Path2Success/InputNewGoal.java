@@ -151,6 +151,7 @@ public class InputNewGoal extends AppCompatActivity {
         categoryList.setOnItemClickListener(new CategoryItemClickListener());
         alertDialog = builder.create();
         alertDialog.show();
+        alertDialog.getWindow().setLayout(1200,800);
     }
 
     /**
@@ -175,7 +176,6 @@ public class InputNewGoal extends AppCompatActivity {
         } else {
             Toast.makeText(InputNewGoal.this, "Cannot save an empty goal", Toast.LENGTH_SHORT).show();
         }
-        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /**
