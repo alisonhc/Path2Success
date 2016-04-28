@@ -30,9 +30,9 @@ import java.util.Locale;
 
 public class InputNewGoal extends AppCompatActivity {
     //final string to bring information to the main activity
-    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
-    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";
-    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE3";
+    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE0";
+    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE1";
+    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE2";
     public final static String NEW_CAT = "com.example.tyler.myfirstapp.MESSAGE6";
     //an integer to indicate the category of the goal
     private Integer category;

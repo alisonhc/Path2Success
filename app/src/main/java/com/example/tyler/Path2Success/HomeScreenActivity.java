@@ -34,26 +34,18 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class HomeScreenActivity extends AppCompatActivity implements Serializable {
     private static final String DEBUGTAG = HomeScreenActivity.class.getSimpleName();
     private ListView listLayout;
     private LocalStorage storage;
-  //  private EditText taskContent;
-  //  private EditText dueDate;
     private Button addButton;
     private LayoutTransition mTransition;
     public static final int RESULT_CODE_ADD = 9;
     public static final int RESULT_CODE_EDIT = 12;
-    private ArrayList<IndividualGoal> goalArrayList =new ArrayList<>();
+    private ArrayList<IndividualGoal> goalArrayList;
     private GoalDataAdapter adapter;
     private Toolbar homeToolBar;
-    private JSONArray goalList;
-    private JSONObject goalToChange;
-    private JSONArray goalsToShow;
     private ListView goalDrawer;
     private ArrayAdapter<String> drawerAdapter;
     private ActionBarDrawerToggle drawerToggle;
@@ -77,7 +69,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         this.storage = new LocalStorage(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        listLayout = (ListView) findViewById(R.id.homescreen_listview);
+
 
         soundPlayer = MediaPlayer.create(this,R.raw.cheer);
         int maxVolume = 50;
@@ -102,10 +94,11 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
 
         drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
         setupDrawer();
+        goalArrayList=new ArrayList<>();
+        listLayout = (ListView) findViewById(R.id.homescreen_listview);
 
         adapter = new GoalDataAdapter(this, goalArrayList);
         listLayout.setAdapter(adapter);
-        goalList = new JSONArray();
         listLayout.setItemsCanFocus(false);
         listLayout.setChoiceMode(listLayout.CHOICE_MODE_MULTIPLE);
         listLayout.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -138,27 +131,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 }
             }
         });
-
-        goalsToShow = storage.getCompletedOrUncompletedGoals(false);
-//        Log.d(DEBUGTAG, "Showing goals: " + goalsToShow.toString());
-
-        for (int i = 0; i < goalsToShow.length(); i++) {
-            try {
-                JSONObject goalToShow = goalsToShow.getJSONObject(i);
-
-                //Code that updates the view
-                String title = goalToShow.getString("title");
-                String date = goalToShow.getString("dueDate");
-                Integer category = goalToShow.getInt("category");
-
-                IndividualGoal newGoal = new IndividualGoal(title, date, category);
-                newGoal.setRandomID(goalToShow.getString("id"));
-                goalArrayList.add(newGoal);
-                adapter.notifyDataSetChanged();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+        refreshGoal(currentCategory);
     }
 
     private void initializeCats() {
@@ -251,24 +224,13 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                     catsArray.add(catsArray.size()-1,newCat);
                     drawerAdapter.notifyDataSetChanged();
                 }
-                if (!tContent.isEmpty()) {
-                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
-                    storage.saveNewGoal(newGoal);
-                    int i = listLayout.getChildCount();
-                    if(listLayout.getChildCount()!=0
-                            && runner_record.getBoolean("firstinput",true)) {
-                        editTut();
-                        runner_record.edit().putBoolean("firstinput", false).commit();
-                    }
-
-                    if (currentCategory ==-1){
-                        goalArrayList.add(newGoal);
-                        adapter.notifyDataSetChanged();
-                    }
-                    else if (newGoal.getCategory() == currentCategory) {
-                        goalArrayList.add(newGoal);
-                        adapter.notifyDataSetChanged();
-                    }
+                IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
+                storage.saveNewGoal(newGoal);
+                refreshGoal(currentCategory);
+                if(listLayout.getChildCount()!=0
+                        && runner_record.getBoolean("firstinput",true)) {
+                    editTut();
+                    runner_record.edit().putBoolean("firstinput", false).commit();
                 }
             }
         }
@@ -281,6 +243,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 Integer tCategory=data.getIntExtra((EditGoal.GOAL_CATEGORY),0);
                 if(!tContent.isEmpty()) {
                     IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
+ //                   newGoal.setRandomID(data.getStringExtra(EditGoal.GOAL_ID));
                    // goalArrayList.add(newGoal);
                     storage.saveNewGoal(newGoal);
                     View viewToEdit = listLayout.getChildAt(editGoalPosition);
@@ -313,71 +276,21 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         }
     }
         private void selectItem(int position){
-            //getAll
-            if (position==0) {
-                getAllUnfinishedGoalsSaved();
-                homeToolBar.setTitle("Path 2 Success");
-                drawerLayout.closeDrawers();
-                currentCategory = -1;
-            }
+
             //HistoryPage
-            else if(position== catsArray.size()-1){
+            if(position== catsArray.size()-1){
                 Intent a = new Intent(HomeScreenActivity.this, HistoryStore.class);
                 startActivity(a);
             }
-            //CategoryFilter
+            //CategoryFilter or get all goals
             else{
                 Integer categoryIndex=position-1;
-                filterGoal(categoryIndex);
+                refreshGoal(categoryIndex);
                 homeToolBar.setTitle(catsArray.get(categoryIndex+1));
                 drawerLayout.closeDrawers();
                 currentCategory = categoryIndex;
             }
         }
-    //TODO refactor
-    private void filterGoal(Integer catIndex) {
-        goalArrayList.clear();
-        JSONArray temp = storage.getCompletedOrUncompletedGoals(false);
-        for (int i = 0; i < temp.length(); i++) {
-            try {
-                JSONObject goalToShow = temp.getJSONObject(i);
-
-                //Code that updates the view
-                String title = goalToShow.getString("title");
-                String date = goalToShow.getString("dueDate");
-                Integer category = goalToShow.getInt("category");
-                if(category==catIndex) {
-                    IndividualGoal newGoal = new IndividualGoal(title, date, category);
-                    goalArrayList.add(newGoal);
-                }
-                adapter.notifyDataSetChanged();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    //TODO be refactored
-    private void getAllUnfinishedGoalsSaved() {
-        JSONArray temp = storage.getCompletedOrUncompletedGoals(false);//This seems to get all the goals whether checked or unchecked.
-        goalArrayList.clear();
-        for (int i = 0; i < temp.length(); i++) {
-            try {
-                JSONObject goalToShow = temp.getJSONObject(i);
-                //Code that updates the view
-                String title = goalToShow.getString("title");
-                String date = goalToShow.getString("dueDate");
-                Integer category = goalToShow.getInt("category");
-
-                IndividualGoal newGoal = new IndividualGoal(title, date, category);
-                goalArrayList.add(newGoal);
-                adapter.notifyDataSetChanged();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState){
@@ -436,10 +349,9 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 .build();
     }
 
-    //TODO finish this so that refactoring is done.
-    // Angelica will finish this.
     private void refreshGoal(int filterIndex){
-        //assume that LocalStorage is returning an ArrayList
-
-    }
+        goalArrayList.clear();
+        goalArrayList.addAll(storage.getCompletedOrUncompletedGoals(false,filterIndex));
+        adapter.notifyDataSetChanged();
+       }
 }
