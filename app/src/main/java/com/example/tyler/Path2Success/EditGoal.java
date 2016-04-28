@@ -43,10 +43,10 @@ public class EditGoal extends AppCompatActivity {
     //TODO can we have a common activities for EditGoal and InputNewGoal, that they will all extend this class
 
     //final string to bring information to the main activity
-    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE7";
-    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE8";
-    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE9";
-    public final static String GOAL_ID = "com.example.tyler.myfirstapp.MESSAGE10";
+//    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE7";
+//    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE8";
+//    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE9";
+//    public final static String GOAL_ID = "com.example.tyler.myfirstapp.MESSAGE10";
     //an integer to indicate the category of the goal
     private Integer category;
     //private DatePicker dueDate;
@@ -143,14 +143,7 @@ public class EditGoal extends AppCompatActivity {
         builder.setTitle("Pick a category");
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.category_selector, null);
-//        builder.setItems(categoryArray, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                category = which;
-//                categoryInput.setText(categoryArray[category]);
-//                putCategoryIn = true;
-//            }
-//        });
+
         builder.setView(convertView);
         adapter = new CategoryAdapter(this, catsArray);
         categoryList = (ListView) convertView.findViewById(R.id.category_selection);
@@ -239,10 +232,6 @@ public class EditGoal extends AppCompatActivity {
             goal.setDueDate(date);
             goal.setCategory(category);
             storage.updateGoal(id, goal);
-            intent.putExtra(GOAL_TITLE, task);
-            intent.putExtra(DUE_DATE, date);
-            intent.putExtra(GOAL_CATEGORY, category);
-            intent.putExtra(GOAL_ID,goal.getRandomID());
             setResult(Activity.RESULT_OK, intent);
             finish();
         }

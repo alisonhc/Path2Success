@@ -30,16 +30,11 @@ import java.util.Locale;
 
 public class InputNewGoal extends AppCompatActivity {
     //final string to bring information to the main activity
-    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE0";
-    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE1";
-    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE2";
-    public final static String NEW_CAT = "com.example.tyler.myfirstapp.MESSAGE6";
     //an integer to indicate the category of the goal
     private Integer category;
     //private DatePicker dueDate;
     private EditText taskContent;
     private Button addButton;
-    private JSONArray goalList;
     private EditText dateInput;
     private EditText categoryInput;
     private Calendar myCalendar;
@@ -69,7 +64,6 @@ public class InputNewGoal extends AppCompatActivity {
         setContentView(R.layout.activity_input_new_goal);
         addButton = (Button) findViewById(R.id.add_and_back);
 
-        //dueDate = (DatePicker) findViewById(R.id.datePicker);
         taskContent = (EditText) findViewById(R.id.taskContent);
 
         category_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
@@ -124,7 +118,6 @@ public class InputNewGoal extends AppCompatActivity {
         for (int i = 0; i < categoryCount; i++) {
             categoryArray.add(category_record.getString("cat_" + i, "Loading error"));
         }
-//        Toast.makeText(InputNewGoal.this, cats_size, Toast.LENGTH_SHORT).show();
         categoryArray.add("Input your own");
     }
 

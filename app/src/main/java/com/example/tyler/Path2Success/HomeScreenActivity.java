@@ -40,7 +40,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private ListView listLayout;
     private LocalStorage storage;
     private Button addButton;
-    private LayoutTransition mTransition;
     public static final int RESULT_CODE_ADD = 9;
     public static final int RESULT_CODE_EDIT = 12;
     private ArrayList<IndividualGoal> goalArrayList;
@@ -53,7 +52,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     private MediaPlayer soundPlayer;
     private ArrayList<String> catsArray;
     private int currentCategory = -1;
-    private int editGoalPosition = -1;
+
     public final static String FIRST_RUN = "com.example.tyler.myfirstapp.MESSAGE4";
     public final static String CAT_STORE = "com.example.tyler.myfirstapp.MESSAGE5";
     SharedPreferences runner_record = null;
@@ -192,7 +191,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         Intent intent = new Intent(this, EditGoal.class);
         intent.putExtra("IndividualGoal", (Serializable) g); // or could be serializable
         startActivityForResult(intent, RESULT_CODE_EDIT);
-        editGoalPosition = pos;
     }
 
     /** Called when the user clicks the plus button */
@@ -281,7 +279,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         super.onResume();
 
         if(runner_record.getBoolean("firstrun",true)){
-           // Toast.makeText(HomeScreenActivity.this, "First run!", Toast.LENGTH_SHORT).show();
 
             navTut();
             runner_record.edit().putBoolean("firstrun",false).commit();
