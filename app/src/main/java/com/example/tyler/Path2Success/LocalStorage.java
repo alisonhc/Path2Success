@@ -1,6 +1,7 @@
 package com.example.tyler.Path2Success;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -182,7 +183,21 @@ public class LocalStorage {
 
     public void updateGoal(String previousGoalID, IndividualGoal newGoal) {
         JSONObject goals = getAllGoals();
-        goals.remove(previousGoalID);
+//        goals.remove(previousGoalID);
+
+        String title = newGoal.getTitle();
+        String dueDate = newGoal.getDueDate();
+        Integer category = newGoal.getCategory();
+
+        try {
+            JSONObject goalToUpdate = goals.getJSONObject(previousGoalID);
+            goalToUpdate.put("title", title);
+            goalToUpdate.put("dueDate", dueDate);
+            goalToUpdate.put("category", category);
+//            Toast.makeText(appContext, "Goal is: " + goalToUpdate.toString(), Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         writeAllGoalsLocally(goals);
 
