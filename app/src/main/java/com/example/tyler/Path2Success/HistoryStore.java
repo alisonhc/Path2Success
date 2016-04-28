@@ -29,7 +29,6 @@ public class HistoryStore extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        int shownGoalLimit = 50;
         storage = new LocalStorage(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_store);
@@ -47,15 +46,7 @@ public class HistoryStore extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.historyscreen_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle("History!");
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.history_add_button);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            //TODO BUG the logic of the startAcitivity is a problem!
-            public void onClick(View view) {
-                Intent intent = new Intent(HistoryStore.this, InputNewGoal.class);
-                startActivity(intent);
-            }
-        });
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         adapter.notifyDataSetChanged();
 
