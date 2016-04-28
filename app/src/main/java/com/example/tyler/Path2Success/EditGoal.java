@@ -123,6 +123,7 @@ public class EditGoal extends AppCompatActivity {
 
         //Handle category input
         categoryInput = (EditText)findViewById(R.id.categorySelector);
+        category = goal.getCategory();
         categoryInput.setText(catsArray.get(goal.getCategory()));
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
