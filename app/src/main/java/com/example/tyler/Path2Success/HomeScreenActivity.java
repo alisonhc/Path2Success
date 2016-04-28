@@ -216,16 +216,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
 
-                String tContent = data.getStringExtra(InputNewGoal.GOAL_TITLE);
-                String tDate = data.getStringExtra((InputNewGoal.DUE_DATE));
-                Integer tCategory = data.getIntExtra((InputNewGoal.GOAL_CATEGORY), 0);
-                String newCat = data.getStringExtra(InputNewGoal.NEW_CAT);
-                if(newCat.length()!=0){
-                    catsArray.add(catsArray.size()-1,newCat);
-                    drawerAdapter.notifyDataSetChanged();
-                }
-                IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
-                storage.saveNewGoal(newGoal);
                 refreshGoal(currentCategory);
                 if(listLayout.getChildCount()!=0
                         && runner_record.getBoolean("firstinput",true)) {
@@ -235,24 +225,9 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             }
         }
 
-        //TODO this is where the goal content and the date will change when it is edited.
         else if (requestCode == RESULT_CODE_EDIT) {
             if (resultCode == RESULT_OK) {
-                String tContent = data.getStringExtra(EditGoal.GOAL_TITLE);
-                String tDate = data.getStringExtra((EditGoal.DUE_DATE));
-                Integer tCategory=data.getIntExtra((EditGoal.GOAL_CATEGORY),0);
-                if(!tContent.isEmpty()) {
-                    IndividualGoal newGoal = new IndividualGoal(tContent, tDate, tCategory);
- //                   newGoal.setRandomID(data.getStringExtra(EditGoal.GOAL_ID));
-                   // goalArrayList.add(newGoal);
-                    storage.saveNewGoal(newGoal);
-                    View viewToEdit = listLayout.getChildAt(editGoalPosition);
-                    CheckedTextView a = (CheckedTextView) viewToEdit.findViewById(R.id.taskContent);
-                    a.setText(tContent);
-                    TextView b = (TextView) viewToEdit.findViewById(R.id.taskDate);
-                    b.setText(tDate.substring(0,5));
-                    //adapter.notifyDataSetChanged();
-                }
+                refreshGoal(currentCategory);
             }
         }
     }

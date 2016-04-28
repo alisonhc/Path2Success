@@ -31,15 +31,29 @@ public class LocalStorage {
 //        Log.d(DEBUGTAG, "Working!!");
     }
 
-//    private JSONObject getAllCategories(){
-//        JSONObject allCategories = new JSONObject();
-//        try{
-//            FileInputStream fis = appContext.openFileInput(CATEGORY_FILENAME);
-//            BufferedInputStream bis = new BufferedInputStream(fis);
-//
-//
-//        }
-//    }
+    private JSONObject getAllCategories(){
+        JSONObject allCategories = new JSONObject();
+        try{
+            FileInputStream fis = appContext.openFileInput(CATEGORY_FILENAME);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            StringBuffer b = new StringBuffer();
+            while (bis.available() != 0){
+                char c = (char) bis.read();
+                b.append(c);
+            }
+            bis.close();
+            fis.close();
+            allCategories = new JSONObject(b.toString());
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+        return allCategories;
+    }
     private JSONObject getAllGoals() {
 
         JSONObject allGoals = new JSONObject();
@@ -202,7 +216,7 @@ public class LocalStorage {
         writeAllGoalsLocally(goals);
 
         //before this, all goals need to be updated
-        saveNewGoal(newGoal);
+        //saveNewGoal(newGoal);
     }
 
     public void writeAllGoalsLocally(JSONObject allGoals) {
@@ -217,6 +231,20 @@ public class LocalStorage {
             e.printStackTrace();
         }
         catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeAllCategoriesLocally(JSONObject allCategories){
+        String convertedCategories = allCategories.toString();
+
+        try{
+            FileOutputStream fos = appContext.openFileOutput(CATEGORY_FILENAME, Context.MODE_PRIVATE);
+            fos.write(convertedCategories.getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

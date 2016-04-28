@@ -59,6 +59,8 @@ public class InputNewGoal extends AppCompatActivity {
     private ArrayList<String> categoryArray;
     private int categoryCount = 0;
 
+    private LocalStorage storage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,12 +68,14 @@ public class InputNewGoal extends AppCompatActivity {
         myCalendar = Calendar.getInstance();
         setContentView(R.layout.activity_input_new_goal);
         addButton = (Button) findViewById(R.id.add_and_back);
+
         //dueDate = (DatePicker) findViewById(R.id.datePicker);
         taskContent = (EditText) findViewById(R.id.taskContent);
 
         category_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
         initializeCategories();
 
+        storage = new LocalStorage(this.getApplicationContext());
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
         setSupportActionBar(myToolbar);
@@ -153,10 +157,8 @@ public class InputNewGoal extends AppCompatActivity {
             Intent intent = this.getIntent();
             String task = taskContent.getText().toString();
             String date = dateInput.getText().toString();
-            intent.putExtra(GOAL_TITLE, task);
-            intent.putExtra(DUE_DATE, date);
-            intent.putExtra(GOAL_CATEGORY, category);
-            intent.putExtra(NEW_CAT, newCat);
+
+            storage.saveNewGoal(new IndividualGoal(task,date,category));
             setResult(Activity.RESULT_OK, intent);
             finish();
         } else {
