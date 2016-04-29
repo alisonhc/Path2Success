@@ -37,7 +37,7 @@ public class HistoryStore extends AppCompatActivity {
 
 
 //        goalArrayList.addAll(storage.getCompletedOrUncompletedGoals(true,-1));
-        goalArrayList.addAll(storage.getCompletedGoals());
+        goalArrayList.addAll(storage.getCompletedOrUncompletedGoals(true,-1));
 
         historyList = (ListView) findViewById(R.id.historyscreen_listview);
         adapter = new HistoryDataAdapter(this,goalArrayList);
