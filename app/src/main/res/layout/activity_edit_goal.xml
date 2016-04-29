@@ -57,7 +57,7 @@
         android:background="#BBDEFB"
         android:hint="Save"
         android:layout_gravity="center_horizontal"
-        android:onClick="addNewItem"
+        android:onClick="saveModification"
         android:layout_marginTop="24dp"
         />
 

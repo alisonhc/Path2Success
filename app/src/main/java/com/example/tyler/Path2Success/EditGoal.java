@@ -9,7 +9,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.Selection;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -77,6 +79,9 @@ public class EditGoal extends AppCompatActivity {
         //dueDate = (DatePicker) findViewById(R.id.datePicker);
         taskContent = (EditText) findViewById(R.id.taskContent);
         taskContent.setText(goal.getTitle());
+        int position = taskContent.length();
+        Editable etext = taskContent.getText();
+        Selection.setSelection(etext,position);
         //cat_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
 
         storage = new LocalStorage(this.getApplicationContext());
@@ -218,7 +223,7 @@ public class EditGoal extends AppCompatActivity {
      * Add a new item, and bring the information from this activity to the main activity
      * @param view
      */
-    public void addNewItem(View view){
+    public void saveModification(View view){
         storage = new LocalStorage(this.getApplicationContext());
         Intent intent = getIntent();
         String task = taskContent.getText().toString();
