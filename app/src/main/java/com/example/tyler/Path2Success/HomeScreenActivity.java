@@ -214,7 +214,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
 
-                refreshGoal(currentCategory);
+                goBackToMainScreen();
                 if(listLayout.getChildCount()!=0
                         && runner_record.getBoolean("firstinput",true)) {
                     editTut();
@@ -225,7 +225,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
 
         else if (requestCode == RESULT_CODE_EDIT) {
             if (resultCode == RESULT_OK) {
-                refreshGoal(currentCategory);
+                goBackToMainScreen();
             }
         }
     }
@@ -326,4 +326,9 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         goalArrayList.addAll(storage.getCompletedOrUncompletedGoals(false,filterIndex));
         adapter.notifyDataSetChanged();
        }
+
+    private void goBackToMainScreen(){
+        refreshGoal(-1);
+        homeToolBar.setTitle(catsArray.get(0));
+    }
 }
