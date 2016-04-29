@@ -29,6 +29,10 @@ public class GoalDataAdapter extends BaseAdapter{
         public ViewHolder(View item){
             task = (CheckedTextView)item.findViewById(R.id.taskContent);
             date = (TextView)item.findViewById(R.id.taskDate);
+            task.setChecked(false);
+        }
+        public void setViewUnchecked(){
+            task.setChecked(false);
         }
     }
 
@@ -58,6 +62,7 @@ public class GoalDataAdapter extends BaseAdapter{
         }
         else{
             viewHolder = (ViewHolder)convertView.getTag();
+            viewHolder.setViewUnchecked();
         }
 
         IndividualGoal currentGoalInList=getItem(position);
