@@ -140,8 +140,8 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         if (cats_size == 0) {
             editor.putString("cat_" + 0, "Fitness");
             catsArray.add("Fitness");
-            editor.putString("cat_" + 1, "Academic");
-            catsArray.add("Academic");
+            editor.putString("cat_" + 1, "Academics");
+            catsArray.add("Academics");
             editor.putString("cat_" + 2, "Miscellaneous");
             catsArray.add("Miscellaneous");
             editor.putInt("cats_size", 3);
@@ -291,7 +291,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         new ShowcaseView.Builder(this)
                 .setTarget(editTarget)
                 .setContentTitle("Edit")
-                .setContentText("You can edit your goal by clicking and holding one!")
+                .setContentText("You can edit your goal by clicking and holding!")
                 .hideOnTouchOutside()
                 .setStyle(R.style.CustomShowcaseTheme2)
                 .build();
@@ -315,7 +315,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         new ShowcaseView.Builder(this)
                 .setTarget(addTarget)
                 .setContentTitle("Menu")
-                .setContentText("You can filter your goal and access your history.")
+                .setContentText("You can filter your goals and access your history.")
                 .hideOnTouchOutside()
                 .setStyle(R.style.CustomShowcaseTheme2)
                 .build();

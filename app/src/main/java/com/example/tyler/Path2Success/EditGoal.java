@@ -236,7 +236,7 @@ public class EditGoal extends AppCompatActivity {
             finish();
         }
         else {
-            Toast.makeText(EditGoal.this, "Cannot save an empty goal", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditGoal.this, "Cannot save goal without all options filled", Toast.LENGTH_SHORT).show();
         }
 
     }
