@@ -159,7 +159,7 @@ public class InputNewGoal extends AppCompatActivity {
             setResult(Activity.RESULT_OK, intent);
             finish();
         } else {
-            Toast.makeText(InputNewGoal.this, "Cannot save an empty goal", Toast.LENGTH_SHORT).show();
+            Toast.makeText(InputNewGoal.this, "Cannot save goal without all options filled", Toast.LENGTH_SHORT).show();
         }
     }
 
