@@ -50,9 +50,7 @@ public class InputNewGoal extends AppCompatActivity {
     private boolean putCategoryIn = false;
 
     private String newCat = "";
-    SharedPreferences category_record = null;
     private ArrayList<String> categoryArray;
-    private int categoryCount = 0;
 
     private LocalStorage storage;
 
@@ -66,10 +64,13 @@ public class InputNewGoal extends AppCompatActivity {
 
         taskContent = (EditText) findViewById(R.id.taskContent);
 
-        category_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
-        initializeCategories();
+        //category_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
 
         storage = new LocalStorage(this.getApplicationContext());
+
+        categoryArray = new ArrayList<>();
+
+        adapter = new CategoryAdapter(this, categoryArray);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
         setSupportActionBar(myToolbar);
@@ -113,11 +114,13 @@ public class InputNewGoal extends AppCompatActivity {
     }
 
     private void initializeCategories() {
-        categoryCount = category_record.getInt("cats_size", 0);
-        categoryArray = new ArrayList<>(categoryCount + 1);
-        for (int i = 0; i < categoryCount; i++) {
-            categoryArray.add(category_record.getString("cat_" + i, "Loading error"));
-        }
+        categoryArray.clear();
+        categoryArray.addAll(storage.getAllCategoriesToShow());
+//        categoryCount = category_record.getInt("cats_size", 0);
+//        categoryArray = new ArrayList<>(categoryCount + 1);
+//        for (int i = 0; i < categoryCount; i++) {
+//            categoryArray.add(category_record.getString("cat_" + i, "Loading error"));
+//        }
         categoryArray.add("Input your own");
     }
 
@@ -128,9 +131,10 @@ public class InputNewGoal extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.category_selector, null);
         builder.setView(convertView);
-        adapter = new CategoryAdapter(this, categoryArray);
         categoryList = (ListView) convertView.findViewById(R.id.category_selection);
         categoryList.setAdapter(adapter);
+        initializeCategories();
+        adapter.notifyDataSetChanged();
         categoryList.setOnItemClickListener(new CategoryItemClickListener());
         alertDialog = builder.create();
         alertDialog.show();
@@ -207,14 +211,23 @@ public class InputNewGoal extends AppCompatActivity {
         }
 
         private void selectItem(int pos) {
-            if (pos < categoryCount) {
+//            if (pos < categoryCount) {
+//                categoryInput.setText(categoryArray.get(pos));
+//                category=pos;
+//                putCategoryIn = true;
+//                alertDialog.cancel();
+//            } else {
+//                alertDialog.cancel();
+//                inputNewCat();
+            if(pos == categoryArray.size()-1){
+                alertDialog.cancel();
+                inputNewCat();
+            }
+            else{
                 categoryInput.setText(categoryArray.get(pos));
                 category=pos;
                 putCategoryIn = true;
                 alertDialog.cancel();
-            } else {
-                alertDialog.cancel();
-                inputNewCat();
             }
         }
 
@@ -235,8 +248,8 @@ public class InputNewGoal extends AppCompatActivity {
                     categoryInput.setText(newCat);
                     if (newCat.length() != 0) {
                         putCategoryIn = true;
-                        category = categoryCount;
-                        writeInternally();
+                        category = categoryArray.size()-1;
+                        storage.saveNewCategory(newCat);
                     }
                 }
             });
@@ -249,13 +262,13 @@ public class InputNewGoal extends AppCompatActivity {
             builder.show();
         }
 
-        private void writeInternally() {
-            SharedPreferences.Editor editor = category_record.edit();
-            editor.remove("cats_size");
-            editor.putInt("cats_size", categoryCount + 1);
-            editor.putString("cat_" + categoryCount, newCat);
-            editor.commit();
-        }
+//        private void writeInternally() {
+//            SharedPreferences.Editor editor = category_record.edit();
+//            editor.remove("cats_size");
+//            editor.putInt("cats_size", categoryCount + 1);
+//            editor.putString("cat_" + categoryCount, newCat);
+//            editor.commit();
+//        }
     }
 
     @Override

@@ -79,6 +79,23 @@ public class LocalStorage {
         return allGoals;
     }
 
+    public ArrayList getAllCategoriesToShow(){
+        ArrayList<String> categoryArrayList = new ArrayList<>();
+        JSONObject allCategories = getAllCategories();
+        Iterator<String> iterator = allCategories.keys();
+        while(iterator.hasNext()){
+            String key = iterator.next();
+            try{
+                JSONObject iteratedCategory = allCategories.getJSONObject(key);
+                categoryArrayList.add(iteratedCategory.getString("categoryTitle"));
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return categoryArrayList;
+    }
+
     //If the user passes in 'true' as the value of bool, they wish to retrieve all completed goals
     // return an ArrayList<IndividualGoal>
     public ArrayList getCompletedOrUncompletedGoals(Boolean bool, int filterIndex) {
@@ -113,6 +130,19 @@ public class LocalStorage {
         return individualGoalArrayList;
     }
 
+    public void saveNewCategory(String categoryToAdd){
+        try{
+            JSONObject newCategory = new JSONObject();
+            newCategory.put("categoryTitle",categoryToAdd);
+            JSONObject allCategories = getAllCategories();
+            String categoryID = String.valueOf(allCategories.length());
+            allCategories.put(categoryID,newCategory);
+            writeAllCategoriesLocally(allCategories);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void saveNewGoal(IndividualGoal goalToAdd) {
         try {
             String title = goalToAdd.getTitle();
@@ -135,20 +165,16 @@ public class LocalStorage {
                 randInt = rand.nextInt(10000);
                 goalID = randInt.toString();
             }
-
             newGoal.put("id", goalID);
-
             allGoals.put(goalID, newGoal);
             goalToAdd.setRandomID(goalID);
 
             //The goals JSON Object must be converted to a string before being
             // written to local storage
 //            String convertedGoals = allGoals.toString();
-//
 //            FileOutputStream fos = appContext.openFileOutput(GOAL_FILE, Context.MODE_PRIVATE);
 //            fos.write(convertedGoals.getBytes());
 //            fos.close();
-
             writeAllGoalsLocally(allGoals);
         }
 
