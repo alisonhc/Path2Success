@@ -15,12 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -28,24 +26,15 @@ import org.json.JSONArray;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public class InputNewGoal extends AppCompatActivity {
     //final string to bring information to the main activity
-    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
-    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";
-    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE3";
-    public final static String NEW_CAT = "com.example.tyler.myfirstapp.MESSAGE6";
     //an integer to indicate the category of the goal
     private Integer category;
     //private DatePicker dueDate;
     private EditText taskContent;
     private Button addButton;
-    private JSONArray goalList;
     private EditText dateInput;
     private EditText categoryInput;
     private Calendar myCalendar;
@@ -61,9 +50,11 @@ public class InputNewGoal extends AppCompatActivity {
     private boolean putCategoryIn = false;
 
     private String newCat = "";
-    SharedPreferences cat_record = null;
-    private ArrayList<String> catsArray;
-    private int cats_count = 0;
+    SharedPreferences category_record = null;
+    private ArrayList<String> categoryArray;
+    private int categoryCount = 0;
+
+    private LocalStorage storage;
 
 
     @Override
@@ -72,34 +63,42 @@ public class InputNewGoal extends AppCompatActivity {
         myCalendar = Calendar.getInstance();
         setContentView(R.layout.activity_input_new_goal);
         addButton = (Button) findViewById(R.id.add_and_back);
-        cat_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
-        initializeCats();
 
-        makeToolbar("Start a new goal");
-        makeGoalInput();
-        makeDateInput();
-        makeCategoryInput();
-    }
+        taskContent = (EditText) findViewById(R.id.taskContent);
 
-    private void makeToolbar(String title) {
+        category_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
+        initializeCategories();
+
+        storage = new LocalStorage(this.getApplicationContext());
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.input_toolbar);
         setSupportActionBar(myToolbar);
-        setTitle(title);
+        setTitle("Start a new goal");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
 
-    private void initializeCats() {
-        cats_count = cat_record.getInt("cats_size", 0);
-        catsArray = new ArrayList<>(cats_count + 1);
-        for (int i = 0; i < cats_count; i++) {
-            catsArray.add(cat_record.getString("cat_" + i, "Loading error"));
-        }
-//        Toast.makeText(InputNewGoal.this, cats_size, Toast.LENGTH_SHORT).show();
-        catsArray.add("Input your own");
-    }
+        //Handle date input
+        dateInput = (EditText) findViewById(R.id.datePicker);
+        dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (dateInput.hasFocus()) {
+                    pickDate();
+                    dateInput.clearFocus();
+                }
+            }
+        });
+        taskContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    hideKeyboard(v);
+                }
+            }
+        });
+        dateInput.setKeyListener(null);
 
 
-    private void makeCategoryInput(){
+        //Handle category input
         categoryInput = (EditText) findViewById(R.id.categorySelector);
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -113,6 +112,15 @@ public class InputNewGoal extends AppCompatActivity {
         });
     }
 
+    private void initializeCategories() {
+        categoryCount = category_record.getInt("cats_size", 0);
+        categoryArray = new ArrayList<>(categoryCount + 1);
+        for (int i = 0; i < categoryCount; i++) {
+            categoryArray.add(category_record.getString("cat_" + i, "Loading error"));
+        }
+        categoryArray.add("Input your own");
+    }
+
 
     private void pickCategory() {
         builder = new AlertDialog.Builder(this);
@@ -120,25 +128,13 @@ public class InputNewGoal extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.category_selector, null);
         builder.setView(convertView);
-        adapter = new CategoryAdapter(this, catsArray);
+        adapter = new CategoryAdapter(this, categoryArray);
         categoryList = (ListView) convertView.findViewById(R.id.category_selection);
         categoryList.setAdapter(adapter);
         categoryList.setOnItemClickListener(new CategoryItemClickListener());
         alertDialog = builder.create();
         alertDialog.show();
         alertDialog.getWindow().setLayout(1200,800);
-    }
-
-    private void makeGoalInput() {
-        taskContent = (EditText) findViewById(R.id.taskContent);
-        taskContent.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    hideKeyboard(v);
-                }
-            }
-        });
     }
 
     /**
@@ -154,10 +150,8 @@ public class InputNewGoal extends AppCompatActivity {
             Intent intent = this.getIntent();
             String task = taskContent.getText().toString();
             String date = dateInput.getText().toString();
-            intent.putExtra(GOAL_TITLE, task);
-            intent.putExtra(DUE_DATE, date);
-            intent.putExtra(GOAL_CATEGORY, category);
-            intent.putExtra(NEW_CAT, newCat);
+
+            storage.saveNewGoal(new IndividualGoal(task,date,category));
             setResult(Activity.RESULT_OK, intent);
             finish();
         } else {
@@ -190,20 +184,6 @@ public class InputNewGoal extends AppCompatActivity {
 
     };
 
-    private void makeDateInput() {
-        dateInput = (EditText) findViewById(R.id.datePicker);
-        dateInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (dateInput.hasFocus()) {
-                    pickDate();
-                    dateInput.clearFocus();
-                }
-            }
-        });
-        dateInput.setKeyListener(null);
-    }
-
 
     private void pickDate() {
         new DatePickerDialog(InputNewGoal.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -227,8 +207,8 @@ public class InputNewGoal extends AppCompatActivity {
         }
 
         private void selectItem(int pos) {
-            if (pos < cats_count) {
-                categoryInput.setText(catsArray.get(pos));
+            if (pos < categoryCount) {
+                categoryInput.setText(categoryArray.get(pos));
                 category=pos;
                 putCategoryIn = true;
                 alertDialog.cancel();
@@ -255,7 +235,7 @@ public class InputNewGoal extends AppCompatActivity {
                     categoryInput.setText(newCat);
                     if (newCat.length() != 0) {
                         putCategoryIn = true;
-                        category = cats_count;
+                        category = categoryCount;
                         writeInternally();
                     }
                 }
@@ -270,10 +250,10 @@ public class InputNewGoal extends AppCompatActivity {
         }
 
         private void writeInternally() {
-            SharedPreferences.Editor editor = cat_record.edit();
+            SharedPreferences.Editor editor = category_record.edit();
             editor.remove("cats_size");
-            editor.putInt("cats_size", cats_count + 1);
-            editor.putString("cat_" + cats_count, newCat);
+            editor.putInt("cats_size", categoryCount + 1);
+            editor.putString("cat_" + categoryCount, newCat);
             editor.commit();
         }
     }

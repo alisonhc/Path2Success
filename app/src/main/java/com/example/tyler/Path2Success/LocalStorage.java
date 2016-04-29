@@ -1,11 +1,8 @@
 package com.example.tyler.Path2Success;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,9 +11,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.Buffer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import java.util.HashSet;
 
 /**
  * Created by pbertel on 4/7/16.
@@ -24,7 +22,8 @@ import java.util.HashSet;
  */
 public class LocalStorage {
     private static final String DEBUGTAG = LocalStorage.class.getSimpleName();
-    public final static String FILENAME = "goal_file";
+    public final static String GOAL_FILE = "goal_file";
+    public final static String CATEGORY_FILENAME = "category_file";
     private Context appContext;
 
     public LocalStorage(Context c) {
@@ -32,12 +31,35 @@ public class LocalStorage {
 //        Log.d(DEBUGTAG, "Working!!");
     }
 
-    public JSONObject getAllGoals() {
+    private JSONObject getAllCategories(){
+        JSONObject allCategories = new JSONObject();
+        try{
+            FileInputStream fis = appContext.openFileInput(CATEGORY_FILENAME);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            StringBuffer b = new StringBuffer();
+            while (bis.available() != 0){
+                char c = (char) bis.read();
+                b.append(c);
+            }
+            bis.close();
+            fis.close();
+            allCategories = new JSONObject(b.toString());
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        catch (JSONException e){
+            e.printStackTrace();
+        }
+        return allCategories;
+    }
+    private JSONObject getAllGoals() {
 
         JSONObject allGoals = new JSONObject();
 
         try {
-            FileInputStream fis = appContext.openFileInput(FILENAME);
+            FileInputStream fis = appContext.openFileInput(GOAL_FILE);
             BufferedInputStream bis = new BufferedInputStream(fis);
             StringBuffer b = new StringBuffer();
             while (bis.available() != 0) {
@@ -54,17 +76,16 @@ public class LocalStorage {
         catch (JSONException e) {
             e.printStackTrace();
         }
-
         return allGoals;
     }
 
     //If the user passes in 'true' as the value of bool, they wish to retrieve all completed goals
-    public JSONArray getCompletedOrUncompletedGoals(Boolean bool) {
-        JSONArray completedOrUncompletedGoals = new JSONArray();
-
+    // return an ArrayList<IndividualGoal>
+    public ArrayList getCompletedOrUncompletedGoals(Boolean bool, int filterIndex) {
+        //JSONArray completedOrUncompletedGoals = new JSONArray();
+        ArrayList<IndividualGoal> individualGoalArrayList = new ArrayList<>();
         JSONObject allGoals = getAllGoals();
 //        Log.d(DEBUGTAG, "All the goals are: " + allGoals.toString());
-
         //Iterator code found from
         // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
         Iterator<String> iterator = allGoals.keys();
@@ -73,24 +94,23 @@ public class LocalStorage {
             try {
                 JSONObject iteratedGoal = allGoals.getJSONObject(key);
                 Boolean completed = iteratedGoal.getBoolean("completed");
-                if (bool) {
-                    if (completed) {
-                        //then add the goal to the array that is to be returned
-                        completedOrUncompletedGoals.put(iteratedGoal);
-                    }
-                }
-                else {
-                    if (!completed) {
-                        completedOrUncompletedGoals.put(iteratedGoal);
+                if(bool.equals(completed)) {
+                    Integer category = iteratedGoal.getInt("category");
+                    if (category==filterIndex||filterIndex==-1){
+                        String title = iteratedGoal.getString("title");
+                        String date = iteratedGoal.getString("dueDate");
+                        String id = iteratedGoal.getString("id");
+                        IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
+                        goalToAdd.setRandomID(id);
+                        individualGoalArrayList.add(goalToAdd);
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-
 //        Log.d(DEBUGTAG, "Goals to be returned are: " + completedOrUncompletedGoals.toString());
-        return completedOrUncompletedGoals;
+        return individualGoalArrayList;
     }
 
     public void saveNewGoal(IndividualGoal goalToAdd) {
@@ -125,7 +145,7 @@ public class LocalStorage {
             // written to local storage
 //            String convertedGoals = allGoals.toString();
 //
-//            FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+//            FileOutputStream fos = appContext.openFileOutput(GOAL_FILE, Context.MODE_PRIVATE);
 //            fos.write(convertedGoals.getBytes());
 //            fos.close();
 
@@ -157,13 +177,13 @@ public class LocalStorage {
 
             String goalID = goal.getRandomID();
             JSONObject goalToChange = allGoals.getJSONObject(goalID);
-
+            goalToChange.remove("completed");
             goalToChange.put("completed", value);
 
             //now put the goalList back in to local storage
             String convertedGoals = allGoals.toString();
 
-            FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = appContext.openFileOutput(GOAL_FILE, Context.MODE_PRIVATE);
             fos.write(convertedGoals.getBytes());
             fos.close();
 
@@ -177,19 +197,33 @@ public class LocalStorage {
 
     public void updateGoal(String previousGoalID, IndividualGoal newGoal) {
         JSONObject goals = getAllGoals();
-        goals.remove(previousGoalID);
+//        goals.remove(previousGoalID);
+
+        String title = newGoal.getTitle();
+        String dueDate = newGoal.getDueDate();
+        Integer category = newGoal.getCategory();
+
+        try {
+            JSONObject goalToUpdate = goals.getJSONObject(previousGoalID);
+            goalToUpdate.put("title", title);
+            goalToUpdate.put("dueDate", dueDate);
+            goalToUpdate.put("category", category);
+//            Toast.makeText(appContext, "Goal is: " + goalToUpdate.toString(), Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         writeAllGoalsLocally(goals);
 
         //before this, all goals need to be updated
-        saveNewGoal(newGoal);
+        //saveNewGoal(newGoal);
     }
 
     public void writeAllGoalsLocally(JSONObject allGoals) {
         String convertedGoals = allGoals.toString();
 
         try {
-            FileOutputStream fos = appContext.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = appContext.openFileOutput(GOAL_FILE, Context.MODE_PRIVATE);
             fos.write(convertedGoals.getBytes());
             fos.close();
         }
@@ -197,6 +231,20 @@ public class LocalStorage {
             e.printStackTrace();
         }
         catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeAllCategoriesLocally(JSONObject allCategories){
+        String convertedCategories = allCategories.toString();
+
+        try{
+            FileOutputStream fos = appContext.openFileOutput(CATEGORY_FILENAME, Context.MODE_PRIVATE);
+            fos.write(convertedCategories.getBytes());
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

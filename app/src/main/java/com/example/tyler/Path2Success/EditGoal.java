@@ -38,10 +38,15 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class EditGoal extends AppCompatActivity {
+
+
+    //TODO can we have a common activities for EditGoal and InputNewGoal, that they will all extend this class
+
     //final string to bring information to the main activity
-    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE";
-    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE2";
-    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE3";
+//    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE7";
+//    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE8";
+//    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE9";
+//    public final static String GOAL_ID = "com.example.tyler.myfirstapp.MESSAGE10";
     //an integer to indicate the category of the goal
     private Integer category;
     //private DatePicker dueDate;
@@ -51,7 +56,6 @@ public class EditGoal extends AppCompatActivity {
     private EditText dateInput;
     private EditText categoryInput;
     private Calendar myCalendar;
-    private TextView repeatOptionView;
     private IndividualGoal goal;
 
     private CategoryAdapter adapter;
@@ -119,6 +123,7 @@ public class EditGoal extends AppCompatActivity {
 
         //Handle category input
         categoryInput = (EditText)findViewById(R.id.categorySelector);
+        category = goal.getCategory();
         categoryInput.setText(catsArray.get(goal.getCategory()));
         categoryInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -138,14 +143,7 @@ public class EditGoal extends AppCompatActivity {
         builder.setTitle("Pick a category");
         LayoutInflater inflater = getLayoutInflater();
         View convertView = inflater.inflate(R.layout.category_selector, null);
-//        builder.setItems(categoryArray, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                category = which;
-//                categoryInput.setText(categoryArray[category]);
-//                putCategoryIn = true;
-//            }
-//        });
+
         builder.setView(convertView);
         adapter = new CategoryAdapter(this, catsArray);
         categoryList = (ListView) convertView.findViewById(R.id.category_selection);
@@ -234,16 +232,13 @@ public class EditGoal extends AppCompatActivity {
             goal.setDueDate(date);
             goal.setCategory(category);
             storage.updateGoal(id, goal);
-            intent.putExtra(GOAL_TITLE, task);
-            intent.putExtra(DUE_DATE, date);
-            intent.putExtra(GOAL_CATEGORY, category);
             setResult(Activity.RESULT_OK, intent);
             finish();
         }
         else {
             Toast.makeText(EditGoal.this, "Cannot save an empty goal", Toast.LENGTH_SHORT).show();
         }
-        //overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
     }
 
     /**
@@ -281,7 +276,7 @@ public class EditGoal extends AppCompatActivity {
      * This method will update the text in the date field to the date that is selected
      */
     private void updateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "MM/dd";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateInput.setText(sdf.format(myCalendar.getTime()));
 
@@ -293,7 +288,7 @@ public class EditGoal extends AppCompatActivity {
         for (int i = 0; i < cats_count; i++) {
             catsArray.add(cat_record.getString("cat_" + i, "Loading error"));
         }
-//        Toast.makeText(InputNewGoal.this, cats_size, Toast.LENGTH_SHORT).show();
+
         catsArray.add("Input your own");
     }
 
