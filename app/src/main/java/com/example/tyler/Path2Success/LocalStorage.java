@@ -113,6 +113,56 @@ public class LocalStorage {
         return individualGoalArrayList;
     }
 
+    public ArrayList getCompletedGoals() {
+        ArrayList<IndividualGoal> completedGoals = new ArrayList<>();
+        JSONObject allGoals = getAllGoals();
+        Iterator<String> iterator = allGoals.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            try {
+                JSONObject iteratedGoal = allGoals.getJSONObject(key);
+                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
+                if (goalIsCompleted) {
+                    Integer category = iteratedGoal.getInt("category");
+                    String title = iteratedGoal.getString("title");
+                    String date = iteratedGoal.getString("dueDate");
+                    String id = iteratedGoal.getString("id");
+                    IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
+                    goalToAdd.setRandomID(id);
+                    completedGoals.add(goalToAdd);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return completedGoals;
+    }
+
+    public ArrayList getUncompletedGoals() {
+        ArrayList<IndividualGoal> uncompletedGoals = new ArrayList<>();
+        JSONObject allGoals = getAllGoals();
+        Iterator<String> iterator = allGoals.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            try {
+                JSONObject iteratedGoal = allGoals.getJSONObject(key);
+                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
+                if (!goalIsCompleted) {
+                    Integer category = iteratedGoal.getInt("category");
+                    String title = iteratedGoal.getString("title");
+                    String date = iteratedGoal.getString("dueDate");
+                    String id = iteratedGoal.getString("id");
+                    IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
+                    goalToAdd.setRandomID(id);
+                    uncompletedGoals.add(goalToAdd);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return uncompletedGoals;
+    }
+
     public void saveNewGoal(IndividualGoal goalToAdd) {
         try {
             String title = goalToAdd.getTitle();
