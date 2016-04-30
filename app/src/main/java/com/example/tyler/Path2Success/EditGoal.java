@@ -57,6 +57,9 @@ public class EditGoal extends AppCompatActivity {
     private AlertDialog.Builder builder;
     private AlertDialog alertDialog;
 
+    private AlertDialog.Builder warningBuilder;
+    private AlertDialog warningDialog;
+
     private boolean putTitelIn = false;
     private boolean putDateIn = false;
 
@@ -133,25 +136,9 @@ public class EditGoal extends AppCompatActivity {
             }
         });
     }
-// get info from putExtra and then setText to
 
-    private void pickCategory() {
-        builder = new AlertDialog.Builder(this);
-        builder.setTitle("Pick a category");
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.category_selector, null);
 
-        builder.setView(convertView);
 
-        categoryList = (ListView) convertView.findViewById(R.id.category_selection);
-        initializeCats();
-        categoryList.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        categoryList.setOnItemClickListener(new CategoryItemClickListener());
-        alertDialog = builder.create();
-        alertDialog.show();
-        alertDialog.getWindow().setLayout(1200,800);
-    }
     private class CategoryItemClickListener implements ListView.OnItemClickListener {
 
         @Override
@@ -160,14 +147,7 @@ public class EditGoal extends AppCompatActivity {
         }
 
         private void selectItem(int pos) {
-//            if (pos < categoryCount) {
-//                categoryInput.setText(categoryArray.get(pos));
-//                category=pos;
-//                putCategoryIn = true;
-//                alertDialog.cancel();
-//            } else {
-//                alertDialog.cancel();
-//                inputNewCat();
+
             if(pos == categoryArray.size()-1){
                 alertDialog.cancel();
                 inputNewCat();
@@ -209,13 +189,6 @@ public class EditGoal extends AppCompatActivity {
             builder.show();
         }
 
-//        private void writeInternally() {
-//            SharedPreferences.Editor editor = cat_record.edit();
-//            editor.remove("cats_size");
-//            editor.putInt("cats_size", cats_count + 1);
-//            editor.putString("cat_" + cats_count, newCat);
-//            editor.commit();
-//        }
     }
 
 
@@ -296,8 +269,52 @@ public class EditGoal extends AppCompatActivity {
         categoryArray.add("Input your own");
     }
 
+    private void pickCategory() {
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("Pick a category");
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.category_selector, null);
+
+        builder.setView(convertView);
+
+        categoryList = (ListView) convertView.findViewById(R.id.category_selection);
+        initializeCats();
+        categoryList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        categoryList.setOnItemClickListener(new CategoryItemClickListener());
+        alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.getWindow().setLayout(1200,800);
+    }
+
+    private void warningMessageBeforeBack(){
+        warningBuilder = new AlertDialog.Builder(this);
+        warningBuilder.setTitle("Leave before saving?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setMessage("You will lose any changes.")
+                .setCancelable(true);
+        warningDialog = warningBuilder.create();
+        warningDialog.show();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+        if (item!=null && id == android.R.id.home){
+            warningMessageBeforeBack();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }
