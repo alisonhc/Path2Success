@@ -35,14 +35,7 @@ public class EditGoal extends AppCompatActivity {
 
     //TODO can we have a common activities for EditGoal and InputNewGoal, that they will all extend this class
 
-    //final string to bring information to the main activity
-//    public final static String GOAL_TITLE = "com.example.tyler.myfirstapp.MESSAGE7";
-//    public final static String DUE_DATE = "com.example.tyler.myfirstapp.MESSAGE8";
-//    public final static String GOAL_CATEGORY = "com.example.tyler.myfirstapp.MESSAGE9";
-//    public final static String GOAL_ID = "com.example.tyler.myfirstapp.MESSAGE10";
-    //an integer to indicate the category of the goal
     private Integer category;
-    //private DatePicker dueDate;
     private EditText taskContent;
     private Button addButton;
     private JSONArray goalList;
@@ -64,7 +57,6 @@ public class EditGoal extends AppCompatActivity {
     private boolean putDateIn = false;
 
     private String newCat = "";
-    //SharedPreferences cat_record = null;
     private ArrayList<String> categoryArray;
 
     private LocalStorage storage;
@@ -79,13 +71,11 @@ public class EditGoal extends AppCompatActivity {
         myCalendar = Calendar.getInstance();
         setContentView(R.layout.activity_edit_goal);
         addButton = (Button) findViewById(R.id.add_and_back);
-        //dueDate = (DatePicker) findViewById(R.id.datePicker);
         taskContent = (EditText) findViewById(R.id.taskContent);
         taskContent.setText(goal.getTitle());
         int position = taskContent.length();
         Editable etext = taskContent.getText();
         Selection.setSelection(etext,position);
-        //cat_record = getSharedPreferences(HomeScreenActivity.CAT_STORE, MODE_PRIVATE);
 
         storage = new LocalStorage(this.getApplicationContext());
         categoryArray = new ArrayList<>();

@@ -61,16 +61,12 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-
         soundPlayer = MediaPlayer.create(this,R.raw.cheer);
         int maxVolume = 50;
-
         float log1=(float)(Math.log(maxVolume-10)/Math.log(maxVolume));
         soundPlayer.setVolume(1-log1,1-log1);
 
         runner_record = getSharedPreferences(FIRST_RUN,MODE_PRIVATE);
-        //cat_record = getSharedPreferences(CAT_STORE,MODE_PRIVATE);
-
 
         homeToolBar = (Toolbar) findViewById(R.id.homescreen_toolbar);
         setSupportActionBar(homeToolBar);
@@ -81,13 +77,11 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         goalDrawer = (ListView)findViewById(R.id.drawer_list_layout);
         goalDrawer.setOnItemClickListener(new DrawerItemClickListener());
 
-
         drawerLayout = (DrawerLayout) findViewById(R.id.home_drawer_layout);
         setupDrawer();
         catsArray = new ArrayList<>();
         addDrawerItems();
         refreshCategory();
-
 
         goalArrayList=new ArrayList<>();
         listLayout = (ListView) findViewById(R.id.homescreen_listview);
@@ -130,8 +124,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
     }
 
     private void refreshCategory() {
-       // SharedPreferences.Editor editor = cat_record.edit();
-        //int cats_size = cat_record.getInt("cats_size", 0);
         catsArray.clear();
         catsArray.addAll(storage.getAllCategoriesToShow());
         if (catsArray.size() == 0) {
@@ -263,7 +255,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         drawerToggle.syncState();
     }
 
-
     // This is the code for first-time tutorial.
 
     @Override
@@ -271,7 +262,6 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         super.onResume();
 
         if(runner_record.getBoolean("firstrun",true)){
-
             navTut();
             runner_record.edit().putBoolean("firstrun",false).commit();
         }
