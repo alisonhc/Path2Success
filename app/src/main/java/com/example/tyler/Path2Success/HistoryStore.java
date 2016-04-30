@@ -65,7 +65,6 @@ public class HistoryStore extends AppCompatActivity {
                 } else {
                     iG.goalIsDone();
                     a.setChecked(true);
-//                    Toast.makeText(HomeScreenActivity.this, "checked: " + iG.getTitle(), Toast.LENGTH_SHORT).show();
                     storage.setCompleted(iG, true);
                 }
             }
