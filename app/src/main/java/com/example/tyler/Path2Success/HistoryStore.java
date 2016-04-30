@@ -32,11 +32,8 @@ public class HistoryStore extends AppCompatActivity {
         storage = new LocalStorage(this.getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_store);
-        //Initialize goalArrayList here
         goalArrayList=new ArrayList<>();
 
-
-//        goalArrayList.addAll(storage.getCompletedOrUncompletedGoals(true,-1));
         goalArrayList.addAll(storage.getCompletedOrUncompletedGoals(true,-1));
 
         historyList = (ListView) findViewById(R.id.historyscreen_listview);
@@ -50,7 +47,6 @@ public class HistoryStore extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         adapter.notifyDataSetChanged();
 
-        //TODO OnItemClickListener storage implement
         historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
