@@ -18,17 +18,16 @@ import java.util.Random;
 
 /**
  * Created by pbertel on 4/7/16.
- * Referenced from http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files
+ * Code for reading and writing to local storage was referenced from
+ *      http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files
  */
 public class LocalStorage {
-    private static final String DEBUGTAG = LocalStorage.class.getSimpleName();
     public final static String GOAL_FILE = "goal_file";
     public final static String CATEGORY_FILENAME = "category_file";
     private Context appContext;
 
     public LocalStorage(Context c) {
-        appContext = c;
-//        Log.d(DEBUGTAG, "Working!!");
+        appContext = c; //having the context is necessary to access the phone's local storage
     }
 
     private JSONObject getAllCategories(){
@@ -130,6 +129,63 @@ public class LocalStorage {
         return individualGoalArrayList;
     }
 
+    //run by with Paul first
+    public ArrayList getCompletedGoals() {
+        ArrayList<IndividualGoal> completedGoals = new ArrayList<>();
+        JSONObject allGoals = getAllGoals();
+        //Iterator code found from
+        // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
+        Iterator<String> iterator = allGoals.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            try {
+                JSONObject iteratedGoal = allGoals.getJSONObject(key);
+                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
+                if (goalIsCompleted) {
+                    Integer category = iteratedGoal.getInt("category");
+                    String title = iteratedGoal.getString("title");
+                    String date = iteratedGoal.getString("dueDate");
+                    String id = iteratedGoal.getString("id");
+                    IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
+                    goalToAdd.setRandomID(id);
+                    completedGoals.add(goalToAdd);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return completedGoals;
+    }
+
+    public ArrayList getUncompletedGoals(int filterIndex) {
+        ArrayList<IndividualGoal> uncompletedGoals = new ArrayList<>();
+        JSONObject allGoals = getAllGoals();
+        //Iterator code found from
+        // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
+        Iterator<String> iterator = allGoals.keys();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            try {
+                JSONObject iteratedGoal = allGoals.getJSONObject(key);
+                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
+                if (!goalIsCompleted) {
+                    Integer category = iteratedGoal.getInt("category");
+                    if (category==filterIndex||filterIndex==-1){
+                        String title = iteratedGoal.getString("title");
+                        String date = iteratedGoal.getString("dueDate");
+                        String id = iteratedGoal.getString("id");
+                        IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
+                        goalToAdd.setRandomID(id);
+                        uncompletedGoals.add(goalToAdd);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return uncompletedGoals;
+    }
+
     public void saveNewCategory(String categoryToAdd){
         try{
             JSONObject newCategory = new JSONObject();
@@ -168,45 +224,21 @@ public class LocalStorage {
             newGoal.put("id", goalID);
             allGoals.put(goalID, newGoal);
             goalToAdd.setRandomID(goalID);
-
-            //The goals JSON Object must be converted to a string before being
-            // written to local storage
-//            String convertedGoals = allGoals.toString();
-//            FileOutputStream fos = appContext.openFileOutput(GOAL_FILE, Context.MODE_PRIVATE);
-//            fos.write(convertedGoals.getBytes());
-//            fos.close();
             writeAllGoalsLocally(allGoals);
         }
-
-//        catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
         catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    //this does not work yet
-    //this method is difficult, should probably work on new method of storage (uniqueID for each goal, a single JSON object, etc.)
     public void setCompleted(IndividualGoal goal, Boolean value) {
-
-//        Log.d(DEBUGTAG, "Working!!");
-
         try {
 
             JSONObject allGoals = getAllGoals();
-            //goalToChange = goalList.getJSONObject(position);
-            //instead, here we will get the JSON object that corresponds to the unique ID provided from the Individual Goal class
-
             String goalID = goal.getRandomID();
             JSONObject goalToChange = allGoals.getJSONObject(goalID);
             goalToChange.remove("completed");
             goalToChange.put("completed", value);
-
-            //now put the goalList back in to local storage
             String convertedGoals = allGoals.toString();
 
             FileOutputStream fos = appContext.openFileOutput(GOAL_FILE, Context.MODE_PRIVATE);
@@ -223,8 +255,6 @@ public class LocalStorage {
 
     public void updateGoal(String previousGoalID, IndividualGoal newGoal) {
         JSONObject goals = getAllGoals();
-//        goals.remove(previousGoalID);
-
         String title = newGoal.getTitle();
         String dueDate = newGoal.getDueDate();
         Integer category = newGoal.getCategory();
@@ -234,15 +264,10 @@ public class LocalStorage {
             goalToUpdate.put("title", title);
             goalToUpdate.put("dueDate", dueDate);
             goalToUpdate.put("category", category);
-//            Toast.makeText(appContext, "Goal is: " + goalToUpdate.toString(), Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         writeAllGoalsLocally(goals);
-
-        //before this, all goals need to be updated
-        //saveNewGoal(newGoal);
     }
 
     public void writeAllGoalsLocally(JSONObject allGoals) {
