@@ -1,7 +1,6 @@
 package com.example.tyler.Path2Success;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +10,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
@@ -23,41 +21,18 @@ import java.util.Random;
  */
 public class LocalStorage {
     public final static String GOAL_FILE = "goal_file";
-    public final static String CATEGORY_FILENAME = "category_file";
+    public final static String CATEGORY_FILE = "category_file";
     private Context appContext;
 
     public LocalStorage(Context c) {
         appContext = c; //having the context is necessary to access the phone's local storage
     }
 
-    private JSONObject getAllCategories(){
-        JSONObject allCategories = new JSONObject();
-        try{
-            FileInputStream fis = appContext.openFileInput(CATEGORY_FILENAME);
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            StringBuffer b = new StringBuffer();
-            while (bis.available() != 0){
-                char c = (char) bis.read();
-                b.append(c);
-            }
-            bis.close();
-            fis.close();
-            allCategories = new JSONObject(b.toString());
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        catch (JSONException e){
-            e.printStackTrace();
-        }
-        return allCategories;
-    }
-    private JSONObject getAllGoals() {
-
-        JSONObject allGoals = new JSONObject();
+    private JSONObject getAllData(String filename) {
+        JSONObject allData = new JSONObject();
 
         try {
-            FileInputStream fis = appContext.openFileInput(GOAL_FILE);
+            FileInputStream fis = appContext.openFileInput(filename);
             BufferedInputStream bis = new BufferedInputStream(fis);
             StringBuffer b = new StringBuffer();
             while (bis.available() != 0) {
@@ -66,7 +41,7 @@ public class LocalStorage {
             }
             bis.close();
             fis.close();
-            allGoals = new JSONObject(b.toString());
+            allData = new JSONObject(b.toString());
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -74,12 +49,12 @@ public class LocalStorage {
         catch (JSONException e) {
             e.printStackTrace();
         }
-        return allGoals;
+        return allData;
     }
 
     public ArrayList getAllCategoriesToShow(){
         ArrayList<String> categoryArrayList = new ArrayList<>();
-        JSONObject allCategories = getAllCategories();
+        JSONObject allCategories = getAllData(CATEGORY_FILE);
         Iterator<String> iterator = allCategories.keys();
         while(iterator.hasNext()){
             String key = iterator.next();
@@ -96,7 +71,7 @@ public class LocalStorage {
 
     public ArrayList getCompletedGoals() {
         ArrayList<IndividualGoal> completedGoals = new ArrayList<>();
-        JSONObject allGoals = getAllGoals();
+        JSONObject allGoals = getAllData(GOAL_FILE);
         //Iterator code found from
         // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
         Iterator<String> iterator = allGoals.keys();
@@ -123,7 +98,7 @@ public class LocalStorage {
 
     public ArrayList getUncompletedGoals(int filterIndex) {
         ArrayList<IndividualGoal> uncompletedGoals = new ArrayList<>();
-        JSONObject allGoals = getAllGoals();
+        JSONObject allGoals = getAllData(GOAL_FILE);
         Iterator<String> iterator = allGoals.keys();
         while (iterator.hasNext()) {
             String key = iterator.next();
@@ -152,10 +127,10 @@ public class LocalStorage {
         try{
             JSONObject newCategory = new JSONObject();
             newCategory.put("categoryTitle",categoryToAdd);
-            JSONObject allCategories = getAllCategories();
+            JSONObject allCategories = getAllData(CATEGORY_FILE);
             String categoryID = String.valueOf(allCategories.length());
             allCategories.put(categoryID,newCategory);
-            writeDataLocally(allCategories, CATEGORY_FILENAME);
+            writeDataLocally(allCategories, CATEGORY_FILE);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -177,7 +152,7 @@ public class LocalStorage {
             Integer randInt = rand.nextInt(10000);
             String goalID = randInt.toString();
 
-            JSONObject allGoals = getAllGoals();
+            JSONObject allGoals = getAllData(GOAL_FILE);
 
             while (allGoals.has(goalID)) {
                 randInt = rand.nextInt(10000);
@@ -194,7 +169,7 @@ public class LocalStorage {
     }
 
     public void updateGoal(String previousGoalID, IndividualGoal newGoal) {
-        JSONObject goals = getAllGoals();
+        JSONObject goals = getAllData(GOAL_FILE);
         String title = newGoal.getTitle();
         String dueDate = newGoal.getDueDate();
         Integer category = newGoal.getCategory();
