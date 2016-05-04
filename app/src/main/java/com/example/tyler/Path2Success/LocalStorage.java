@@ -69,8 +69,63 @@ public class LocalStorage {
         return categoryArrayList;
     }
 
-    public ArrayList getCompletedGoals() {
-        ArrayList<IndividualGoal> completedGoals = new ArrayList<>();
+//    public ArrayList getCompletedGoals() {
+//        ArrayList<IndividualGoal> completedGoals = new ArrayList<>();
+//        JSONObject allGoals = getAllData(GOAL_FILE);
+//        //Iterator code found from
+//        // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
+//        Iterator<String> iterator = allGoals.keys();
+//        while (iterator.hasNext()) {
+//            String key = iterator.next();
+//            try {
+//                JSONObject iteratedGoal = allGoals.getJSONObject(key);
+//                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
+//                if (goalIsCompleted) {
+//                    Integer category = iteratedGoal.getInt("category");
+//                    String title = iteratedGoal.getString("title");
+//                    String date = iteratedGoal.getString("dueDate");
+//                    String id = iteratedGoal.getString("id");
+//                    IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
+//                    goalToAdd.setRandomID(id);
+//                    completedGoals.add(goalToAdd);
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return completedGoals;
+//    }
+//
+//    public ArrayList getUncompletedGoals(int filterIndex) {
+//        ArrayList<IndividualGoal> uncompletedGoals = new ArrayList<>();
+//        JSONObject allGoals = getAllData(GOAL_FILE);
+//        Iterator<String> iterator = allGoals.keys();
+//        while (iterator.hasNext()) {
+//            String key = iterator.next();
+//            try {
+//                JSONObject iteratedGoal = allGoals.getJSONObject(key);
+//                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
+//                if (!goalIsCompleted) {
+//                    Integer category = iteratedGoal.getInt("category");
+//                    if (category==filterIndex||filterIndex==-1){
+//                        String title = iteratedGoal.getString("title");
+//                        String date = iteratedGoal.getString("dueDate");
+//                        String id = iteratedGoal.getString("id");
+//                        IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
+//                        goalToAdd.setRandomID(id);
+//                        uncompletedGoals.add(goalToAdd);
+//                    }
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return uncompletedGoals;
+//    }
+
+    //If the user passes in 'true' as the value of bool, they wish to retrieve all completed goals
+    public ArrayList getCompletedOrUncompletedGoals(Boolean bool, int filterIndex) {
+        ArrayList<IndividualGoal> individualGoalArrayList = new ArrayList<>();
         JSONObject allGoals = getAllData(GOAL_FILE);
         //Iterator code found from
         // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
@@ -79,33 +134,8 @@ public class LocalStorage {
             String key = iterator.next();
             try {
                 JSONObject iteratedGoal = allGoals.getJSONObject(key);
-                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
-                if (goalIsCompleted) {
-                    Integer category = iteratedGoal.getInt("category");
-                    String title = iteratedGoal.getString("title");
-                    String date = iteratedGoal.getString("dueDate");
-                    String id = iteratedGoal.getString("id");
-                    IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
-                    goalToAdd.setRandomID(id);
-                    completedGoals.add(goalToAdd);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return completedGoals;
-    }
-
-    public ArrayList getUncompletedGoals(int filterIndex) {
-        ArrayList<IndividualGoal> uncompletedGoals = new ArrayList<>();
-        JSONObject allGoals = getAllData(GOAL_FILE);
-        Iterator<String> iterator = allGoals.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            try {
-                JSONObject iteratedGoal = allGoals.getJSONObject(key);
-                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
-                if (!goalIsCompleted) {
+                Boolean completed = iteratedGoal.getBoolean("completed");
+                if(bool.equals(completed)) {
                     Integer category = iteratedGoal.getInt("category");
                     if (category==filterIndex||filterIndex==-1){
                         String title = iteratedGoal.getString("title");
@@ -113,14 +143,14 @@ public class LocalStorage {
                         String id = iteratedGoal.getString("id");
                         IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
                         goalToAdd.setRandomID(id);
-                        uncompletedGoals.add(goalToAdd);
+                        individualGoalArrayList.add(goalToAdd);
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        return uncompletedGoals;
+        return individualGoalArrayList;
     }
 
     public void saveNewCategory(String categoryToAdd){
