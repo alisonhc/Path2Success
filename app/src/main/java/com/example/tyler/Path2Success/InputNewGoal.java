@@ -138,6 +138,11 @@ public class InputNewGoal extends AppCompatActivity {
      */
     public void addNewItem(View view) {
         putTitelIn = (taskContent.getText().toString().trim().length() > 0);
+        if (newCat.length() != 0) {
+            putCategoryIn = true;
+            category = categoryArray.size()-1;
+            storage.saveNewCategory(newCat);
+        }
         if (putTitelIn && putDateIn && putCategoryIn) {
             Intent intent = this.getIntent();
             String task = taskContent.getText().toString();
@@ -201,6 +206,7 @@ public class InputNewGoal extends AppCompatActivity {
                 inputNewCat();
             }
             else{
+                newCat = "";
                 categoryInput.setText(categoryArray.get(pos));
                 category=pos;
                 putCategoryIn = true;
@@ -223,11 +229,11 @@ public class InputNewGoal extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     newCat = input.getText().toString();
                     categoryInput.setText(newCat);
-                    if (newCat.length() != 0) {
-                        putCategoryIn = true;
-                        category = categoryArray.size()-1;
-                        storage.saveNewCategory(newCat);
-                    }
+//                    if (newCat.length() != 0) {
+//                        putCategoryIn = true;
+//                        category = categoryArray.size()-1;
+//                        storage.saveNewCategory(newCat);
+//                    }
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

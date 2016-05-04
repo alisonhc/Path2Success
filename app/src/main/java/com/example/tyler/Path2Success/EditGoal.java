@@ -55,6 +55,7 @@ public class EditGoal extends AppCompatActivity {
 
     private boolean putTitelIn = false;
     private boolean putDateIn = false;
+    private boolean putCategoryIn = false;
 
     private String newCat = "";
     private ArrayList<String> categoryArray;
@@ -143,6 +144,8 @@ public class EditGoal extends AppCompatActivity {
                 inputNewCat();
             }
             else{
+                newCat = "";
+                putCategoryIn = true;
                 categoryInput.setText(categoryArray.get(pos));
                 category=pos;
                 alertDialog.cancel();
@@ -164,10 +167,10 @@ public class EditGoal extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     newCat = input.getText().toString();
                     categoryInput.setText(newCat);
-                    if (newCat.length() != 0) {
-                        category = categoryArray.size()-1;
-                        storage.saveNewCategory(newCat);
-                    }
+//                    if (newCat.length() != 0) {
+//                        category = categoryArray.size()-1;
+//                        storage.saveNewCategory(newCat);
+//                    }
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -196,6 +199,10 @@ public class EditGoal extends AppCompatActivity {
         String date = dateInput.getText().toString();
         if (date.length()!=0){
             putDateIn = true;
+        }
+        if (newCat.length() != 0) {
+            category = categoryArray.size()-1;
+            storage.saveNewCategory(newCat);
         }
         if(putDateIn&&putTitelIn) {
             String id = goal.getRandomID();
