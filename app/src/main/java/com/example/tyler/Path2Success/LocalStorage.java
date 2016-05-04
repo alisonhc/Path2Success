@@ -129,7 +129,6 @@ public class LocalStorage {
         return individualGoalArrayList;
     }
 
-    //run by with Paul first
     public ArrayList getCompletedGoals() {
         ArrayList<IndividualGoal> completedGoals = new ArrayList<>();
         JSONObject allGoals = getAllGoals();
