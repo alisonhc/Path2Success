@@ -95,40 +95,6 @@ public class LocalStorage {
         return categoryArrayList;
     }
 
-    //If the user passes in 'true' as the value of bool, they wish to retrieve all completed goals
-    // return an ArrayList<IndividualGoal>
-    public ArrayList getCompletedOrUncompletedGoals(Boolean bool, int filterIndex) {
-        //JSONArray completedOrUncompletedGoals = new JSONArray();
-        ArrayList<IndividualGoal> individualGoalArrayList = new ArrayList<>();
-        JSONObject allGoals = getAllGoals();
-//        Log.d(DEBUGTAG, "All the goals are: " + allGoals.toString());
-        //Iterator code found from
-        // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
-        Iterator<String> iterator = allGoals.keys();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            try {
-                JSONObject iteratedGoal = allGoals.getJSONObject(key);
-                Boolean completed = iteratedGoal.getBoolean("completed");
-                if(bool.equals(completed)) {
-                    Integer category = iteratedGoal.getInt("category");
-                    if (category==filterIndex||filterIndex==-1){
-                        String title = iteratedGoal.getString("title");
-                        String date = iteratedGoal.getString("dueDate");
-                        String id = iteratedGoal.getString("id");
-                        IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
-                        goalToAdd.setRandomID(id);
-                        individualGoalArrayList.add(goalToAdd);
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-//        Log.d(DEBUGTAG, "Goals to be returned are: " + completedOrUncompletedGoals.toString());
-        return individualGoalArrayList;
-    }
-
     public ArrayList getCompletedGoals() {
         ArrayList<IndividualGoal> completedGoals = new ArrayList<>();
         JSONObject allGoals = getAllGoals();
@@ -159,8 +125,6 @@ public class LocalStorage {
     public ArrayList getUncompletedGoals(int filterIndex) {
         ArrayList<IndividualGoal> uncompletedGoals = new ArrayList<>();
         JSONObject allGoals = getAllGoals();
-        //Iterator code found from
-        // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
         Iterator<String> iterator = allGoals.keys();
         while (iterator.hasNext()) {
             String key = iterator.next();
