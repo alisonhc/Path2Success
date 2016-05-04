@@ -124,7 +124,7 @@ public class LocalStorage {
 //    }
 
     //If the user passes in 'true' as the value of bool, they wish to retrieve all completed goals
-    public ArrayList getCompletedOrUncompletedGoals(Boolean bool, int filterIndex) {
+    public ArrayList getGoals(Boolean bool, int filterIndex) {
         ArrayList<IndividualGoal> individualGoalArrayList = new ArrayList<>();
         JSONObject allGoals = getAllData(GOAL_FILE);
         //Iterator code found from
