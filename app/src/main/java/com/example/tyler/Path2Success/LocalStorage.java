@@ -43,7 +43,6 @@ public class LocalStorage {
             bis.close();
             fis.close();
             allCategories = new JSONObject(b.toString());
-
         }
         catch (IOException e) {
             e.printStackTrace();

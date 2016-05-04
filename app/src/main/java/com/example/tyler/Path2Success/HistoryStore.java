@@ -56,7 +56,7 @@ public class HistoryStore extends AppCompatActivity {
                 if (a.isChecked()) {
                     iG.goalIsUndone();
                     a.setChecked(false);
-                    Toast.makeText(HistoryStore.this, "This goal has been added to your home screen.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(HistoryStore.this, "This goal has been added to your home screen.", Toast.LENGTH_SHORT).show();
                     storage.setCompleted(iG, false);
 
                 } else {

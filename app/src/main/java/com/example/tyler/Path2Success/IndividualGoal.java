@@ -22,13 +22,7 @@ public class IndividualGoal implements Serializable {
         isDone=false;
         this.category=category;
         this.randomID = "";
-        //add the object to local storage with the above parameters
-        //addToLocalStorage();
     }
-
-//    private void addToLocalStorage() {
-//
-//    }
 
     public String getTitle() {
         return title;
@@ -39,7 +33,7 @@ public class IndividualGoal implements Serializable {
     }
 
     public void setDueDate(String date) {
-        this.dueDate = date;
+        dueDate = date;
     }
 
     public void setTitle(String title) {
@@ -47,15 +41,11 @@ public class IndividualGoal implements Serializable {
     }
 
     public void goalIsDone(){
-        this.isDone=true;
+        isDone=true;
     }
 
     public void goalIsUndone(){
-        this.isDone=false;
-    }
-
-    public Boolean getIfIsDone(){
-        return isDone;
+        isDone=false;
     }
 
     public Integer getCategory(){
