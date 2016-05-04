@@ -109,7 +109,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 if (a.isChecked()) {
                     iG.setIsCompleted(false);
                     a.setChecked(false);
-//                    Toast.makeText(HomeScreenActivity.this, "Goal unchecked.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeScreenActivity.this, "Goal unchecked.", Toast.LENGTH_SHORT).show();
                     storage.updateGoal(iG.getRandomID(), iG);
 
                 } else {
