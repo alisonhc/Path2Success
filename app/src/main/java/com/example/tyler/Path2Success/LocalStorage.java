@@ -155,7 +155,8 @@ public class LocalStorage {
             JSONObject allCategories = getAllCategories();
             String categoryID = String.valueOf(allCategories.length());
             allCategories.put(categoryID,newCategory);
-            writeAllCategoriesLocally(allCategories);
+//            writeAllCategoriesLocally(allCategories);
+            writeDataLocally(allCategories, CATEGORY_FILENAME);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -186,7 +187,8 @@ public class LocalStorage {
             newGoal.put("id", goalID);
             allGoals.put(goalID, newGoal);
             goalToAdd.setRandomID(goalID);
-            writeAllGoalsLocally(allGoals);
+//            writeAllGoalsLocally(allGoals);
+            writeDataLocally(allGoals, GOAL_FILE);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -229,31 +231,17 @@ public class LocalStorage {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        writeAllGoalsLocally(goals);
+//        writeAllGoalsLocally(goals);
+        writeDataLocally(goals, GOAL_FILE);
     }
 
-    public void writeAllGoalsLocally(JSONObject allGoals) {
-        String convertedGoals = allGoals.toString();
-
-        try {
-            FileOutputStream fos = appContext.openFileOutput(GOAL_FILE, Context.MODE_PRIVATE);
-            fos.write(convertedGoals.getBytes());
-            fos.close();
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void writeAllCategoriesLocally(JSONObject allCategories){
-        String convertedCategories = allCategories.toString();
+    public void writeDataLocally(JSONObject data, String filename) {
+        //data needs to be a String before being written to local storage
+        String convertedData = data.toString();
 
         try{
-            FileOutputStream fos = appContext.openFileOutput(CATEGORY_FILENAME, Context.MODE_PRIVATE);
-            fos.write(convertedCategories.getBytes());
+            FileOutputStream fos = appContext.openFileOutput(filename, Context.MODE_PRIVATE);
+            fos.write(convertedData.getBytes());
             fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
