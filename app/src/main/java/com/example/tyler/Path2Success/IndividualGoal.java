@@ -11,7 +11,7 @@ public class IndividualGoal implements Serializable {
 
     private String title;
     private String dueDate;
-    private Boolean isDone;
+    private Boolean isCompleted;
     private Integer category;
     private String randomID;
 
@@ -19,7 +19,7 @@ public class IndividualGoal implements Serializable {
     public IndividualGoal(String title,String date, Integer category){
         this.title=title;
         this.dueDate=date;
-        isDone=false;
+        isCompleted=false;
         this.category=category;
         this.randomID = "";
     }
@@ -40,12 +40,12 @@ public class IndividualGoal implements Serializable {
         this.title = title;
     }
 
-    public void goalIsDone(){
-        isDone=true;
+    public boolean getIsCompleted() {
+        return isCompleted;
     }
 
-    public void goalIsUndone(){
-        isDone=false;
+    public void setIsCompleted(Boolean val) {
+        isCompleted = val;
     }
 
     public Integer getCategory(){

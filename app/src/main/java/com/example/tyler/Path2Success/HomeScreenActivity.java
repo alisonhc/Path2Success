@@ -107,16 +107,16 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
                 IndividualGoal iG = adapter.getItem(position);
                 CheckedTextView a = (CheckedTextView) ((RelativeLayout) view).getChildAt(0);
                 if (a.isChecked()) {
-                    iG.goalIsUndone();
+                    iG.setIsCompleted(false);
                     a.setChecked(false);
-                    Toast.makeText(HomeScreenActivity.this, "Goal unchecked.", Toast.LENGTH_SHORT).show();
-                    storage.setCompleted(iG, false);
+//                    Toast.makeText(HomeScreenActivity.this, "Goal unchecked.", Toast.LENGTH_SHORT).show();
+                    storage.updateGoal(iG.getRandomID(), iG);
 
                 } else {
                     soundPlayer.start();
-                    iG.goalIsDone();
+                    iG.setIsCompleted(true);
                     a.setChecked(true);
-                    storage.setCompleted(iG, true);
+                    storage.updateGoal(iG.getRandomID(), iG);
                 }
             }
         });

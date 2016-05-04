@@ -155,7 +155,6 @@ public class LocalStorage {
             JSONObject allCategories = getAllCategories();
             String categoryID = String.valueOf(allCategories.length());
             allCategories.put(categoryID,newCategory);
-//            writeAllCategoriesLocally(allCategories);
             writeDataLocally(allCategories, CATEGORY_FILENAME);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -187,32 +186,9 @@ public class LocalStorage {
             newGoal.put("id", goalID);
             allGoals.put(goalID, newGoal);
             goalToAdd.setRandomID(goalID);
-//            writeAllGoalsLocally(allGoals);
             writeDataLocally(allGoals, GOAL_FILE);
         }
         catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void setCompleted(IndividualGoal goal, Boolean value) {
-        try {
-
-            JSONObject allGoals = getAllGoals();
-            String goalID = goal.getRandomID();
-            JSONObject goalToChange = allGoals.getJSONObject(goalID);
-            goalToChange.remove("completed");
-            goalToChange.put("completed", value);
-            String convertedGoals = allGoals.toString();
-
-            FileOutputStream fos = appContext.openFileOutput(GOAL_FILE, Context.MODE_PRIVATE);
-            fos.write(convertedGoals.getBytes());
-            fos.close();
-
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -222,16 +198,17 @@ public class LocalStorage {
         String title = newGoal.getTitle();
         String dueDate = newGoal.getDueDate();
         Integer category = newGoal.getCategory();
+        Boolean isCompleted = newGoal.getIsCompleted();
 
         try {
             JSONObject goalToUpdate = goals.getJSONObject(previousGoalID);
             goalToUpdate.put("title", title);
             goalToUpdate.put("dueDate", dueDate);
             goalToUpdate.put("category", category);
+            goalToUpdate.put("completed", isCompleted);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        writeAllGoalsLocally(goals);
         writeDataLocally(goals, GOAL_FILE);
     }
 

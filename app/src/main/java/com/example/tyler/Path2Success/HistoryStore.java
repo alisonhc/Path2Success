@@ -54,15 +54,14 @@ public class HistoryStore extends AppCompatActivity {
                 IndividualGoal iG = adapter.getItem(position);
                 CheckedTextView a = (CheckedTextView) ((LinearLayout) view).getChildAt(0);
                 if (a.isChecked()) {
-                    iG.goalIsUndone();
+                    iG.setIsCompleted(false);
                     a.setChecked(false);
 //                    Toast.makeText(HistoryStore.this, "This goal has been added to your home screen.", Toast.LENGTH_SHORT).show();
-                    storage.setCompleted(iG, false);
-
+                    storage.updateGoal(iG.getRandomID(), iG);
                 } else {
-                    iG.goalIsDone();
+                    iG.setIsCompleted(true);
                     a.setChecked(true);
-                    storage.setCompleted(iG, true);
+                    storage.updateGoal(iG.getRandomID(), iG);
                 }
             }
         });
