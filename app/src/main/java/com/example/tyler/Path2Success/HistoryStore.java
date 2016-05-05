@@ -114,7 +114,7 @@ public class HistoryStore extends AppCompatActivity {
 
     private void refreshGoals(){
         goalArrayList.clear();
-        Boolean completed = false;
+        Boolean completed = true;
         int allCategories = -1;
         goalArrayList.addAll(storage.getGoals(completed, allCategories));
         adapter.notifyDataSetChanged();
