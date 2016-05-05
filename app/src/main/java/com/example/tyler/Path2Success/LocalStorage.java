@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * Created by pbertel on 4/7/16.
  * Code for reading and writing to local storage was referenced from
  *      http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files
  */
@@ -30,7 +29,6 @@ public class LocalStorage {
 
     private JSONObject getAllData(String filename) {
         JSONObject allData = new JSONObject();
-
         try {
             FileInputStream fis = appContext.openFileInput(filename);
             BufferedInputStream bis = new BufferedInputStream(fis);
@@ -68,60 +66,6 @@ public class LocalStorage {
         }
         return categoryArrayList;
     }
-
-//    public ArrayList getCompletedGoals() {
-//        ArrayList<IndividualGoal> completedGoals = new ArrayList<>();
-//        JSONObject allGoals = getAllData(GOAL_FILE);
-//        //Iterator code found from
-//        // http://stackoverflow.com/questions/13573913/android-jsonobject-how-can-i-loop-through-a-flat-json-object-to-get-each-key-a
-//        Iterator<String> iterator = allGoals.keys();
-//        while (iterator.hasNext()) {
-//            String key = iterator.next();
-//            try {
-//                JSONObject iteratedGoal = allGoals.getJSONObject(key);
-//                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
-//                if (goalIsCompleted) {
-//                    Integer category = iteratedGoal.getInt("category");
-//                    String title = iteratedGoal.getString("title");
-//                    String date = iteratedGoal.getString("dueDate");
-//                    String id = iteratedGoal.getString("id");
-//                    IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
-//                    goalToAdd.setRandomID(id);
-//                    completedGoals.add(goalToAdd);
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return completedGoals;
-//    }
-//
-//    public ArrayList getUncompletedGoals(int filterIndex) {
-//        ArrayList<IndividualGoal> uncompletedGoals = new ArrayList<>();
-//        JSONObject allGoals = getAllData(GOAL_FILE);
-//        Iterator<String> iterator = allGoals.keys();
-//        while (iterator.hasNext()) {
-//            String key = iterator.next();
-//            try {
-//                JSONObject iteratedGoal = allGoals.getJSONObject(key);
-//                Boolean goalIsCompleted = iteratedGoal.getBoolean("completed");
-//                if (!goalIsCompleted) {
-//                    Integer category = iteratedGoal.getInt("category");
-//                    if (category==filterIndex||filterIndex==-1){
-//                        String title = iteratedGoal.getString("title");
-//                        String date = iteratedGoal.getString("dueDate");
-//                        String id = iteratedGoal.getString("id");
-//                        IndividualGoal goalToAdd = new IndividualGoal(title, date, category);
-//                        goalToAdd.setRandomID(id);
-//                        uncompletedGoals.add(goalToAdd);
-//                    }
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return uncompletedGoals;
-//    }
 
     //If the user passes in 'true' as the value of bool, they wish to retrieve all completed goals
     public ArrayList getGoals(Boolean bool, int filterIndex) {
@@ -171,17 +115,14 @@ public class LocalStorage {
             String title = goalToAdd.getTitle();
             String dueDate = goalToAdd.getDueDate();
             Integer category = goalToAdd.getCategory();
-
             JSONObject newGoal = new JSONObject();
             newGoal.put("title", title);
             newGoal.put("dueDate", dueDate);
             newGoal.put("category", category);
             newGoal.put("completed", false);
-
             Random rand = new Random();
             Integer randInt = rand.nextInt(10000);
             String goalID = randInt.toString();
-
             JSONObject allGoals = getAllData(GOAL_FILE);
 
             while (allGoals.has(goalID)) {
@@ -220,7 +161,6 @@ public class LocalStorage {
     public void writeDataLocally(JSONObject data, String filename) {
         //data needs to be a String before being written to local storage
         String convertedData = data.toString();
-
         try{
             FileOutputStream fos = appContext.openFileOutput(filename, Context.MODE_PRIVATE);
             fos.write(convertedData.getBytes());
