@@ -309,7 +309,7 @@ public class HomeScreenActivity extends AppCompatActivity implements Serializabl
         goalArrayList.addAll(storage.getGoals(uncompleted, currentCategory));
 //        goalArrayList.addAll(storage.getUncompletedGoals(currentCategory));
         adapter.notifyDataSetChanged();
-       }
+    }
 
     private void goBackToMainScreen(){
         refreshGoal();

@@ -231,4 +231,10 @@ public class LocalStorage {
             e.printStackTrace();
         }
     }
+
+    public void removeGoal(IndividualGoal goal) {
+        JSONObject allGoals = getAllData(GOAL_FILE);
+        allGoals.remove(goal.getRandomID());
+        writeDataLocally(allGoals, GOAL_FILE);
+    }
 }
