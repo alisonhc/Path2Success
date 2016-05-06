@@ -16,7 +16,7 @@ import java.util.Random;
 
 /**
  * Code for reading and writing to local storage was referenced from
- *      http://chrisrisner.com/31-Days-of-Android--Day-23-Writing-and-Reading-Files
+ *      http://chrisrisner.com/31-Days-of-Android-Day-23-Writing-and-Reading-Files
  */
 public class LocalStorage {
     public final static String GOAL_FILE = "goal_file";
