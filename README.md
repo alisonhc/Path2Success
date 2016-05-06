@@ -26,4 +26,4 @@ which will then appear back on the home screen.
         7. Have fun!
 
 Disclosure:
-Open Source https://github.com/amlcurran/ShowcaseView for the app tutorial.
+Open Source https://github.com/amlcurran/ShowcaseView for the app tutorial when launched for the first time.
