@@ -10,8 +10,9 @@ which will then appear back on the home screen.
 
     Home screen with list of all goals: can filter display via navigation drawer using "All" or any goal category.
         - From navigation drawer, the user can click on the History page
-        - Long click on a goal to go to Edit page with title, date, and category options
+        - Long click on a goal on the home scrren to go to Edit page with title, date, and category options
         - Click red floating button to go to to Input page with title, date, and category options
+        - Long click on a goal on the history page to delet the goal permanently
 
     ## Install and run this app
         1. Copy github url.
@@ -23,3 +24,6 @@ which will then appear back on the home screen.
         7. Click run.
         8. After gradle builds (might take awhile), the app should launch and give you a simple tutorial.
         7. Have fun!
+
+Disclosure:
+Open Source https://github.com/amlcurran/ShowcaseView for the app tutorial.
